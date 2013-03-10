@@ -1,0 +1,1 @@
+install_package "node-0.8.22" "http://nodejs.org/dist/v0.8.22/node-v0.8.22.tar.gz" 

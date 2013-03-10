@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+#
+# Summary: Install a Node version using the node-build plugin
+#
+# Usage: nodenv install [-f|--force] [-k|--keep] [-v|--verbose] <version>
+#        nodenv install [-f|--force] [-k|--keep] [-v|--verbose] <definition-file>
+#        nodenv install -l|--list
+#
+#   -l/--list        List all available versions
+#   -f/--force       Install even if the version appears to be installed already
+#   -k/--keep        Keep source tree in $NODENV_BUILD_ROOT after installation
+#                    (defaults to $NODENV_ROOT/sources)
+#   -v/--verbose     Verbose mode: print compilation status to stdout
+#
+# For detailed information on installing Node versions with
+# node-build, including a list of environment variables for adjusting
+# compilation, see: https://github.com/OiNutter/node-build#usage
+#
+set -e
+[ -n "$NODENV_DEBUG" ] && set -x
+
+# Provide nodenv completions
+if [ "$1" = "--complete" ]; Then
+  exec node-build --definitions
+fi
+
+if [ -z "$NODENV_ROOT" ]; then
+  NODENV_ROOT="${HOME}/.nodenv"
+fi
+
+# Load shared library functions
+eval "$(node-build --lib)"
+
+usage() {
+  # We can remove the sed fallback once nodenv 0.4.0 is widely available.
+  nodenv-help install 2>/dev/null || sed -ne '/^#/!q;s/.//;s/.//;1,4d;p' < "$0"
+  [ -z "$1" ] || exit "$1"
+}
+
+unset FORCE
+unset KEEP
+unset VERBOSE
+
+parse_options "$@"
+for option in "${OPTIONS[@]}"; do
+  case "$option" in
+  "h" | "help" )
+    usage 0
+    ;;
+  "l" | "list" )
+    echo "Available versions:"
+    node-build --definitions | sed 's/^/  /'
+    exit
+    ;;
+  "f" | "force" )
+    FORCE=true
+    ;;
+  "k" | "keep" )
+    [ -n "${NODENV_BUILD_ROOT}" ] || NODENV_BUILD_ROOT="${NODENV_ROOT}/sources"
+    ;;
+  "v" | "verbose" )
+    VERBOSE="-v"
+    ;;
+  "version" )
+    exec node-build --version
+    ;;
+  * )
+    usage 1
+    ;;
+  esac
+done
+
+unset VERSION_NAME
+
+# The first argument contains the definition to install. If the
+# argument is missing, try to install whatever local app-specific
+# version is specified by nodenv. Show usage instructions if a local
+# version is not specified.
+DEFINITION="${ARGUMENTS[0]}"
+[ -n "$DEFINITION" ] || DEFINITION="$(nodenv local 2>/dev/null || true)"
+[ -n "$DEFINITION" ] || usage 1
+
+
+# Define `before_install` and `after_install` functions that allow
+# plugin hooks to register a string of code for execution before or
+# after the installation process.
+declare -a before_hooks after_hooks
+
+before_install() {
+  local hook="$1"
+  before_hooks["${#before_hooks[@]}"]="$hook"
+}
+
+after_install() {
+  local hook="$1"
+  after_hooks["${#after_hooks[@]}"]="$hook"
+}
+
+# Load plugin hooks.
+for script in $(nodenv-hooks install); do
+  source "$script"
+done
+
+
+# Set VERSION_NAME from $DEFINITION, if it is not already set. Then
+# compute the installation prefix.
+[ -n "$VERSION_NAME" ] || VERSION_NAME="${DEFINITION##*/}"
+PREFIX="${NODENV_ROOT}/versions/${VERSION_NAME}"
+
+[ -d "${PREFIX}" ] && PREFIX_EXISTS=1
+
+# If the installation prefix exists, prompt for confirmation unless
+# the --force option was specified.
+if [ -z "$FORCE" ] && [ -d "${PREFIX}/bin" ]; then
+  echo "nodenv: $PREFIX already exists" >&2
+  read -p "continue with installation? (y/N) "
+
+  case "$REPLY" in
+  y* | Y* ) ;;
+  * ) exit 1 ;;
+  esac
+fi
+
+# If NODENV_BUILD_ROOT is set, always pass keep options to node-build.
+if [ -n "${NODENV_BUILD_ROOT}" ]; then
+  export NODE_BUILD_BUILD_PATH="${NODENV_BUILD_ROOT}/${VERSION_NAME}"
+  KEEP="-k"
+fi
+
+# Set NODE_BUILD_CACHE_PATH to $NODENV_ROOT/cache, if the directory
+# exists and the variable is not already set.
+if [ -z "${NODE_BUILD_CACHE_PATH}" ] && [ -d "${NODENV_ROOT}/cache" ]; then
+  export NODE_BUILD_CACHE_PATH="${NODENV_ROOT}/cache"
+fi
+
+
+# Execute `before_install` hooks.
+for hook in "${before_hooks[@]}"; do eval "$hook"; done
+
+# Plan cleanup on unsuccessful installation.
+cleanup() {
+  [ -z "${PREFIX_EXISTS}" ] && rm -rf "$PREFIX"
+}
+
+trap cleanup SIGINT
+
+# Invoke `node-build` and record the exit status in $STATUS. Run
+# `nodenv rehash` after a successful installation.
+STATUS=0
+node-build $KEEP $VERBOSE "$DEFINITION" "$PREFIX" || STATUS="$?"
+
+# Execute `after_install` hooks.
+for hook in "${after_hooks[@]}"; do eval "$hook"; done
+
+# Run `nodenv-rehash` after a successful installation.
+if [ "$STATUS" == "0" ]; then
+  nodenv rehash
+else
+  cleanup
+fi
+
+exit "$STATUS"
