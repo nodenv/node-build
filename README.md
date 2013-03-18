@@ -171,6 +171,9 @@ If you can't find an answer on the wiki, open an issue on the [issue
 tracker](https://github.com/OiNutter/node-build/issues). Be sure to
 include the full build log for build failures.
 
+### Credits
+
+Copied from [ruby-build](https://github.com/sstephenson/ruby-build) and modified to work for node.
 
 ### License
 
