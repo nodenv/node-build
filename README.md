@@ -43,23 +43,6 @@ setting the `PREFIX` environment variable.
 To update node-build after it has been installed, run `git pull` in
 your cloned copy of the repository, then re-run the install script.
 
-### Installing with Homebrew (for OS X users)
-
-Mac OS X users can install node-build with the
-[Homebrew](http://mxcl.github.com/homebrew/) package manager. This
-will give you access to the `node-build` command. If you have nodenv
-installed, you will also be able to use the `nodenv install` command.
-
-*This is the recommended method of installation if you installed nodenv
- with Homebrew.*
-
-    brew install node-build
-
-Or, if you would like to install the latest development release:
-
-    brew install --HEAD node-build
-
-
 ## Usage
 
 ### Using `nodenv install` with nodenv
@@ -67,7 +50,7 @@ Or, if you would like to install the latest development release:
 To install a Node version for use with nodenv, run `nodenv install` with
 the exact name of the version you want to install. For example,
 
-    nodenv install 1.9.3-p392
+    nodenv install 0.10.0
 
 Node versions will be installed into a directory of the same name
 under `~/.nodenv/versions`.
@@ -86,7 +69,7 @@ Run the `node-build` command with the exact name of the version you
 want to install and the full path where you want to install it. For
 example,
 
-    node-build 1.9.3-p392 ~/local/node-1.9.3-p392
+    node-build 0.10.0 ~/local/node-0.10.0
 
 To see a list of all available Node versions, run `node-build
 --definitions`.
@@ -132,8 +115,8 @@ process.
 
 ### Checksum verification
 
-If you have the `md5`, `openssl`, or `md5sum` tool installed,
-node-build will automatically verify the MD5 checksum of each
+If you have the `sha1`, `openssl`, or `sha1sum` tool installed,
+node-build will automatically verify the SHA1 checksum of each
 downloaded package before installing it.
 
 Checksums are optional and specified as anchors on the package URL in
@@ -141,25 +124,16 @@ each definition. (All bundled definitions include checksums.)
 
 ### Package download mirrors
 
-node-build will first attempt to download package files from a mirror
-hosted on Amazon CloudFront. If a package is not available on the
-mirror, if the mirror is down, or if the download is corrupt,
-node-build will fall back to the official URL specified in the
-defintion file.
-
 You can point node-build to another mirror by specifying the
 `NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to
 run your own local mirror, for example. Package mirror URLs are
 constructed by joining this variable with the MD5 checksum of the
 package file.
 
-If you don't have an MD5 program installed, node-build will skip the
+If you don't have a SHA1 program installed, node-build will skip the
 download mirror and use official URLs instead. You can force
 node-build to bypass the mirror by setting the
 `NODE_BUILD_SKIP_MIRROR` environment variable.
-
-The official node-build download mirror is sponsored by
-[37signals](http://37signals.com/).
 
 ### Package download caching
 
@@ -202,7 +176,7 @@ include the full build log for build failures.
 
 (The MIT License)
 
-Copyright (c) 2012 Sam Stephenson
+Copyright (c) 2013 Will McKenzie
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
