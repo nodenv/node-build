@@ -372,19 +372,6 @@ build_package_node() {
   } >&4 2>&1
 }
 
-build_package_ree_installer() {
-  local options=""
-  if [[ "Darwin" = "$(uname)" ]]; then
-    options="--no-tcmalloc"
-  fi
-
-  # Work around install_useful_libraries crash with --dont-install-useful-gems
-  mkdir -p "$PREFIX_PATH/lib/node/gems/1.8/gems"
-
-  { ./installer --auto "$PREFIX_PATH" --dont-install-useful-gems $options $CONFIGURE_OPTS
-  } >&4 2>&1
-}
-
 remove_windows_files() {
   cd "$PREFIX_PATH"
   rm -f bin/*.exe bin/*.dll bin/*.bat bin/jnode.sh
@@ -406,90 +393,6 @@ after_install_package() {
 fix_directory_permissions() {
   # Ensure installed directories are not world-writable to avoid Bundler warnings
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
-}
-
-require_gcc() {
-  local gcc="$(locate_gcc || true)"
-
-  if [ -z "$gcc" ]; then
-    local esc=$'\033'
-    { echo
-      echo "${esc}[1mERROR${esc}[0m: This package must be compiled with GCC, but node-build couldn't"
-      echo "find a suitable \`gcc\` executable on your system. Please install GCC"
-      echo "and try again."
-      echo
-
-      if [ "$(uname -s)" = "Darwin" ]; then
-        echo "${esc}[1mDETAILS${esc}[0m: Apple no longer includes the official GCC compiler with Xcode"
-        echo "as of version 4.2. Instead, the \`gcc\` executable is a symlink to"
-        echo "\`llvm-gcc\`, a modified version of GCC which outputs LLVM bytecode."
-        echo
-        echo "For most programs the \`llvm-gcc\` compiler works fine. However,"
-        echo "versions of Ruby older than 1.9.3-p125 are incompatible with"
-        echo "\`llvm-gcc\`. To build older versions of Ruby you must have the official"
-        echo "GCC compiler installed on your system."
-        echo
-        echo "${esc}[1mTO FIX THE PROBLEM${esc}[0m: Install the official GCC compiler using these"
-        echo "packages: ${esc}[4mhttps://github.com/kennethreitz/osx-gcc-installer/downloads${esc}[0m"
-        echo
-        echo "You will need to install the official GCC compiler to build older"
-        echo "versions of Ruby even if you have installed Apple's Command Line Tools"
-        echo "for Xcode package. The Command Line Tools for Xcode package only"
-        echo "includes \`llvm-gcc\`."
-      fi
-    } >&3
-    return 1
-  fi
-
-  export CC="$gcc"
-}
-
-locate_gcc() {
-  local gcc gccs
-  IFS=: gccs=($(gccs_in_path))
-
-  verify_gcc "$CC" ||
-  verify_gcc "$(command -v gcc || true)" || {
-    for gcc in "${gccs[@]}"; do
-      verify_gcc "$gcc" && break || true
-    done
-  }
-
-  return 1
-}
-
-gccs_in_path() {
-  local gcc path paths
-  local gccs=()
-  IFS=: paths=($PATH)
-
-  shopt -s nullglob
-  for path in "${paths[@]}"; do
-    for gcc in "$path"/gcc-*; do
-      gccs["${#gccs[@]}"]="$gcc"
-    done
-  done
-  shopt -u nullglob
-
-  printf :%s "${gccs[@]}"
-}
-
-verify_gcc() {
-  local gcc="$1"
-  if [ -z "$gcc" ]; then
-    return 1
-  fi
-
-  local version="$("$gcc" --version || true)"
-  if [ -z "$version" ]; then
-    return 1
-  fi
-
-  if echo "$version" | grep LLVM >/dev/null; then
-    return 1
-  fi
-
-  echo "$gcc"
 }
 
 has_broken_mac_openssl() {
@@ -619,13 +522,6 @@ else
   TMP="${TMPDIR%/}"
 fi
 
-# Work around warnings building Ruby 2.0 on Clang 2.x
-if type clang &>/dev/null; then
-  if "${CC:-clang}" -x c /dev/null -E -Wno-error=shorten-64-to-32 &>/dev/null; then
-    NODE_CFLAGS="$NODE_CFLAGS -Wno-error=shorten-64-to-32"
-  fi
-fi
-
 if [ -z "$MAKE" ]; then
   export MAKE="make"
 fi
@@ -636,10 +532,10 @@ else
   unset NODE_BUILD_CACHE_PATH
 fi
 
-if [ -z "$NODE_BUILD_MIRROR_URL" ]; then
-  NODE_BUILD_MIRROR_URL="http://dqw8nmjcqpjn7.cloudfront.net"
-else
+if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
   NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
+else
+  unset NODE_BUILD_MIRROR_URL
 fi
 
 if [ -n "$NODE_BUILD_SKIP_MIRROR" ]; then
