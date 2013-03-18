@@ -5,7 +5,7 @@ export NODE_BUILD_SKIP_MIRROR=1
 export NODE_BUILD_CACHE_PATH="$TMP/cache"
 
 setup() {
-  mkdir "$NODE_BUILD_CACHE_PATH"
+  mkdir -p "$NODE_BUILD_CACHE_PATH"
 }
 
 
