@@ -53,26 +53,6 @@ setup() {
 }
 
 
-@test "cached package with invalid checksum falls back to mirror and updates cache" {
-  export NODE_BUILD_SKIP_MIRROR=
-  local checksum="83e6d7725e20166024a1eb74cde80677"
-
-  stub sha1 true "echo invalid" "echo $checksum"
-  stub curl "-*I* : true" "-*S* http://?*/$checksum : cat package-1.0.0.tar.gz"
-
-  touch "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz"
-
-  install_fixture definitions/with-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
-  [ -e "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" ]
-  diff -q "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" "${FIXTURE_ROOT}/package-1.0.0.tar.gz"
-
-  unstub curl
-  unstub sha1
-}
-
-
 @test "nonexistent cache directory is ignored" {
   stub sha1 true
   stub curl "-*S* : cat package-1.0.0.tar.gz"

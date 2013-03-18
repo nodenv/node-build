@@ -80,19 +80,3 @@ export NODE_BUILD_MIRROR_URL=http://mirror.example.com
   unstub curl
   unstub sha1
 }
-
-
-@test "default mirror URL" {
-  export NODE_BUILD_MIRROR_URL=
-  local checksum="83e6d7725e20166024a1eb74cde80677"
-
-  stub sha1 true "echo $checksum"
-  stub curl "-*I* : true" "-*S* http://?*/$checksum : cat package-1.0.0.tar.gz"
-
-  install_fixture definitions/with-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
-
-  unstub curl
-  unstub sha1
-}
