@@ -1,12 +1,12 @@
 #!/usr/bin/env bats
 
 load test_helper
-export RUBY_BUILD_SKIP_MIRROR=1
-export RUBY_BUILD_CACHE_PATH=
+export NODE_BUILD_SKIP_MIRROR=1
+export NODE_BUILD_CACHE_PATH=
 
 
 @test "package URL without checksum" {
-  stub md5 true
+  stub sha1 true
   stub curl "-*S* : cat package-1.0.0.tar.gz"
 
   install_fixture definitions/without-checksum
@@ -14,12 +14,12 @@ export RUBY_BUILD_CACHE_PATH=
   [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
-  unstub md5
+  unstub sha1
 }
 
 
 @test "package URL with valid checksum" {
-  stub md5 true "echo 83e6d7725e20166024a1eb74cde80677"
+  stub sha1 true "echo 83e6d7725e20166024a1eb74cde80677"
   stub curl "-*S* : cat package-1.0.0.tar.gz"
 
   install_fixture definitions/with-checksum
@@ -27,12 +27,12 @@ export RUBY_BUILD_CACHE_PATH=
   [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
-  unstub md5
+  unstub sha1
 }
 
 
 @test "package URL with invalid checksum" {
-  stub md5 true "echo 83e6d7725e20166024a1eb74cde80677"
+  stub sha1 true "echo 83e6d7725e20166024a1eb74cde80677"
   stub curl "-*S* : cat package-1.0.0.tar.gz"
 
   install_fixture definitions/with-invalid-checksum
@@ -40,12 +40,12 @@ export RUBY_BUILD_CACHE_PATH=
   [ ! -f "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
-  unstub md5
+  unstub sha1
 }
 
 
-@test "package URL with checksum but no MD5 support" {
-  stub md5 false
+@test "package URL with checksum but no SHA1 support" {
+  stub sha1 false
   stub curl "-*S* : cat package-1.0.0.tar.gz"
 
   install_fixture definitions/with-checksum
@@ -53,12 +53,12 @@ export RUBY_BUILD_CACHE_PATH=
   [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
-  unstub md5
+  unstub sha1
 }
 
 
 @test "package with invalid checksum" {
-  stub md5 true "echo invalid"
+  stub sha1 true "echo invalid"
   stub curl "-*S* : cat package-1.0.0.tar.gz"
 
   install_fixture definitions/with-checksum
@@ -66,5 +66,5 @@ export RUBY_BUILD_CACHE_PATH=
   [ ! -f "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
-  unstub md5
+  unstub sha1
 }

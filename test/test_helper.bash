@@ -43,5 +43,5 @@ install_fixture() {
   local destination="$2"
   [ -n "$destination" ] || destination="$INSTALL_ROOT"
 
-  run ruby-build "$FIXTURE_ROOT/$name" "$destination"
+  run node-build "$FIXTURE_ROOT/$name" "$destination"
 }
