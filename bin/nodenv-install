@@ -20,7 +20,7 @@ set -e
 [ -n "$NODENV_DEBUG" ] && set -x
 
 # Provide nodenv completions
-if [ "$1" = "--complete" ]; Then
+if [ "$1" = "--complete" ]; then
   exec node-build --definitions
 fi
 
