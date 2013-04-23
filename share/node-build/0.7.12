@@ -1,0 +1,1 @@
+install_package "node-v0.7.12" "http://nodejs.org/dist/v0.7.12/node-v0.7.12.tar.gz#cb570abacbf4eb7e23c3d2620d00dd3080d9c19d"
