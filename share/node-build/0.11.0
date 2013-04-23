@@ -1,0 +1,1 @@
+install_package "node-v0.11.0" "http://nodejs.org/dist/v0.11.0/node-v0.11.0.tar.gz#0402aae18f847238409e9d1a5ddd806beb5fe678"

@@ -1,0 +1,1 @@
+install_package "node-v0.6.13" "http://nodejs.org/dist/v0.6.13/node-v0.6.13.tar.gz#04379ec7651db61bb0023f151b49c4ddbb1de4ff"
