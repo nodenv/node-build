@@ -201,11 +201,11 @@ http() {
 }
 
 http_head_curl() {
-  curl -qsILf "$1" >&4 2>&1
+  curl -sILf "$1" >&4 2>&1
 }
 
 http_get_curl() {
-  curl -qsSLf "$1"
+  curl -sSLf "$1"
 }
 
 http_head_wget() {
