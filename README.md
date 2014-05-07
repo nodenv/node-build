@@ -160,6 +160,16 @@ command. You should specify the location of the source code with the
 `NODE_BUILD_BUILD_PATH` environment variable when using `--keep` with
 `node-build`.
 
+## Update available build versions
+
+To grab the latest versions from the node website and generate version files for node-build to use
+run the following command in the `tools` subdirectory of your node-build installation:
+
+``` shell
+node scraper.js
+```
+
+Feel free to commit and send a pull request with the updated versions.
 
 ## Getting Help
 
