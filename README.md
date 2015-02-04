@@ -110,7 +110,7 @@ process.
 * `MAKE_OPTS` (or `MAKEOPTS`) lets you pass additional options to
   `make`.
 * `NODE_CONFIGURE_OPTS` and `NODE_MAKE_OPTS` allow you to specify
-  configure and make options for building MRI. These variables will
+  configure and make options for building Node. These variables will
   be passed to Node only, not any dependent packages (e.g. libyaml).
 
 ### Checksum verification
