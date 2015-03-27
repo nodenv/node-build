@@ -17,10 +17,10 @@ need precise control over Node version installation.
 Installing node-build as an nodenv plugin will give you access to the
 `nodenv install` command.
 
-    git clone git://github.com/OiNutter/node-build.git ~/.nodenv/plugins/node-build
+    git clone git://github.com/OiNutter/node-build.git $(nodenv root)/plugins/node-build
 
 This will install the latest development version of node-build into
-the `~/.nodenv/plugins/node-build` directory. From that directory, you
+the `$(nodenv root)/plugins/node-build` directory. From that directory, you
 can check out a specific release tag. To update node-build, run `git
 pull` to download the latest changes.
 
@@ -53,7 +53,7 @@ the exact name of the version you want to install. For example,
     nodenv install 0.10.0
 
 Node versions will be installed into a directory of the same name
-under `~/.nodenv/versions`.
+under `$(nodenv root)/versions`.
 
 To see a list of all available Node versions, run `nodenv install --list`.
 You may also tab-complete available Node
@@ -143,7 +143,7 @@ variable. When set, package files will be kept in this directory after
 the first successful download and reused by subsequent invocations of
 `node-build` and `nodenv install`.
 
-The `nodenv install` command defaults this path to `~/.nodenv/cache`, so
+The `nodenv install` command defaults this path to `$(nodenv root)/cache`, so
 in most cases you can enable download caching simply by creating that
 directory.
 
@@ -155,7 +155,7 @@ installation. This can be useful if you need to use `gdb` and
 `memprof` with Node.
 
 Source code will be kept in a parallel directory tree
-`~/.nodenv/sources` when using `--keep` with the `nodenv install`
+`$(nodenv root)/sources` when using `--keep` with the `nodenv install`
 command. You should specify the location of the source code with the
 `NODE_BUILD_BUILD_PATH` environment variable when using `--keep` with
 `node-build`.
