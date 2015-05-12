@@ -1,11 +1,12 @@
 var http    = require('https'),
-  	fs      = require('fs'),
+    fs      = require('fs'),
+    path    = require('path'),
     baseUrl = "https://github.com/iojs/io.js.git";
 
 function generateNodeFile (item) {
   var version   = "iojs-" + item.version.replace(/^v/,''),
     installLine = 'install_git "' + version + '" "' + baseUrl  + '" "' + item.version + '" standard',
-    filePath    = '../share/node-build/' + version;
+    filePath    = path.join(__dirname, '../share/node-build', version);
 
   fs.exists(filePath,function(exists){
     if(!exists){

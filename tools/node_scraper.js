@@ -1,5 +1,6 @@
 var http = require('http'),
-  	fs = require('fs'),
+	fs = require('fs'),
+	path = require('path'),
 	baseUrl = "http://nodejs.org/dist/",
 	generateNodeFile = function( version ){
 		var shaUrl = baseUrl + version + "/" + "SHASUMS.txt",
@@ -26,7 +27,7 @@ var http = require('http'),
 					//this is gnarly, oh well
 					//install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
 					installLine = 'install_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"'
-					filePath = '../share/node-build/' + version.substring(1)
+					filePath = path.join(__dirname, '../share/node-build', version.substring(1))
 					fs.exists(filePath,function(exists){
 
 						if(!exists){
