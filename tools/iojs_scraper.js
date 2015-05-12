@@ -3,7 +3,7 @@ var http    = require('https'),
     baseUrl = "https://github.com/iojs/io.js.git";
 
 function generateNodeFile (item) {
-  var version   = "iojs-" + item.version,
+  var version   = "iojs-" + item.version.replace(/^v/,''),
     installLine = 'install_git "' + version + '" "' + baseUrl  + '" "' + item.version + '" standard',
     filePath    = '../share/node-build/' + version;
 
