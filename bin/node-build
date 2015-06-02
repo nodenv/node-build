@@ -61,6 +61,10 @@ capitalize() {
   printf "%s" "$1" | tr a-z A-Z
 }
 
+sanitize() {
+  printf "%s" "$1" | sed "s/[^A-Za-z0-9.-]/_/g; s/__*/_/g"
+}
+
 build_failed() {
   { echo
     echo "BUILD FAILED"
@@ -168,11 +172,11 @@ verify_checksum() {
   [ -e "$filename" ] || return 0
 
   # If there's no expected checksum, return success
-  local expected_checksum="$2"
+  local expected_checksum=`echo "$2" | tr [A-Z] [a-z]`
   [ -n "$expected_checksum" ] || return 0
 
   # If the computed checksum is empty, return failure
-  local computed_checksum="$(compute_sha1 < "$filename")"
+  local computed_checksum=`echo "$(compute_sha1 < "$filename")" | tr [A-Z] [a-z]`
   [ -n "$computed_checksum" ] || return 1
 
   if [ "$expected_checksum" != "$computed_checksum" ]; then
@@ -188,12 +192,13 @@ verify_checksum() {
 http() {
   local method="$1"
   local url="$2"
+  local file="$3"
   [ -n "$url" ] || return 1
 
   if type curl &>/dev/null; then
-    "http_${method}_curl" "$url"
+    "http_${method}_curl" "$url" "$file"
   elif type wget &>/dev/null; then
-    "http_${method}_wget" "$url"
+    "http_${method}_wget" "$url" "$file"
   else
     echo "error: please install \`curl\` or \`wget\` and try again" >&2
     exit 1
@@ -205,7 +210,7 @@ http_head_curl() {
 }
 
 http_get_curl() {
-  curl -sSLf "$1"
+  curl -C - -o "${2:--}" -qsSLf "$1"
 }
 
 http_head_wget() {
@@ -213,7 +218,7 @@ http_head_wget() {
 }
 
 http_get_wget() {
-  wget -nv -O- "$1"
+  wget -nv -c -O "${2:--}" "$1"
 }
 
 fetch_tarball() {
@@ -240,8 +245,13 @@ fetch_tarball() {
     download_tarball "$package_url" "$package_filename" "$checksum"
   }
 
-  { tar xzvf "$package_filename"
-    rm -f "$package_filename"
+  { if tar xzvf "$package_filename"; then
+      if [ -z "$KEEP_BUILD_PATH" ]; then
+        rm -f "$package_filename"
+      else
+        true
+      fi
+    fi
   } >&4 2>&1
 }
 
@@ -266,7 +276,7 @@ download_tarball() {
 
   echo "-> $package_url" >&2
 
-  { http get "$package_url" > "$package_filename"
+  { http get "$package_url" "$package_filename"
     verify_checksum "$package_filename" "$checksum"
   } >&4 2>&1 || return 1
 
@@ -286,6 +296,20 @@ fetch_git() {
   echo "Cloning ${git_url}..." >&2
 
   if type git &>/dev/null; then
+    if [ -n "$NODE_BUILD_CACHE_PATH" ]; then
+      pushd "$NODE_BUILD_CACHE_PATH" >&4
+      local clone_name="$(sanitize "$git_url")"
+      if [ -e "${clone_name}" ]; then
+        { cd "${clone_name}"
+          git fetch --force "$git_url" "+${git_ref}:${git_ref}"
+        } >&4 2>&1
+      else
+        git clone --bare --branch "$git_ref" "$git_url" "${clone_name}" >&4 2>&1
+      fi
+      git_url="$NODE_BUILD_CACHE_PATH/${clone_name}"
+      popd >&4
+    fi
+
     git clone --depth 1 --branch "$git_ref" "$git_url" "${package_name}" >&4 2>&1
   else
     echo "error: please install \`git\` and try again" >&2
@@ -354,8 +378,13 @@ build_package_standard() {
   local PACKAGE_MAKE_OPTS_ARRAY="${package_var_name}_MAKE_OPTS_ARRAY[@]"
   local PACKAGE_CFLAGS="${package_var_name}_CFLAGS"
 
-  { CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}" ${!PACKAGE_CONFIGURE:-./configure} --prefix="${!PACKAGE_PREFIX_PATH:-$PREFIX_PATH}" $CONFIGURE_OPTS ${!PACKAGE_CONFIGURE_OPTS} "${!PACKAGE_CONFIGURE_OPTS_ARRAY}"
-    "$MAKE" $MAKE_OPTS ${!PACKAGE_MAKE_OPTS} "${!PACKAGE_MAKE_OPTS_ARRAY}"
+  ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
+      export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
+    fi
+    ${!PACKAGE_CONFIGURE:-./configure} --prefix="${!PACKAGE_PREFIX_PATH:-$PREFIX_PATH}" $CONFIGURE_OPTS ${!PACKAGE_CONFIGURE_OPTS} "${!PACKAGE_CONFIGURE_OPTS_ARRAY}"
+  ) >&4 2>&1
+
+  { "$MAKE" $MAKE_OPTS ${!PACKAGE_MAKE_OPTS} "${!PACKAGE_MAKE_OPTS_ARRAY}"
     "$MAKE" install
   } >&4 2>&1
 }
@@ -397,8 +426,18 @@ fix_directory_permissions() {
 
 has_broken_mac_openssl() {
   [ "$(uname -s)" = "Darwin" ] &&
-  [ "$(openssl version 2>/dev/null || true)" = "OpenSSL 0.9.8r 8 Feb 2011" ] &&
-  [[ "$NODE_CONFIGURE_OPTS" != *--with-openssl-dir=* ]]
+  [[ "$(openssl version 2>/dev/null || true)" = "OpenSSL 0.9.8"?* ]] &&
+  [[ "$NODE_CONFIGURE_OPTS" != *--with-openssl-dir=* ]] &&
+  ! use_homebrew_openssl
+}
+
+use_homebrew_openssl() {
+  local ssldir="$(brew --prefix openssl 2>/dev/null || true)"
+  if [ -d "$ssldir" ]; then
+    package_option node configure --with-openssl-dir="$ssldir"
+  else
+    return 1
+  fi
 }
 
 build_package_mac_openssl() {
@@ -507,7 +546,7 @@ elif [ ! -e "$DEFINITION_PATH" ]; then
     DEFINITION_PATH="$BUILTIN_DEFINITION_PATH"
   else
     echo "node-build: definition not found: ${DEFINITION_PATH}" >&2
-    exit 1
+    exit 2
   fi
 fi
 
