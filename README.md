@@ -17,7 +17,7 @@ need precise control over Node version installation.
 Installing node-build as an nodenv plugin will give you access to the
 `nodenv install` command.
 
-    git clone git://github.com/OiNutter/node-build.git $(nodenv root)/plugins/node-build
+    git clone https://github.com/OiNutter/node-build.git $(nodenv root)/plugins/node-build
 
 This will install the latest development version of node-build into
 the `$(nodenv root)/plugins/node-build` directory. From that directory, you
@@ -31,7 +31,7 @@ the `node-build` command for precise control over Node version
 installation. If you have nodenv installed, you will also be able to
 use the `nodenv install` command.
 
-    git clone git://github.com/OiNutter/node-build.git
+    git clone https://github.com/OiNutter/node-build.git
     cd node-build
     ./install.sh
 
