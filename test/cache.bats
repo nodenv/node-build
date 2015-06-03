@@ -11,7 +11,7 @@ setup() {
 
 @test "packages are saved to download cache" {
   stub sha1 true
-  stub curl "-*S* : cat package-1.0.0.tar.gz"
+  stub curl "-C - -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${6##*/} \$4"
 
   install_fixture definitions/without-checksum
   [ "$status" -eq 0 ]
@@ -55,7 +55,7 @@ setup() {
 
 @test "nonexistent cache directory is ignored" {
   stub sha1 true
-  stub curl "-*S* : cat package-1.0.0.tar.gz"
+  stub curl "-C - -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${6##*/} \$4"
 
   export NODE_BUILD_CACHE_PATH="${TMP}/nonexistent"
 
