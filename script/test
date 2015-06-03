@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+[ -d ./bats/bin ] && export PATH=./bats/bin:"$PATH"
+
+bats -t test
