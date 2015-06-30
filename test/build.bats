@@ -27,7 +27,7 @@ tarball() {
   mkdir -p "$path"
   cat > "$configure" <<OUT
 #!$BASH
-echo "$name: \$@" >> build.log
+echo "$name: \$@" \${NODEOPT:+NODEOPT=\$NODEOPT} >> build.log
 OUT
   chmod +x "$configure"
 
