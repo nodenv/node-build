@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 #
-# Summary: Install a Node version using the node-build plugin
+# Summary: Install a Node version using node-build
 #
-# Usage: nodenv install [-f|--force] [-k|--keep] [-v|--verbose] <version>
-#        nodenv install [-f|--force] [-k|--keep] [-v|--verbose] <definition-file>
+# Usage: nodenv install [-f] [-kvp] <version>
+#        nodenv install [-f] [-kvp] <definition-file>
 #        nodenv install -l|--list
 #
 #   -l/--list        List all available versions
 #   -f/--force       Install even if the version appears to be installed already
+#
+#   node-build options:
+#
 #   -k/--keep        Keep source tree in $NODENV_BUILD_ROOT after installation
 #                    (defaults to $NODENV_ROOT/sources)
 #   -v/--verbose     Verbose mode: print compilation status to stdout
+#   -p/--patch       Apply a patch from stdin before building
 #
 # For detailed information on installing Node versions with
 # node-build, including a list of environment variables for adjusting
@@ -49,6 +53,7 @@ indent() {
 unset FORCE
 unset KEEP
 unset VERBOSE
+unset HAS_PATCH
 
 parse_options "$@"
 for option in "${OPTIONS[@]}"; do
@@ -69,6 +74,9 @@ for option in "${OPTIONS[@]}"; do
     ;;
   "v" | "verbose" )
     VERBOSE="-v"
+    ;;
+  "p" | "patch" )
+    HAS_PATCH="-p"
     ;;
   "version" )
     exec node-build --version
@@ -155,7 +163,7 @@ trap cleanup SIGINT
 
 # Invoke `node-build` and record the exit status in $STATUS.
 STATUS=0
-node-build $KEEP $VERBOSE "$DEFINITION" "$PREFIX" || STATUS="$?"
+node-build $KEEP $VERBOSE $HAS_PATCH "$DEFINITION" "$PREFIX" || STATUS="$?"
 
 # Display a more helpful message if the definition wasn't found.
 if [ "$STATUS" == "2" ]; then
