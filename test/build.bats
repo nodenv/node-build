@@ -50,6 +50,50 @@ assert_build_log() {
   assert_output
 }
 
+@test "readline is linked from Homebrew" {
+  cached_tarball "ruby-2.0.0"
+
+  readline_libdir="$TMP/homebrew-readline"
+  mkdir -p "$readline_libdir"
+
+  stub brew "--prefix readline : echo '$readline_libdir'"
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "ruby-2.0.0" "http://ruby-lang.org/ruby/2.0/ruby-2.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub brew
+  unstub make
+
+  assert_build_log <<OUT
+ruby-2.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=$readline_libdir
+make -j 2
+OUT
+}
+
+@test "readline is not linked from Homebrew when explicitly defined" {
+  cached_tarball "ruby-2.0.0"
+
+  stub brew
+  stub_make_install
+
+  export RUBY_CONFIGURE_OPTS='--with-readline-dir=/custom'
+  run_inline_definition <<DEF
+install_package "ruby-2.0.0" "http://ruby-lang.org/ruby/2.0/ruby-2.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub brew
+  unstub make
+
+  assert_build_log <<OUT
+ruby-2.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=/custom
+make -j 2
+OUT
+}
+
 @test "number of CPU cores defaults to 2" {
   cached_tarball "ruby-2.0.0"
 
