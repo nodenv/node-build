@@ -464,10 +464,10 @@ build_package_mac_openssl() {
   # Install to a subdirectory since we don't want shims for bin/openssl.
   OPENSSL_PREFIX_PATH="${PREFIX_PATH}/openssl"
 
-  # Put openssl.conf, certs, etc in ~/.rbenv/versions/*/openssl/ssl
+  # Put openssl.conf, certs, etc in ~/.nodenv/versions/*/openssl/ssl
   OPENSSLDIR="${OPENSSLDIR:-$OPENSSL_PREFIX_PATH/ssl}"
 
-  # Tell Ruby to use this openssl for its extension.
+  # Tell Node to use this openssl for its extension.
   package_option node configure --with-openssl-dir="$OPENSSL_PREFIX_PATH"
 
   # Hint OpenSSL that we prefer a 64-bit build.
@@ -494,7 +494,7 @@ build_package_verify_openssl() {
   "$NODE_BIN" -e 'begin
     require "openssl"
   rescue LoadError
-    abort "The Ruby openssl extension was not compiled. Missing the OpenSSL lib?"
+    abort "The Node openssl extension was not compiled. Missing the OpenSSL lib?"
   end' >&4 2>&1
 }
 
