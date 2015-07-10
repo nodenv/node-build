@@ -1,0 +1,1 @@
+install_git "iojs-2.3.0" "https://github.com/iojs/io.js.git" "v2.3.0" standard
