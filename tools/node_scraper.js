@@ -26,7 +26,7 @@ var http = require('http'),
 					parts = shaLine[0].split('  ')
 					//this is gnarly, oh well
 					//install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
-					installLine = 'install_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"'
+					installLine = 'install_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
 					filePath = path.join(__dirname, '../share/node-build', version.substring(1))
 					fs.exists(filePath,function(exists){
 
