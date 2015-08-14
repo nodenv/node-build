@@ -5,7 +5,7 @@ var http    = require('https'),
 
 function generateNodeFile (item) {
   var version   = "iojs-" + item.version.replace(/^v/,''),
-    installLine = 'install_git "' + version + '" "' + baseUrl  + '" "' + item.version + '" standard',
+    installLine = 'install_git "' + version + '" "' + baseUrl  + '" "' + item.version + '" standard\n',
     filePath    = path.join(__dirname, '../share/node-build', version);
 
   fs.exists(filePath,function(exists){
