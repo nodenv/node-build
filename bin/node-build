@@ -163,6 +163,20 @@ compute_sha1() {
   fi
 }
 
+compute_sha256() {
+  if type sha1 &>/dev/null; then
+    sha1 -q
+  elif type openssl &>/dev/null; then
+    local output=$(openssl dgst -sha256)
+    echo "${output##* }"
+  elif type sha256sum &>/dev/null; then
+    local output="$(sha256sum)"
+    echo "${output% *}"
+  else
+    return 1
+  fi
+}
+
 verify_checksum() {
   # If there's no MD5 support, return success
   [ -n "$HAS_SHA1_SUPPORT" ] || return 0
@@ -176,8 +190,15 @@ verify_checksum() {
   [ -n "$expected_checksum" ] || return 0
 
   # If the computed checksum is empty, return failure
-  local computed_checksum=`echo "$(compute_sha1 < "$filename")" | tr [A-Z] [a-z]`
-  [ -n "$computed_checksum" ] || return 1
+
+
+  if [ ${#expected_checksum} == 64 ]; then
+    local computed_checksum=`echo "$(compute_sha256 < "$filename")" | tr [A-Z] [a-z]`
+    [ -n "$computed_checksum" ] || return 1
+  else
+    local computed_checksum=`echo "$(compute_sha1 < "$filename")" | tr [A-Z] [a-z]`
+    [ -n "$computed_checksum" ] || return 1
+  fi
 
   if [ "$expected_checksum" != "$computed_checksum" ]; then
     { echo

@@ -38,7 +38,7 @@ setup() {
 
 
 @test "cached package with valid checksum" {
-  stub sha1 true "echo 83e6d7725e20166024a1eb74cde80677"
+  stub sha1 true "echo c2dca7d96803baebcdc7eb831eaaca9963330627"
   stub curl
 
   cp "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_CACHE_PATH"
