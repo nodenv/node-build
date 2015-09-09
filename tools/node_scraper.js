@@ -3,12 +3,14 @@ var http = require('http'),
 	path = require('path'),
 	baseUrl = "http://nodejs.org/dist/",
 	generateNodeFile = function( version ){
-		var shaUrl = baseUrl + version + "/" + "SHASUMS.txt",
+		var shaUrl = baseUrl + version + "/",
 			shaData,
 			shaLine,
 			installLine,
 			parts,
 			filePath
+
+		shaUrl += /^(v4)/g.test(version) ? "SHASUMS256.txt" : "SHASUMS.txt"
 
 		http.get(shaUrl, function( res ){
 
@@ -21,6 +23,7 @@ var http = require('http'),
 			res.on('end', function(){
 
 				shaLine = shaData.match(/[\da-zA-Z]{40}  node-v[\d]{1,2}\.[\d]{1,2}\.[\d]{1,2}.tar.gz/gi)
+
 				if(shaLine && shaLine.length){
 
 					parts = shaLine[0].split('  ')
