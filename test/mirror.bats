@@ -34,7 +34,7 @@ export NODE_BUILD_MIRROR_URL=http://mirror.example.com
 
 
 @test "package URL with checksum hits mirror first" {
-  local checksum="83e6d7725e20166024a1eb74cde80677"
+  local checksum="c2dca7d96803baebcdc7eb831eaaca9963330627"
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
   stub sha1 true "echo $checksum"
@@ -51,7 +51,7 @@ export NODE_BUILD_MIRROR_URL=http://mirror.example.com
 
 
 @test "package is fetched from original URL if mirror download fails" {
-  local checksum="83e6d7725e20166024a1eb74cde80677"
+  local checksum="c2dca7d96803baebcdc7eb831eaaca9963330627"
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
   stub sha1 true "echo $checksum"
@@ -68,7 +68,7 @@ export NODE_BUILD_MIRROR_URL=http://mirror.example.com
 
 
 @test "package is fetched from original URL if mirror download checksum is invalid" {
-  local checksum="83e6d7725e20166024a1eb74cde80677"
+  local checksum="c2dca7d96803baebcdc7eb831eaaca9963330627"
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
   stub sha1 true "echo invalid" "echo $checksum"

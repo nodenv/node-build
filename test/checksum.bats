@@ -18,8 +18,8 @@ export NODE_BUILD_CACHE_PATH=
 }
 
 
-@test "package URL with valid checksum" {
-  stub sha1 true "echo 83e6d7725e20166024a1eb74cde80677"
+@test "package URL with valid sha1 checksum" {
+  stub sha1 true "echo c2dca7d96803baebcdc7eb831eaaca9963330627"
   stub curl "-C - -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${6##*/} \$4"
 
   install_fixture definitions/with-checksum
@@ -30,9 +30,21 @@ export NODE_BUILD_CACHE_PATH=
   unstub sha1
 }
 
+@test "package URL with valid sha256 checksum" {
+  stub sha1 true "echo ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
+  stub curl "-C - -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${6##*/} \$4"
+
+  install_fixture definitions/with-checksum-sha256
+  [ "$status" -eq 0 ]
+  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  unstub curl
+  unstub sha1
+}
+
 
 @test "package URL with invalid checksum" {
-  stub sha1 true "echo 83e6d7725e20166024a1eb74cde80677"
+  stub sha1 true "echo c2dca7d96803baebcdc7eb831eaaca9963330627"
   stub curl "-C - -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${6##*/} \$4"
 
   install_fixture definitions/with-invalid-checksum

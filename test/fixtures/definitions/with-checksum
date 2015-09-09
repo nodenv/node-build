@@ -1,1 +1,1 @@
-install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz#83e6d7725e20166024a1eb74cde80677" copy
+install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz#c2dca7d96803baebcdc7eb831eaaca9963330627" copy
