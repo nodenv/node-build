@@ -1,6 +1,6 @@
 # node-build
 
-[![Build Status](https://travis-ci.org/OiNutter/node-build.png?branch=master)](https://travis-ci.org/OiNutter/node-build)
+[![Build Status](https://travis-ci.org/pongstr/node-build.svg?branch=master)](https://travis-ci.org/pongstr/node-build)
 
 node-build is an [nodenv](https://github.com/OiNutter/nodenv) plugin that
 provides a `nodenv install` command to compile and install different versions
@@ -17,7 +17,7 @@ precise control over Node version installation.
 Installing node-build as a nodenv plugin will give you access to the `nodenv
 install` command.
 
-    git clone https://github.com/OiNutter/node-build.git $(nodenv root)/plugins/node-build
+    git clone https://github.com/pongstr/node-build.git $(nodenv root)/plugins/node-build
 
 This will install the latest development version of node-build into the
 `$(nodenv root)/plugins/node-build` directory. From that directory, you can
@@ -31,7 +31,7 @@ Installing node-build as a standalone program will give you access to the
 have nodenv installed, you will also be able to use the `nodenv install`
 command.
 
-    git clone https://github.com/OiNutter/node-build.git
+    git clone https://github.com/pongstr/node-build.git
     cd node-build
     ./install.sh
 
@@ -96,7 +96,7 @@ versions of Node that are not yet supported by node-build.
 See the [node-build built-in definitions][definitions] as a starting point for
 custom definition files.
 
-[definitions]: https://github.com/OiNutter/node-build/tree/master/share/node-build
+[definitions]: https://github.com/pongstr/node-build/tree/master/share/node-build
 
 ### Special environment variables
 
