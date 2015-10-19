@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NODE_BUILD_VERSION="20131115"
+NODE_BUILD_VERSION="20131122"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
@@ -440,11 +440,6 @@ build_package_node() {
 
   { "$NODE_BIN" setup.rb
   } >&4 2>&1
-}
-
-remove_windows_files() {
-  cd "$PREFIX_PATH"
-  rm -f bin/*.exe bin/*.dll bin/*.bat bin/jnode.sh
 }
 
 build_package_copy() {
