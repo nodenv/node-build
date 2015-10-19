@@ -117,6 +117,35 @@ OUT
   unstub uname
 }
 
+@test "can use NODE_CONFIGURE to apply a patch" {
+  cached_tarball "node-v4.0.0"
+
+  cat > "${TMP}/custom-configure" <<CONF
+#!$BASH
+apply -p1 -i /my/patch.diff
+exec ./configure "\$@"
+CONF
+  chmod +x "${TMP}/custom-configure"
+
+  stub apply 'echo apply "$@" >> build.log'
+  stub_make_install
+
+  export NODE_CONFIGURE="${TMP}/custom-configure"
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub make
+  unstub apply
+
+  assert_build_log <<OUT
+apply -p1 -i /my/patch.diff
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 2
+OUT
+}
+
 @test "copy strategy forces overwrite" {
   export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
 
