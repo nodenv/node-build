@@ -116,9 +116,10 @@ You can set certain environment variables to control the build process.
 * `MAKE` lets you override the command to use for `make`. Useful for specifying
   GNU make (`gmake`) on some systems.
 * `MAKE_OPTS` (or `MAKEOPTS`) lets you pass additional options to `make`.
-* `NODE_CONFIGURE_OPTS` and `NODE_MAKE_OPTS` allow you to specify configure and
-  make options for building Node. These variables will be passed to Node only,
-  not any dependent packages (e.g. libyaml).
+* `MAKE_INSTALL_OPTS` lets you pass additional options to `make install`.
+* `NODE_CONFIGURE_OPTS`, `NODE_MAKE_OPTS` and `NODE_MAKE_INSTALL_OPTS` allow
+  you to specify configure and make options for buildling Node. These variables
+  will be passed to Node only, not any dependent packages (e.g. libyaml).
 
 ### Applying patches to Node before compiling
 

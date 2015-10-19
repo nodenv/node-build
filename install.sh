@@ -17,4 +17,4 @@ SHARE_PATH="${PREFIX}/share/node-build"
 mkdir -p "$BIN_PATH" "$SHARE_PATH"
 
 install -p bin/* "$BIN_PATH"
-install -p share/node-build/* "$SHARE_PATH"
+install -p -m 0644 share/node-build/* "$SHARE_PATH"

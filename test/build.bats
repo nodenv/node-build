@@ -47,7 +47,7 @@ OUT
 stub_make_install() {
   stub "$MAKE" \
     " : echo \"$MAKE \$@\" >> build.log" \
-    "install : cat build.log >> '$INSTALL_ROOT/build.log'"
+    "install : echo \"$MAKE \$@\" >> build.log && cat build.log >> '$INSTALL_ROOT/build.log'"
 }
 
 assert_build_log() {
@@ -72,6 +72,7 @@ assert_build_log() {
 patch -p0 -i -
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
+make install
 OUT
 }
 
@@ -95,6 +96,7 @@ DEF
   assert_build_log <<OUT
 node-v4.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=$readline_libdir
 make -j 2
+make install
 OUT
 }
 
@@ -116,6 +118,7 @@ DEF
   assert_build_log <<OUT
 node-v4.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=/custom
 make -j 2
+make install
 OUT
 }
 
@@ -138,6 +141,7 @@ DEF
   assert_build_log <<OUT
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
+make install
 OUT
 }
 
@@ -161,6 +165,47 @@ DEF
   assert_build_log <<OUT
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 4
+make install
+OUT
+}
+
+@test "setting NODE_MAKE_INSTALL_OPTS to a multi-word string" {
+  cached_tarball "node-v4.0.0"
+
+  stub_make_install
+
+  export NODE_MAKE_INSTALL_OPTS="DOGE=\"such wow\""
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 2
+make install DOGE="such wow"
+OUT
+}
+
+@test "setting MAKE_INSTALL_OPTS to a multi-word string" {
+  cached_tarball "node-v4.0.0"
+
+  stub_make_install
+
+  export MAKE_INSTALL_OPTS="DOGE=\"such wow\""
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 2
+make install DOGE="such wow"
 OUT
 }
 
@@ -211,6 +256,7 @@ DEF
 apply -p1 -i /my/patch.diff
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
+make install
 OUT
 }
 
