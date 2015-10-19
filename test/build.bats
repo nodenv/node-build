@@ -11,6 +11,13 @@ setup() {
   stub curl false
 }
 
+executable() {
+  local file="$1"
+  mkdir -p "${file%/*}"
+  cat > "$file"
+  chmod +x "$file"
+}
+
 cached_tarball() {
   mkdir -p "$NODE_BUILD_CACHE_PATH"
   pushd "$NODE_BUILD_CACHE_PATH" >/dev/null
@@ -24,12 +31,10 @@ tarball() {
   local configure="$path/configure"
   shift 1
 
-  mkdir -p "$path"
-  cat > "$configure" <<OUT
+  executable "$configure" <<OUT
 #!$BASH
 echo "$name: \$@" \${NODEOPT:+NODEOPT=\$NODEOPT} >> build.log
 OUT
-  chmod +x "$configure"
 
   for file; do
     mkdir -p "$(dirname "${path}/${file}")"
@@ -184,12 +189,11 @@ OUT
 @test "can use NODE_CONFIGURE to apply a patch" {
   cached_tarball "node-v4.0.0"
 
-  cat > "${TMP}/custom-configure" <<CONF
+  executable "${TMP}/custom-configure" <<CONF
 #!$BASH
 apply -p1 -i /my/patch.diff
 exec ./configure "\$@"
 CONF
-  chmod +x "${TMP}/custom-configure"
 
   stub apply 'echo apply "$@" >> build.log'
   stub_make_install
