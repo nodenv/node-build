@@ -50,6 +50,26 @@ assert_build_log() {
   assert_output
 }
 
+@test "apply node patch before building" {
+  cached_tarball "node-v4.0.0"
+
+  stub brew false
+  stub_make_install
+  stub patch ' : echo patch "$@" >> build.log'
+
+  install_fixture --patch definitions/vanilla-node
+  assert_success
+
+  unstub make
+  unstub patch
+
+  assert_build_log <<OUT
+patch -p0 -i -
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 2
+OUT
+}
+
 @test "readline is linked from Homebrew" {
   cached_tarball "node-v4.0.0"
 
