@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NODE_BUILD_VERSION="201300310"
+NODE_BUILD_VERSION="20131028"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
@@ -96,6 +96,17 @@ file_is_not_empty() {
   fi
 }
 
+num_cpu_cores() {
+  local num=""
+  if [ "Darwin" = "$(uname -s)" ]; then
+    num="$(sysctl -n hw.ncpu 2>/dev/null || true)"
+  elif [ -r /proc/cpuinfo ]; then
+    num="$(grep -c ^processor /proc/cpuinfo)"
+    [ "$num" -gt 0 ] || num=""
+  fi
+  echo "${num:-2}"
+}
+
 install_package() {
   install_package_using "tarball" 1 "$@"
 }
@@ -178,7 +189,7 @@ compute_sha256() {
 }
 
 verify_checksum() {
-  # If there's no MD5 support, return success
+  # If there's no SHA1 support, return success
   [ -n "$HAS_SHA1_SUPPORT" ] || return 0
 
   # If the specified filename doesn't exist, return success
@@ -265,13 +276,12 @@ fetch_tarball() {
     tar_args="${tar_args/z/j}"
   fi
 
-  symlink_tarball_from_cache "$package_filename" "$checksum" || {
+  if ! symlink_tarball_from_cache "$package_filename" "$checksum"; then
     echo "Downloading ${package_filename}..." >&2
-    { http head "$mirror_url" &&
-      download_tarball "$mirror_url" "$package_filename" "$checksum"
-    } ||
+    http head "$mirror_url" &&
+    download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
-  }
+  fi
 
   { if tar $tar_args "$package_filename"; then
       if [ -z "$KEEP_BUILD_PATH" ]; then
@@ -304,9 +314,12 @@ download_tarball() {
 
   echo "-> $package_url" >&2
 
-  { http get "$package_url" "$package_filename"
-    verify_checksum "$package_filename" "$checksum"
-  } >&4 2>&1 || return 1
+  if http get "$package_url" "$package_filename" >&4 2>&1; then
+    verify_checksum "$package_filename" "$checksum" >&4 2>&1 || return 1
+  else
+    echo "error: failed to download $package_filename" >&2
+    return 1
+  fi
 
   if [ -n "$NODE_BUILD_CACHE_PATH" ]; then
     local cached_package_filename="${NODE_BUILD_CACHE_PATH}/$package_filename"
@@ -393,7 +406,7 @@ build_package_standard() {
   if [ "${MAKEOPTS+defined}" ]; then
     MAKE_OPTS="$MAKEOPTS"
   elif [ -z "${MAKE_OPTS+defined}" ]; then
-    MAKE_OPTS="-j 2"
+    MAKE_OPTS="-j $(num_cpu_cores)"
   fi
 
   # Support YAML_CONFIGURE_OPTS, NODE_CONFIGURE_OPTS, etc.
@@ -436,7 +449,7 @@ remove_windows_files() {
 
 build_package_copy() {
   mkdir -p "$PREFIX_PATH"
-  cp -R . "$PREFIX_PATH"
+  cp -fR . "$PREFIX_PATH"
 }
 
 before_install_package() {
@@ -472,10 +485,10 @@ build_package_mac_openssl() {
   # Install to a subdirectory since we don't want shims for bin/openssl.
   OPENSSL_PREFIX_PATH="${PREFIX_PATH}/openssl"
 
-  # Put openssl.conf, certs, etc in ~/.rbenv/versions/*/openssl/ssl
+  # Put openssl.conf, certs, etc in ~/.nodenv/versions/*/openssl/ssl
   OPENSSLDIR="${OPENSSLDIR:-$OPENSSL_PREFIX_PATH/ssl}"
 
-  # Tell Ruby to use this openssl for its extension.
+  # Tell Node to use this openssl for its extension.
   package_option node configure --with-openssl-dir="$OPENSSL_PREFIX_PATH"
 
   # Hint OpenSSL that we prefer a 64-bit build.
@@ -502,8 +515,18 @@ build_package_verify_openssl() {
   "$NODE_BIN" -e 'begin
     require "openssl"
   rescue LoadError
-    abort "The Ruby openssl extension was not compiled. Missing the OpenSSL lib?"
+    abort "The Node openssl extension was not compiled. Missing the OpenSSL lib?"
   end' >&4 2>&1
+}
+
+# Ensure that directories listed in LDFLAGS exist
+build_package_ldflags_dirs() {
+  local arg
+  for arg in $LDFLAGS; do
+    case "$arg" in
+    -L* ) mkdir -p "${arg#-L}" ;;
+    esac
+  done
 }
 
 version() {
@@ -581,6 +604,8 @@ fi
 PREFIX_PATH="${ARGUMENTS[1]}"
 if [ -z "$PREFIX_PATH" ]; then
   usage
+elif [ "${PREFIX_PATH#/}" = "$PREFIX_PATH" ]; then
+  PREFIX_PATH="${PWD}/${PREFIX_PATH}"
 fi
 
 if [ -z "$TMPDIR" ]; then
@@ -589,8 +614,17 @@ else
   TMP="${TMPDIR%/}"
 fi
 
+if [ ! -w "$TMP" ] || [ ! -x "$TMP" ]; then
+  echo "node-build: TMPDIR=$TMP is set to a non-accessible location" >&2
+  exit 1
+fi
+
 if [ -z "$MAKE" ]; then
-  export MAKE="make"
+  if [[ "FreeBSD" = "$(uname -s)" ]]; then
+    export MAKE="gmake"
+  else
+    export MAKE="make"
+  fi
 fi
 
 if [ -n "$NODE_BUILD_CACHE_PATH" ] && [ -d "$NODE_BUILD_CACHE_PATH" ]; then
@@ -634,8 +668,8 @@ if [ -n "$VERBOSE" ]; then
   trap "kill $TAIL_PID" SIGINT SIGTERM EXIT
 fi
 
-export LDFLAGS="-L'${PREFIX_PATH}/lib' ${LDFLAGS}"
-export CPPFLAGS="-I'${PREFIX_PATH}/include' ${CPPFLAGS}"
+export LDFLAGS="-L${PREFIX_PATH}/lib ${LDFLAGS}"
+export CPPFLAGS="-I${PREFIX_PATH}/include ${CPPFLAGS}"
 
 unset NODEOPT
 unset NODELIB

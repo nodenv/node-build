@@ -134,7 +134,7 @@ definition. (All bundled definitions include checksums.)
 You can point node-build to another mirror by specifying the
 `NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to run your
 own local mirror, for example. Package mirror URLs are constructed by joining
-this variable with the MD5 checksum of the package file.
+this variable with the SHA1 checksum of the package file.
 
 If you don't have a SHA1 program installed, node-build will skip the download
 mirror and use official URLs instead. You can force node-build to bypass the
