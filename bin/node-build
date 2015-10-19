@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NODE_BUILD_VERSION="20131206"
+NODE_BUILD_VERSION="20131211"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
@@ -419,6 +419,8 @@ build_package_standard() {
   local PACKAGE_MAKE_OPTS_ARRAY="${package_var_name}_MAKE_OPTS_ARRAY[@]"
   local PACKAGE_CFLAGS="${package_var_name}_CFLAGS"
 
+  [ "$package_var_name" = "NODE" ] && use_homebrew_readline || true
+
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
       export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
     fi
@@ -432,13 +434,6 @@ build_package_standard() {
 
 build_package_autoconf() {
   { autoconf
-  } >&4 2>&1
-}
-
-build_package_node() {
-  local package_name="$1"
-
-  { "$NODE_BIN" setup.rb
   } >&4 2>&1
 }
 
@@ -458,6 +453,17 @@ after_install_package() {
 fix_directory_permissions() {
   # Ensure installed directories are not world-writable to avoid Bundler warnings
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
+}
+
+use_homebrew_readline() {
+  if [[ "$NODE_CONFIGURE_OPTS" != *--with-readline-dir=* ]]; then
+    local libdir="$(brew --prefix readline 2>/dev/null || true)"
+    if [ -d "$libdir" ]; then
+      package_option node configure --with-readline-dir="$libdir"
+    else
+      return 1
+    fi
+  fi
 }
 
 has_broken_mac_openssl() {
