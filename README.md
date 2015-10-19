@@ -120,6 +120,25 @@ You can set certain environment variables to control the build process.
   make options for building Node. These variables will be passed to Node only,
   not any dependent packages (e.g. libyaml).
 
+### Applying patches to Node before compiling
+
+Both `nodenv install` and `node-build` support the `--patch` (`-p`) flag that
+signals that a patch from stdin should be applied to Node, or iojs
+source code before the `./configure` and compilation steps.
+
+Example usage:
+
+```sh
+# applying a single patch
+$ nodenv install --patch 0.11.8 < /path/to/node.patch
+
+# applying a patch from HTTP
+$ nodenv install --patch 0.11.8 < <(curl -sSL http://git.io/node.patch)
+
+# applying multiple patches
+$ cat fix1.patch fix2.patch | nodenv install --patch 0.11.8
+```
+
 ### Checksum verification
 
 If you have the `sha1`, `openssl`, or `sha1sum` tool installed, node-build will
