@@ -1,1 +1,1 @@
-install_package "node-v0.10.24" "http://nodejs.org/dist/v0.10.24/node-v0.10.24.tar.gz#d162d01eb173cb5a0e7e46c9d706421c4c771039"
+install_package "node-v0.10.24" "https://nodejs.org/dist/v0.10.24/node-v0.10.24.tar.gz#610cd733186842cb7f554336d6851a61b2d3d956050d62e49fa359a47640377a"
