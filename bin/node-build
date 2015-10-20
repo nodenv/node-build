@@ -436,8 +436,6 @@ build_package_standard() {
   local PACKAGE_MAKE_INSTALL_OPTS_ARRAY="${package_var_name}_MAKE_INSTALL_OPTS_ARRAY[@]"
   local PACKAGE_CFLAGS="${package_var_name}_CFLAGS"
 
-  [ "$package_var_name" = "NODE" ] && use_homebrew_readline || true
-
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
       export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
     fi
@@ -470,17 +468,6 @@ after_install_package() {
 fix_directory_permissions() {
   # Ensure installed directories are not world-writable to avoid Bundler warnings
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
-}
-
-use_homebrew_readline() {
-  if [[ "$NODE_CONFIGURE_OPTS" != *--with-readline-dir=* ]]; then
-    local libdir="$(brew --prefix readline 2>/dev/null || true)"
-    if [ -d "$libdir" ]; then
-      package_option node configure --with-readline-dir="$libdir"
-    else
-      return 1
-    fi
-  fi
 }
 
 has_broken_mac_openssl() {
