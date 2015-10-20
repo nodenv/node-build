@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NODE_BUILD_VERSION="20140225"
+NODE_BUILD_VERSION="20140420"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
@@ -248,7 +248,7 @@ http_head_curl() {
 }
 
 http_get_curl() {
-  curl -C - -o "${2:--}" -qsSLf "$1"
+  curl -q -o "${2:--}" -sSLf "$1"
 }
 
 http_head_wget() {
@@ -256,7 +256,7 @@ http_head_wget() {
 }
 
 http_get_wget() {
-  wget -nv -c -O "${2:--}" "$1"
+  wget -nv -O "${2:--}" "$1"
 }
 
 fetch_tarball() {
@@ -282,7 +282,7 @@ fetch_tarball() {
     tar_args="${tar_args/z/j}"
   fi
 
-  if ! symlink_tarball_from_cache "$package_filename" "$checksum"; then
+  if ! reuse_existing_tarball "$package_filename" "$checksum"; then
     echo "Downloading ${package_filename}..." >&2
     http head "$mirror_url" &&
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
@@ -299,12 +299,18 @@ fetch_tarball() {
   } >&4 2>&1
 }
 
-symlink_tarball_from_cache() {
-  [ -n "$NODE_BUILD_CACHE_PATH" ] || return 1
-
+reuse_existing_tarball() {
   local package_filename="$1"
-  local cached_package_filename="${NODE_BUILD_CACHE_PATH}/$package_filename"
   local checksum="$2"
+
+  # Reuse existing file in build location
+  if [ -e "$package_filename" ] && verify_checksum "$package_filename" "$checksum"; then
+    return 0
+  fi
+
+  # Reuse previously downloaded file in cache location
+  [ -n "$NODE_BUILD_CACHE_PATH" ] || return 1
+  local cached_package_filename="${NODE_BUILD_CACHE_PATH}/$package_filename"
 
   [ -e "$cached_package_filename" ] || return 1
   verify_checksum "$cached_package_filename" "$checksum" >&4 2>&1 || return 1
@@ -615,7 +621,7 @@ done
 DEFINITION_PATH="${ARGUMENTS[0]}"
 if [ -z "$DEFINITION_PATH" ]; then
   usage
-elif [ ! -e "$DEFINITION_PATH" ]; then
+elif [ ! -f "$DEFINITION_PATH" ]; then
   BUILTIN_DEFINITION_PATH="${NODE_BUILD_ROOT}/share/node-build/${DEFINITION_PATH}"
   if [ -e "$BUILTIN_DEFINITION_PATH" ]; then
     DEFINITION_PATH="$BUILTIN_DEFINITION_PATH"

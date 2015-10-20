@@ -6,15 +6,16 @@
 #        nodenv install [-f] [-kvp] <definition-file>
 #        nodenv install -l|--list
 #
-#   -l/--list        List all available versions
-#   -f/--force       Install even if the version appears to be installed already
+#   -l/--list          List all available versions
+#   -f/--force         Install even if the version appears to be installed already
+#   -s/--skip-existing Skip if the version appears to be installed already
 #
 #   node-build options:
 #
-#   -k/--keep        Keep source tree in $NODENV_BUILD_ROOT after installation
-#                    (defaults to $NODENV_ROOT/sources)
-#   -v/--verbose     Verbose mode: print compilation status to stdout
-#   -p/--patch       Apply a patch from stdin before building
+#   -k/--keep          Keep source tree in $NODENV_BUILD_ROOT after installation
+#                      (defaults to $NODENV_ROOT/sources)
+#   -v/--verbose       Verbose mode: print compilation status to stdout
+#   -p/--patch         Apply a patch from stdin before building
 #
 # For detailed information on installing Node versions with
 # node-build, including a list of environment variables for adjusting
@@ -43,7 +44,7 @@ usage() {
 
 definitions() {
   local query="$1"
-  node-build --definitions | grep -F "$query" || true
+  node-build --definitions | $(type -p ggrep grep | head -1) -F "$query" || true
 }
 
 indent() {
@@ -51,6 +52,7 @@ indent() {
 }
 
 unset FORCE
+unset SKIP_EXISTING
 unset KEEP
 unset VERBOSE
 unset HAS_PATCH
@@ -68,6 +70,9 @@ for option in "${OPTIONS[@]}"; do
     ;;
   "f" | "force" )
     FORCE=true
+    ;;
+  "s" | "skip-existing" )
+    SKIP_EXISTING=true
     ;;
   "k" | "keep" )
     [ -n "${NODENV_BUILD_ROOT}" ] || NODENV_BUILD_ROOT="${NODENV_ROOT}/sources"
@@ -128,14 +133,21 @@ PREFIX="${NODENV_ROOT}/versions/${VERSION_NAME}"
 
 # If the installation prefix exists, prompt for confirmation unless
 # the --force option was specified.
-if [ -z "$FORCE" ] && [ -d "${PREFIX}/bin" ]; then
-  echo "nodenv: $PREFIX already exists" >&2
-  read -p "continue with installation? (y/N) "
+if [ -d "${PREFIX}/bin" ]; then
+  if [ -z "$FORCE" ] && [ -z "$SKIP_EXISTING" ]; then
+    echo "nodenv: $PREFIX already exists" >&2
+    read -p "continue with installation? (y/N) "
 
-  case "$REPLY" in
-  y* | Y* ) ;;
-  * ) exit 1 ;;
-  esac
+    case "$REPLY" in
+    y* | Y* ) ;;
+    * ) exit 1 ;;
+    esac
+  elif [ -n "$SKIP_EXISTING" ]; then
+    # Since we know the node version is already installed, and are opting to
+    # not force installation of existing versions, we just `exit 0` here to
+    # leave things happy
+    exit 0
+  fi
 fi
 
 # If NODENV_BUILD_ROOT is set, always pass keep options to node-build.

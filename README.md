@@ -9,6 +9,9 @@ of Node on UNIX-like systems.
 You can also use node-build without nodenv in environments where you need
 precise control over Node version installation.
 
+See the [list of releases](https://github.com/OiNutter/node-build/releases)
+for changes in each version.
+
 
 ## Installation
 
