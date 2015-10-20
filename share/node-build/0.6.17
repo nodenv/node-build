@@ -1,1 +1,1 @@
-install_package "node-v0.6.17" "http://nodejs.org/dist/v0.6.17/node-v0.6.17.tar.gz#24974f8d07559e68dec2aaeb077dd52233b7d57e"
+install_package "node-v0.6.17" "https://nodejs.org/dist/v0.6.17/node-v0.6.17.tar.gz#8dfe5948de27e37a14af184f06e7bd89a23c3b248af44c8ef5cffcd0e4c65778"

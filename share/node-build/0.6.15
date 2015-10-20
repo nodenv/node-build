@@ -1,1 +1,1 @@
-install_package "node-v0.6.15" "http://nodejs.org/dist/v0.6.15/node-v0.6.15.tar.gz#5c52d8f91f221277fe69d0e5bf73d13d0f23038f"
+install_package "node-v0.6.15" "https://nodejs.org/dist/v0.6.15/node-v0.6.15.tar.gz#78859a1a31c8e7a64d0efa040326d93c6624cc344d39b2e47e14e9c4dc3136e0"

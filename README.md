@@ -145,8 +145,8 @@ $ cat fix1.patch fix2.patch | nodenv install --patch 0.10.36
 
 ### Checksum verification
 
-If you have the `sha1`, `openssl`, or `sha1sum` tool installed, node-build will
-automatically verify the SHA1 checksum of each downloaded package before
+If you have the `shasum`, `openssl`, or `sha256sum` tool installed, node-build will
+automatically verify the SHA2 checksum of each downloaded package before
 installing it.
 
 Checksums are optional and specified as anchors on the package URL in each
@@ -157,9 +157,9 @@ definition. (All bundled definitions include checksums.)
 You can point node-build to another mirror by specifying the
 `NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to run your
 own local mirror, for example. Package mirror URLs are constructed by joining
-this variable with the SHA1 checksum of the package file.
+this variable with the SHA2 checksum of the package file.
 
-If you don't have a SHA1 program installed, node-build will skip the download
+If you don't have an SHA2 program installed, node-build will skip the download
 mirror and use official URLs instead. You can force node-build to bypass the
 mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
 

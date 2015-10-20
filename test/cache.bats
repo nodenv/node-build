@@ -10,7 +10,7 @@ setup() {
 
 
 @test "packages are saved to download cache" {
-  stub sha1 true
+  stub shasum true
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/without-checksum
@@ -18,12 +18,12 @@ setup() {
   [ -e "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" ]
 
   unstub curl
-  unstub sha1
+  unstub shasum
 }
 
 
 @test "cached package without checksum" {
-  stub sha1 true
+  stub shasum true
   stub curl
 
   cp "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_CACHE_PATH"
@@ -33,12 +33,12 @@ setup() {
   [ -e "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" ]
 
   unstub curl
-  unstub sha1
+  unstub shasum
 }
 
 
 @test "cached package with valid checksum" {
-  stub sha1 true "echo c2dca7d96803baebcdc7eb831eaaca9963330627"
+  stub shasum true "echo ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   stub curl
 
   cp "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_CACHE_PATH"
@@ -49,15 +49,15 @@ setup() {
   [ -e "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" ]
 
   unstub curl
-  unstub sha1
+  unstub shasum
 }
 
 
 @test "cached package with invalid checksum falls back to mirror and updates cache" {
   export NODE_BUILD_SKIP_MIRROR=
-  local checksum="c2dca7d96803baebcdc7eb831eaaca9963330627"
+  local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
 
-  stub sha1 true "echo invalid" "echo $checksum"
+  stub shasum true "echo invalid" "echo $checksum"
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
 
   touch "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz"
@@ -69,12 +69,12 @@ setup() {
   diff -q "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" "${FIXTURE_ROOT}/package-1.0.0.tar.gz"
 
   unstub curl
-  unstub sha1
+  unstub shasum
 }
 
 
 @test "nonexistent cache directory is ignored" {
-  stub sha1 true
+  stub shasum true
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   export NODE_BUILD_CACHE_PATH="${TMP}/nonexistent"
@@ -85,5 +85,5 @@ setup() {
   [ ! -d "$NODE_BUILD_CACHE_PATH" ]
 
   unstub curl
-  unstub sha1
+  unstub shasum
 }

@@ -60,16 +60,37 @@ assert_build_log() {
 
   stub brew false
   stub_make_install
-  stub patch ' : echo patch "$@" >> build.log'
+  stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
-  install_fixture --patch definitions/vanilla-node
+  TMPDIR="$TMP" install_fixture --patch definitions/vanilla-node <<<""
   assert_success
 
   unstub make
   unstub patch
 
   assert_build_log <<OUT
-patch -p0 -i -
+patch -p0 --force -i $TMP/node-patch.XXX
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 2
+make install
+OUT
+}
+
+@test "apply node patch from git diff before building" {
+  cached_tarball "node-v4.0.0"
+
+  stub brew false
+  stub_make_install
+  stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
+
+  TMPDIR="$TMP" install_fixture --patch definitions/vanilla-node <<<"diff --git a/script.rb"
+  assert_success
+
+  unstub make
+  unstub patch
+
+  assert_build_log <<OUT
+patch -p1 --force -i $TMP/node-patch.XXX
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
 make install

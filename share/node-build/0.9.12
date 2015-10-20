@@ -1,1 +1,1 @@
-install_package "node-v0.9.12" "http://nodejs.org/dist/v0.9.12/node-v0.9.12.tar.gz#2353d3e5c6518f75202b74236fa9d8eeecd26ca3"
+install_package "node-v0.9.12" "https://nodejs.org/dist/v0.9.12/node-v0.9.12.tar.gz#d1dbf425eb72b7c6d931f5fabf79b1e67ce1b2808c19c4b06a9aafe313ac2474"

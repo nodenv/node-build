@@ -1,1 +1,1 @@
-install_package "node-v0.8.25" "http://nodejs.org/dist/v0.8.25/node-v0.8.25.tar.gz#df91c9de8f3f14efb4cbe52d3ca8beb754b2a39a"
+install_package "node-v0.8.25" "https://nodejs.org/dist/v0.8.25/node-v0.8.25.tar.gz#3dad0149020102e9b5604edae3cecd5842221c6657f26d35717bffaaf376caec"

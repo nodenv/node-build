@@ -1,1 +1,1 @@
-install_git "iojs-1.2.0" "https://github.com/iojs/io.js.git" "v1.2.0" standard
+install_package "iojs-v1.2.0" "https://iojs.org/dist/v1.2.0/iojs-v1.2.0.tar.gz#33666fce914ca57ef60e2e29d7b02cd64c99a8609287a9227da2087ab9c65d9d"

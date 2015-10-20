@@ -1,1 +1,1 @@
-install_package "node-v4.2.0" "http://nodejs.org/dist/v4.2.0/node-v4.2.0.tar.gz#94ea40efeb598fed6e1a78990b698da73275c49876ec551dc36e11513c99fb6b"
+install_package "node-v4.2.0" "https://nodejs.org/dist/v4.2.0/node-v4.2.0.tar.gz#94ea40efeb598fed6e1a78990b698da73275c49876ec551dc36e11513c99fb6b"
