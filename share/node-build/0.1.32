@@ -1,0 +1,1 @@
+install_package "node-v0.1.32" "https://nodejs.org/dist/v0.1.32/node-v0.1.32.tar.gz#1fda75df1f2c15df3d24c59b8cb3f0c649b6476a59354b9ddad25287cb57f73e"
