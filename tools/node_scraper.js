@@ -4,6 +4,7 @@ var path = require('path')
 
 module.exports = function getVersions (options) {
   var distributionListingUri = options.baseUrl + 'index.json'
+  Build.prefix = options.prefix || ''
 
   https.get(distributionListingUri, function (res) {
     if (res.statusCode !== 200) {
@@ -40,7 +41,7 @@ module.exports = function getVersions (options) {
 
 var Build = {
   get basename () {
-    return this.version.substring(1)
+    return this.prefix + this.version.replace(/v/, '')
   },
   get filename () {
     return path.join(__dirname, '../share/node-build', this.basename)
