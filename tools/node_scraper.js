@@ -1,5 +1,5 @@
-var https = require('https');
 var fs = require('fs');
+var https = require('https');
 var path = require('path');
 
 var baseUrl = "https://nodejs.org/dist/";
@@ -20,18 +20,10 @@ exports.versions = function getVersions (options) {
     res.on('end', function(){
       JSON.parse(responseData)
       .map(function(build){
-        var filename = filenameFor(build.version)
-        return {
-          version: build.version,
-          shasumFileUri: shasumFileUri(build.version),
-          file: {
-            name: filename,
-            exists: fs.existsSync(filename)
-          }
-        }
+        return Object.assign(Object.create(Build), { version: build.version })
       })
       .filter(function(build){
-        return !build.file.exists || options.overwrite
+        return !build.fileExists || options.overwrite
       })
       .forEach(function(build){
         getShasum(build, writeFile)
@@ -42,22 +34,26 @@ exports.versions = function getVersions (options) {
 
 // private
 
-function filenameFor(version){
-  return path.join(__dirname, '../share/node-build', version.substring(1))
-}
-
-function shasumFileUri(version){
-  return baseUrl + version + "/SHASUMS256.txt"
-}
-
-function downloadUri(build){
-  return baseUrl + build.version + '/' + build.package + '#' + build.shasum
-}
-
-function fileContentsFor(build){
-    //    //install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
-  return 'install_package "node-' + build.version + '" "' + downloadUri(build) + '"\n'
-}
+var Build = {
+  get name() {
+    return 'node-' + this.version
+  },
+  get filename() {
+    return path.join(__dirname, '../share/node-build', this.version.substring(1))
+  },
+  get fileExists() {
+    return fs.existsSync(this.filename)
+  },
+  get shasumFileUri() {
+    return baseUrl + this.version + "/SHASUMS256.txt"
+  },
+  get definition() {
+    return 'install_package "' + this.name + '" "' + this.downloadUri + '"\n'
+  },
+  get downloadUri() {
+    return baseUrl + this.version + '/' + this.package + '#' + this.shasum
+  }
+};
 
 function getShasum(build, cb){
   https.get(build.shasumFileUri, function(res){
@@ -84,18 +80,14 @@ function getShasum(build, cb){
       }
     })
   })
-
-    //    //install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
-    //    installLine = 'Xinstall_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
-    //    filePath = path.join(__dirname, '../share/node-build', version.substring(1))
 }
 
 function writeFile(err, build){
   if(err) return console.error(err)
 
-  fs.writeFile(filenameFor(build.version), fileContentsFor(build), function(err){
+  fs.writeFile(build.filename, build.definition, function(err){
     if(err) return console.error(err)
 
-    console.log( build.version + ' file writen')
+    console.log( build.name + ' written')
   })
 }
