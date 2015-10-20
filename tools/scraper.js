@@ -1,10 +1,18 @@
 #!/usr/bin/env node
 
-var nodeVersions = require('./node_scraper.js').versions;
-var iojsVersions = require('./iojs_scraper.js').versions;
+var force = process.argv[2] === '-f' || process.argv[2] === '--force'
 
-console.log('Updating node versions');
-nodeVersions();
+var scrape = require('./node_scraper')
 
-console.log('Updating iojs versions');
-iojsVersions();
+console.log('Updating node versions')
+scrape({
+  baseUrl: 'https://nodejs.org/dist/',
+  overwrite: force
+})
+
+console.log('Updating iojs versions')
+scrape({
+  baseUrl: 'https://iojs.org/dist/',
+  prefix: 'iojs-',
+  overwrite: force
+})

@@ -1,93 +1,95 @@
-var http = require('http'),
-	fs = require('fs'),
-	path = require('path'),
-	baseUrl = "http://nodejs.org/dist/",
-	generateNodeFile = function( version ){
-		var shaUrl = baseUrl + version + "/",
-			shaData,
-			shaLine,
-			installLine,
-			parts,
-			filePath
+var fs = require('fs')
+var https = require('https')
+var path = require('path')
 
-	        if(/^(v4)/g.test(version)) {
-	          shaUrl += "SHASUMS256.txt"
-	          checksum = /[\da-zA-Z]{64}  node-v[\d]{1,2}\.[\d]{1,2}\.[\d]{1,2}.tar.gz/gi
-	        } else {
-	          shaUrl += "SHASUMS.txt"
-	          checksum = /[\da-zA-Z]{40}  node-v[\d]{1,2}\.[\d]{1,2}\.[\d]{1,2}.tar.gz/gi
-	        }
+module.exports = function getVersions (options) {
+  var distributionListingUri = options.baseUrl + 'index.json'
 
-		http.get(shaUrl, function( res ){
+  https.get(distributionListingUri, function (res) {
+    if (res.statusCode !== 200) return this.emit('error', res)
 
-			shaData = ''
+    var responseData = ''
 
-			res.on('data', function(data){
-				shaData = shaData + data
-			})
-
-			res.on('end', function(){
-
-                		shaLine = shaData.match(checksum)
-
-				if(shaLine && shaLine.length){
-
-					parts = shaLine[0].split('  ')
-					//this is gnarly, oh well
-					//install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
-					installLine = 'install_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
-					filePath = path.join(__dirname, '../share/node-build', version.substring(1))
-					fs.exists(filePath,function(exists){
-
-						if(!exists){
-
-							fs.writeFile(filePath, installLine, function(err){
-
-								if(err)
-							        console.log(err)
-							    else
-							        console.log( version.substring(1) + ' file writen')
-
-							})
-
-						}
-
-					})
-
-				}
-
-			})
-
-		})
-
-	}
-
-exports.versions = function getVersions () {
-  http.get(baseUrl, function(res){
-    if( res.statusCode === 200){
-
-      var responseData = "",
-        digestableUrls
-
-      res.on('data', function( data ){
-        responseData = responseData + data
-      })
-
-      res.on('end', function(){
-        digestableUrls = responseData.match(/href=\"v\d\.[\d]{0,2}\.[\d]{0,2}\/\"/g)
-        digestableUrls = digestableUrls.map(function( url ){
-          return url.replace(/href=\"([^"]*)\"/, "$1")
+    res
+    .on('data', function (data) {
+      responseData = responseData + data
+    })
+    .on('end', function () {
+      JSON.parse(responseData)
+        .map(function (build) {
+          return Object.assign(Object.create(Build), {
+            baseUrl: options.baseUrl,
+            prefix: options.prefix || '',
+            version: build.version
+          })
         })
-
-        digestableUrls.forEach(function( url ){
-          generateNodeFile(url.substring(0, url.length - 1))
+        .filter(function (build) {
+          return !build.fileExists || options.overwrite
         })
-      })
+        .forEach(function (build) {
+          getShasum(build, writeFile)
+        })
+    })
+    .on('error', this.emit.bind(this, 'error'))
+  }).on('error', function (e) { console.error('Error with distribution listing', e.message) })
+}
 
-    } else {
+// private
 
-      console.log('response "' + res.status + '" from http://nodejs.org/dist/')
+var Build = {
+  get basename () {
+    return this.prefix + this.version.replace(/v/, '')
+  },
+  get filename () {
+    return path.join(__dirname, '../share/node-build', this.basename)
+  },
+  get fileExists () {
+    return fs.existsSync(this.filename)
+  },
+  get shasumFileUri () {
+    return this.baseUrl + this.version + '/SHASUMS256.txt'
+  },
+  get definition () {
+    return 'install_package "' + this.name + '" "' + this.downloadUri + '"\n'
+  },
+  get downloadUri () {
+    return this.baseUrl + this.version + '/' + this.package + '#' + this.shasum
+  }
+}
 
-    }
+function getShasum (build, cb) {
+  https.get(build.shasumFileUri, function (res) {
+    if (res.statusCode !== 200) this.emit('error', res)
+
+    var shasumData = ''
+
+    res
+    .on('data', function (data) {
+      shasumData = shasumData + data
+    })
+    .on('end', function () {
+      var result = shasumData.match(/(\w{64}) {2}(?:\.\/)?(((?:node|iojs)-v\d+\.\d+\.\d+).tar.gz)/i)
+
+      if (result) {
+        build.shasum = result[1]
+        build.package = result[2]
+        build.name = result[3]
+
+        cb(null, build)
+      } else {
+        cb(shasumData)
+      }
+    })
+    .on('error', this.emit.bind(this, 'error'))
+  }).on('error', function (e) { console.error('Error with ', build.version, e.message) })
+}
+
+function writeFile (err, build) {
+  if (err) return console.error(err)
+
+  fs.writeFile(build.filename, build.definition, function (err) {
+    if (err) return console.error(err)
+
+    console.log(build.name + ' written')
   })
-};
+}
