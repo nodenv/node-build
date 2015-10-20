@@ -1,7 +1,7 @@
-var http = require('http');
+var https = require('https');
 var fs = require('fs');
 var path = require('path');
-var baseUrl = "http://nodejs.org/dist/";
+var baseUrl = "https://nodejs.org/dist/";
 
 exports.versions = function getVersions () {
   http.get(baseUrl, function(res){
@@ -45,7 +45,7 @@ function generateNodeFile( version ){
     checksum = /[\da-zA-Z]{40}  node-v[\d]{1,2}\.[\d]{1,2}\.[\d]{1,2}.tar.gz/gi;
   }
 
-  http.get(shaUrl, function(res){
+  https.get(shaUrl, function(res){
     shaData = ''
 
     res.on('data', function(data){
