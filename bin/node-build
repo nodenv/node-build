@@ -183,13 +183,14 @@ compute_sha2() {
 }
 
 compute_sha1() {
+  local output
   if type sha1 &>/dev/null; then
     sha1 -q
   elif type openssl &>/dev/null; then
-    local output="$(openssl sha1)"
+    output="$(openssl sha1)" || return 1
     echo "${output##* }"
   elif type sha1sum &>/dev/null; then
-    local output="$(sha1sum -b)"
+    output="$(sha1sum -b)" || return 1
     echo "${output% *}"
   else
     return 1
@@ -214,6 +215,8 @@ compute_md5() {
 verify_checksum() {
   # If there's no SHA2 support, return success
   [ -n "$HAS_SHA2_SUPPORT" ] || return 0
+
+  # default to SHA2
   local checksum_command="compute_sha2"
 
   # If the specified filename doesn't exist, return success
@@ -224,7 +227,13 @@ verify_checksum() {
   local expected_checksum=`echo "$2" | tr [A-Z] [a-z]`
   [ -n "$expected_checksum" ] || return 0
 
-  # If the checksum length is 32 chars, assume MD5, otherwise SHA2
+  # If the checksum length is 40 chars, assume SHA1
+  if [ "${#expected_checksum}" -eq 40 ]; then
+    [ -n "$HAS_SHA1_SUPPORT" ] || return 0
+    checksum_command="compute_sha1"
+  fi
+
+  # If the checksum length is 32 chars, assume MD5
   if [ "${#expected_checksum}" -eq 32 ]; then
     [ -n "$HAS_MD5_SUPPORT" ] || return 0
     checksum_command="compute_md5"
@@ -702,6 +711,12 @@ if echo test | compute_sha2 >/dev/null; then
 else
   unset HAS_SHA2_SUPPORT
   unset NODE_BUILD_MIRROR_URL
+fi
+
+if echo test | compute_sha1 >/dev/null; then
+  HAS_SHA1_SUPPORT=1
+else
+  unset HAS_SHA1_SUPPORT
 fi
 
 if echo test | compute_md5 >/dev/null; then

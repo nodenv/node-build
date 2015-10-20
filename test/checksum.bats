@@ -57,6 +57,32 @@ export NODE_BUILD_CACHE_PATH=
 }
 
 
+@test "package URL with valid sha1 checksum" {
+  stub sha1 true "echo c2dca7d96803baebcdc7eb831eaaca9963330627"
+  stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
+
+  install_fixture definitions/with-sha1-checksum
+  [ "$status" -eq 0 ]
+  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  unstub curl
+  unstub sha1
+}
+
+
+@test "package URL with sha1 checksum but no sha1 support" {
+  stub sha1 false
+  stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
+
+  install_fixture definitions/with-sha1-checksum
+  [ "$status" -eq 0 ]
+  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  unstub curl
+  unstub sha1
+}
+
+
 @test "package URL with valid md5 checksum" {
   stub md5 true "echo 83e6d7725e20166024a1eb74cde80677"
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
