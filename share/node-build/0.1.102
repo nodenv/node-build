@@ -1,0 +1,1 @@
+install_package "node-v0.1.102" "https://nodejs.org/dist/v0.1.102/node-v0.1.102.tar.gz#bd9b1d09ad40ceaef4bdd46019960c5c2fe87026c9598a6fb23c66457510a22d"

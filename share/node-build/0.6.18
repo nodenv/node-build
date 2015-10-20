@@ -1,1 +1,1 @@
-install_package "node-v0.6.18" "http://nodejs.org/dist/v0.6.18/node-v0.6.18.tar.gz#ccb7b5c55e3403b3ffc77d46f7a23079ce65e71e"
+install_package "node-v0.6.18" "https://nodejs.org/dist/v0.6.18/node-v0.6.18.tar.gz#6cf4311ecbc1700e88f4382a31b3a7017c1572cd641fd06e653fc1692c2cffff"

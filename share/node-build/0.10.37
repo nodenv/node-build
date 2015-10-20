@@ -1,1 +1,1 @@
-install_package "node-v0.10.37" "http://nodejs.org/dist/v0.10.37/node-v0.10.37.tar.gz#6535468508594e57a27d2f13d02f437dc7b00e2d"
+install_package "node-v0.10.37" "https://nodejs.org/dist/v0.10.37/node-v0.10.37.tar.gz#a5afad14117bb194731e73b4b6635f36950e9476d3873638856cba8dbb4783a5"

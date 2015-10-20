@@ -1,0 +1,1 @@
+install_package "node-v0.1.96" "https://nodejs.org/dist/v0.1.96/node-v0.1.96.tar.gz#b58c607a3f2549722acc9c7cf1f3ccd57c3c15ca7a8ca4a9e6fe3567e8a0b500"

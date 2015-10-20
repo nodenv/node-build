@@ -1,1 +1,1 @@
-install_package "node-v0.6.20" "http://nodejs.org/dist/v0.6.20/node-v0.6.20.tar.gz#91da1dde9badd5250f3d4829c47757de0caab84b"
+install_package "node-v0.6.20" "https://nodejs.org/dist/v0.6.20/node-v0.6.20.tar.gz#b7bf4cf143ddf46ba5e975761b98a38dd3d72b176fd5d4bb2f9c9e7bbe6c4b15"

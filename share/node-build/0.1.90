@@ -1,0 +1,1 @@
+install_package "node-v0.1.90" "https://nodejs.org/dist/v0.1.90/node-v0.1.90.tar.gz#0dbd47f6be45049a54de6ff268b25a8ccf8cac38bd75788e713dab35a14695c3"

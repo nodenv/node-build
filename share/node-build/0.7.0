@@ -1,1 +1,1 @@
-install_package "node-v0.7.0" "http://nodejs.org/dist/v0.7.0/node-v0.7.0.tar.gz#97441188194ec5e41cc01b5ec868df9ef86629b8"
+install_package "node-v0.7.0" "https://nodejs.org/dist/v0.7.0/node-v0.7.0.tar.gz#0c716d7c61f77c53b0383e82da3f3ca8a4187f7d1c9831aec95efe7cfda9cafb"

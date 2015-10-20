@@ -1,1 +1,1 @@
-install_package "node-v0.8.19" "http://nodejs.org/dist/v0.8.19/node-v0.8.19.tar.gz#f4fdbb642055be65579e11cb52c823573efabcf2"
+install_package "node-v0.8.19" "https://nodejs.org/dist/v0.8.19/node-v0.8.19.tar.gz#703207d7b394bd3d4035dc3c94b417ee441fd3ea66aa90cd3d7c9bb28e5f9df4"
