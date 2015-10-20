@@ -144,6 +144,30 @@ make install
 OUT
 }
 
+@test "number of CPU cores is detected on FreeBSD" {
+  cached_tarball "node-v4.0.0"
+
+  stub uname '-s : echo FreeBSD'
+  stub sysctl '-n hw.ncpu : echo 1'
+  stub_make_install
+
+  export -n MAKE_OPTS
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub uname
+  unstub sysctl
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 1
+make install
+OUT
+}
+
 @test "setting NODE_MAKE_INSTALL_OPTS to a multi-word string" {
   cached_tarball "node-v4.0.0"
 
@@ -193,16 +217,28 @@ OUT
   assert [ -x ./here/bin/package ]
 }
 
-@test "make on FreeBSD defaults to gmake" {
+@test "make on FreeBSD 9 defaults to gmake" {
   cached_tarball "node-v4.0.0"
 
-  stub uname "-s : echo FreeBSD"
+  stub uname "-s : echo FreeBSD" "-r : echo 9.1"
   MAKE=gmake stub_make_install
 
   MAKE= install_fixture definitions/vanilla-node
   assert_success
 
   unstub gmake
+  unstub uname
+}
+
+@test "make on FreeBSD 10" {
+  cached_tarball "node-v4.0.0"
+
+  stub uname "-s : echo FreeBSD" "-r : echo 10.0-RELEASE"
+  stub_make_install
+
+  MAKE= install_fixture definitions/vanilla-node
+  assert_success
+
   unstub uname
 }
 

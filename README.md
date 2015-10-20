@@ -60,6 +60,9 @@ Homebrew.*
 
 ## Usage
 
+Before you begin, you should ensure that your build environment has the proper
+system dependencies for compiling the wanted Node version (see our [recommendations](https://github.com/sstephenson/ruby-build/wiki#suggested-build-environment)).
+
 ### Using `nodenv install` with nodenv
 
 To install a Node version for use with nodenv, run `nodenv install` with the
@@ -114,6 +117,10 @@ You can set certain environment variables to control the build process.
   choosing.
 * `NODE_BUILD_SKIP_MIRROR`, if set, forces node-build to download packages from
   their original source URLs instead of using a mirror.
+* `NODE_BUILD_ROOT` overrides the default location from where build definitions
+  in `share/node-build/` are looked up.
+* `NODE_BUILD_DEFINITIONS` can be a list of colon-separated paths that get
+  additionally searched when looking up build definitions.
 * `CC` sets the path to the C compiler.
 * `CONFIGURE_OPTS` lets you pass additional options to `./configure`.
 * `MAKE` lets you override the command to use for `make`. Useful for specifying

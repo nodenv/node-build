@@ -24,13 +24,22 @@
 set -e
 [ -n "$NODENV_DEBUG" ] && set -x
 
+if [ -z "$NODENV_ROOT" ]; then
+  NODENV_ROOT="${HOME}/.nodenv"
+fi
+
+# Add `share/node-build/` directory from each nodenv plugin to the list of
+# paths where build definitions are looked up.
+shopt -s nullglob
+for plugin_path in "$NODENV_ROOT"/plugins/*/share/node-build; do
+  NODE_BUILD_DEFINITIONS="${NODE_BUILD_DEFINITIONS}:${plugin_path}"
+done
+export NODE_BUILD_DEFINITIONS
+shopt -u nullglob
+
 # Provide nodenv completions
 if [ "$1" = "--complete" ]; then
   exec node-build --definitions
-fi
-
-if [ -z "$NODENV_ROOT" ]; then
-  NODENV_ROOT="${HOME}/.nodenv"
 fi
 
 # Load shared library functions
@@ -182,17 +191,25 @@ node-build $KEEP $VERBOSE $HAS_PATCH "$DEFINITION" "$PREFIX" || STATUS="$?"
 # Display a more helpful message if the definition wasn't found.
 if [ "$STATUS" == "2" ]; then
   { candidates="$(definitions "$DEFINITION")"
+    here="$(dirname "${0%/*}")"
     if [ -n "$candidates" ]; then
       echo
       echo "The following versions contain \`$DEFINITION' in the name:"
       echo "$candidates" | indent
     fi
     echo
-    echo "You can list all available versions with \`nodenv install --list'."
+    echo "See all available versions with \`nodenv install --list'."
     echo
-    echo "If the version you're looking for is not present, first try upgrading"
-    echo "node-build. If it's still missing, open a request on the node-build"
-    echo "issue tracker: https://github.com/OiNutter/node-build/issues"
+    echo -n "If the version you need is missing, try upgrading node-build"
+    if [ "$here" != "${here#$(brew --prefix 2>/dev/null)}" ]; then
+      printf ":\n\n"
+      echo "  brew update && brew upgrade node-build"
+    elif [ -d "${here}/.git" ]; then
+      printf ":\n\n"
+      echo "  cd ${here} && git pull"
+    else
+      printf ".\n"
+    fi
   } >&2
 fi
 
