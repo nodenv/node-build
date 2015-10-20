@@ -3,31 +3,27 @@ var fs = require('fs');
 var path = require('path');
 var baseUrl = "https://nodejs.org/dist/";
 
-exports.versions = function getVersions () {
-  http.get(baseUrl, function(res){
-    if( res.statusCode === 200){
+var overwrite = false
 
-      var responseData = "",
-        digestableUrls
+exports.versions = function getVersions (options) {
+  overwrite = options.overwrite
 
-      res.on('data', function( data ){
-        responseData = responseData + data
-      })
-
-      res.on('end', function(){
-        digestableUrls = responseData.match(/href=\"v\d\.[\d]{0,2}\.[\d]{0,2}\/\"/g)
-        digestableUrls = digestableUrls.map(function( url ){
-          return url.replace(/href=\"([^"]*)\"/, "$1")
-        })
-
-        digestableUrls.forEach(function( url ){
-          generateNodeFile(url.substring(0, url.length - 1))
-        })
-      })
-
-    } else {
-      console.log('response "' + res.status + '" from http://nodejs.org/dist/')
+  https.get("https://nodejs.org/dist/index.json", function(res){
+    if( res.statusCode !== 200){
+      return console.log('response "' + res.status + '" from http://nodejs.org/dist/')
     }
+
+    var responseData = ""
+
+    res.on('data', function( data ){
+      responseData = responseData + data
+    })
+
+    res.on('end', function(){
+      JSON.parse(responseData).map(function(build){
+        return build.version
+      }).forEach(generateNodeFile)
+    })
   })
 }
 
@@ -46,6 +42,10 @@ function generateNodeFile( version ){
   }
 
   https.get(shaUrl, function(res){
+    if( res.statusCode !== 200){
+      return console.log('response "' + res.status + '" from ' + shaUrl)
+    }
+
     shaData = ''
 
     res.on('data', function(data){
@@ -55,15 +55,16 @@ function generateNodeFile( version ){
     res.on('end', function(){
       shaLine = shaData.match(checksum)
 
+      console.log(version, shaData, checksum)
       if(shaLine && shaLine.length){
         parts = shaLine[0].split('  ')
         //this is gnarly, oh well
         //install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
-        installLine = 'install_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
+        installLine = 'Xinstall_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
         filePath = path.join(__dirname, '../share/node-build', version.substring(1))
         fs.exists(filePath,function(exists){
 
-          if(!exists){
+          if(!exists || overwrite){
 
             fs.writeFile(filePath, installLine, function(err){
               if(err)
