@@ -2,10 +2,9 @@ var fs = require('fs')
 var https = require('https')
 var path = require('path')
 
-var baseUrl = 'https://nodejs.org/dist/'
-var distributionListingUri = baseUrl + 'index.json'
+module.exports = function getVersions (options) {
+  var distributionListingUri = options.baseUrl + 'index.json'
 
-exports.versions = function getVersions (options) {
   https.get(distributionListingUri, function (res) {
     if (res.statusCode !== 200) {
       return console.error('response "' + res.statusCode + '" from ' + distributionListingUri)
@@ -20,7 +19,10 @@ exports.versions = function getVersions (options) {
     res.on('end', function () {
       JSON.parse(responseData)
         .map(function (build) {
-          return Object.assign(Object.create(Build), { version: build.version })
+          return Object.assign(Object.create(Build), {
+            version: build.version,
+            baseUrl: options.baseUrl
+          })
         })
         .filter(function (build) {
           return !build.fileExists || options.overwrite
@@ -37,23 +39,23 @@ exports.versions = function getVersions (options) {
 // private
 
 var Build = {
-  get name () {
-    return 'node-' + this.version
+  get basename () {
+    return this.version.substring(1)
   },
   get filename () {
-    return path.join(__dirname, '../share/node-build', this.version.substring(1))
+    return path.join(__dirname, '../share/node-build', this.basename)
   },
   get fileExists () {
     return fs.existsSync(this.filename)
   },
   get shasumFileUri () {
-    return baseUrl + this.version + '/SHASUMS256.txt'
+    return this.baseUrl + this.version + '/SHASUMS256.txt'
   },
   get definition () {
     return 'install_package "' + this.name + '" "' + this.downloadUri + '"\n'
   },
   get downloadUri () {
-    return baseUrl + this.version + '/' + this.package + '#' + this.shasum
+    return this.baseUrl + this.version + '/' + this.package + '#' + this.shasum
   }
 }
 
@@ -70,11 +72,12 @@ function getShasum (build, cb) {
     })
 
     res.on('end', function () {
-      var result = shasumData.match(/(\w{64}) {2}(?:\.\/)?(node-v\d+\.\d+\.\d+.tar.gz)/i)
+      var result = shasumData.match(/(\w{64}) {2}(?:\.\/)?(((?:node|iojs)-v\d+\.\d+\.\d+).tar.gz)/i)
 
       if (result) {
         build.shasum = result[1]
         build.package = result[2]
+        build.name = result[3]
 
         cb(null, build)
       } else {
