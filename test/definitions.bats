@@ -81,3 +81,18 @@ iojs-3.3.1"
   run node-build --definitions
   assert_success "$expected"
 }
+
+@test "removing duplicate Node versions" {
+  export NODE_BUILD_ROOT="$TMP"
+  export NODE_BUILD_DEFINITIONS="${NODE_BUILD_ROOT}/share/node-build"
+  mkdir -p "$NODE_BUILD_DEFINITIONS"
+  touch "${NODE_BUILD_DEFINITIONS}/0.10.3"
+  touch "${NODE_BUILD_DEFINITIONS}/4.2.0"
+
+  run node-build --definitions
+  assert_success
+  assert_output <<OUT
+0.10.3
+4.2.0
+OUT
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NODE_BUILD_VERSION="20140926"
+NODE_BUILD_VERSION="20141028"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
@@ -83,6 +83,16 @@ os_information() {
     local os="$(cat /etc/{centos,redhat,fedora,system}-release /etc/debian_version 2>/dev/null | head -1)"
     echo "${os:-$(uname -sr)}"
   fi
+}
+
+#  9.1  -> 901
+# 10.9  -> 1009
+# 10.10 -> 1010
+osx_version() {
+  local ver="$(sw_vers -productVersion)"
+  local major="${ver%.*}"
+  local minor="${ver#*.}"
+  echo $(( major*100 + minor ))
 }
 
 build_failed() {
@@ -190,7 +200,8 @@ compute_sha2() {
     output="$(shasum -a 256 -b)" || return 1
     echo "${output% *}"
   elif type openssl &>/dev/null; then
-    output="$(openssl dgst -sha256)" || return 1
+    local openssl="$(command -v "$(brew --prefix openssl 2>/dev/null)"/bin/openssl openssl | head -1)"
+    output="$("$openssl" dgst -sha256 2>/dev/null)" || return 1
     echo "${output##* }"
   elif type sha256sum &>/dev/null; then
     output="$(sha256sum --quiet)" || return 1
@@ -490,6 +501,9 @@ build_package_standard() {
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
       export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
     fi
+    if [ -z "$CC" ] && [ "$(uname -s)" = "Darwin" ] && [ "$(osx_version)" -ge 1010 ]; then
+      export CC=clang
+    fi
     ${!PACKAGE_CONFIGURE:-./configure} --prefix="${!PACKAGE_PREFIX_PATH:-$PREFIX_PATH}" \
       $CONFIGURE_OPTS ${!PACKAGE_CONFIGURE_OPTS} "${!PACKAGE_CONFIGURE_OPTS_ARRAY}" || return 1
   ) >&4 2>&1
@@ -518,7 +532,6 @@ after_install_package() {
 }
 
 fix_directory_permissions() {
-  # Ensure installed directories are not world-writable to avoid Bundler warnings
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
 }
 
@@ -553,7 +566,7 @@ build_package_mac_openssl() {
   OPENSSL_CONFIGURE="${OPENSSL_CONFIGURE:-./config}"
 
   # Compile a shared lib with zlib dynamically linked, no kerberos.
-  package_option openssl configure --openssldir="$OPENSSLDIR" zlib-dynamic no-krb5 shared
+  package_option openssl configure --openssldir="$OPENSSLDIR" zlib-dynamic no-ssl2 no-ssl3 no-krb5 shared
 
   # Default MAKE_OPTS are -j 2 which can confuse the build. Thankfully, make
   # gives precedence to the last -j option, so we can override that.
@@ -629,7 +642,7 @@ list_definitions() {
   { for DEFINITION_DIR in "${NODE_BUILD_DEFINITIONS[@]}"; do
       [ -d "$DEFINITION_DIR" ] && ls "$DEFINITION_DIR"
     done
-  } | sort_versions
+  } | sort_versions | uniq
 }
 
 sort_versions() {
@@ -717,7 +730,10 @@ fi
 tmp_executable="${TMP}/node-build-test.$$"
 noexec=""
 if mkdir -p "$TMP" && touch "$tmp_executable" 2>/dev/null; then
-  cat > "$tmp_executable" <<<"#!$BASH"
+  cat > "$tmp_executable" <<-EOF
+	#!${BASH}
+	exit 0
+	EOF
   chmod +x "$tmp_executable"
 else
   echo "node-build: TMPDIR=$TMP is set to a non-accessible location" >&2
