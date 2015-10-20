@@ -2,14 +2,17 @@
 
 var force = process.argv[2] === '-f' || process.argv[2] === '--force'
 
-var nodeVersions = require('./node_scraper')
-var iojsVersions = require('./iojs_scraper.js').versions
+var scrape = require('./node_scraper')
 
 console.log('Updating node versions')
-nodeVersions({
+scrape({
   baseUrl: 'https://nodejs.org/dist/',
   overwrite: force
 })
 
 console.log('Updating iojs versions')
-iojsVersions({overwrite: force})
+scrape({
+  baseUrl: 'https://iojs.org/dist/',
+  prefix: 'iojs-',
+  overwrite: force
+})
