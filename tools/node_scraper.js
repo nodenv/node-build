@@ -1,12 +1,14 @@
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
+
 var baseUrl = "https://nodejs.org/dist/";
+var distributionListingUri = baseUrl + 'index.json'
 
 exports.versions = function getVersions (options) {
-  https.get("https://nodejs.org/dist/index.json", function(res){
+  https.get(distributionListingUri, function(res){
     if( res.statusCode !== 200){
-      return console.log('response "' + res.status + '" from http://nodejs.org/dist/')
+      return console.error('response "' + res.statusCode + '" from ' + distributionListingUri)
     }
 
     var responseData = ""
@@ -21,6 +23,7 @@ exports.versions = function getVersions (options) {
         var filename = filenameFor(build.version)
         return {
           version: build.version,
+          shasumFileUri: shasumFileUri(build.version),
           file: {
             name: filename,
             exists: fs.existsSync(filename)
@@ -30,7 +33,9 @@ exports.versions = function getVersions (options) {
       .filter(function(build){
         return !build.file.exists || options.overwrite
       })
-      .forEach(generateNodeFile)
+      .forEach(function(build){
+        getShasum(build, writeFile)
+      })
     })
   })
 }
@@ -41,46 +46,56 @@ function filenameFor(version){
   return path.join(__dirname, '../share/node-build', version.substring(1))
 }
 
-function generateNodeFile( build ){
-  var version = build.version
-  var shaUrl = baseUrl + version + "/"
-  var shaData, shaLine, installLine, parts, filePath
+function shasumFileUri(version){
+  return baseUrl + version + "/SHASUMS256.txt"
+}
 
-  if(/^(v4)/g.test(version)) {
-    shaUrl += "SHASUMS256.txt";
-    checksum = /[\da-zA-Z]{64}  node-v[\d]{1,2}\.[\d]{1,2}\.[\d]{1,2}.tar.gz/gi;
-  } else {
-    shaUrl += "SHASUMS.txt";
-    checksum = /[\da-zA-Z]{40}  node-v[\d]{1,2}\.[\d]{1,2}\.[\d]{1,2}.tar.gz/gi;
-  }
+function downloadUri(build){
+  return baseUrl + build.version + '/' + build.package + '#' + build.shasum
+}
 
-  https.get(shaUrl, function(res){
-    if( res.statusCode !== 200){
-      return console.log('response "' + res.status + '" from ' + shaUrl)
+function fileContentsFor(build){
+    //    //install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
+  return 'install_package "node-' + build.version + '" "' + downloadUri(build) + '"\n'
+}
+
+function getShasum(build, cb){
+  https.get(build.shasumFileUri, function(res){
+    if(res.statusCode !== 200){
+      return cb('response "' + res.statusCode + '" from ' + build.shasumFileUri)
     }
 
-    shaData = ''
+    var shasumData = ''
 
     res.on('data', function(data){
-      shaData = shaData + data
+      shasumData = shasumData + data
     });
 
     res.on('end', function(){
-      shaLine = shaData.match(checksum)
+      var result = shasumData.match(/(\w{64})  (?:\.\/)?(node-v\d+\.\d+\.\d+.tar.gz)/i)
 
-      if(shaLine && shaLine.length){
-        parts = shaLine[0].split('  ')
-        //this is gnarly, oh well
-        //install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
-        installLine = 'Xinstall_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
-        filePath = path.join(__dirname, '../share/node-build', version.substring(1))
-        fs.writeFile(filePath, installLine, function(err){
-          if(err)
-            console.log(err)
-          else
-            console.log( version.substring(1) + ' file writen')
-        })
+      if(result) {
+        build.shasum = result[1]
+        build.package = result[2]
+
+        cb(null, build)
+      } else {
+        cb(shasumData)
       }
     })
   })
-};
+
+    //    //install_package "node-v0.10.0" "http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz#7321266347dc1c47ed2186e7d61752795ce8a0ef"
+    //    installLine = 'Xinstall_package "node-' + version + '" "' + baseUrl + version + '/' + parts[1] + '#'+parts[0]+'"\n'
+    //    filePath = path.join(__dirname, '../share/node-build', version.substring(1))
+}
+
+function writeFile(err, build){
+  if(err) return console.error(err)
+
+  fs.writeFile(filenameFor(build.version), fileContentsFor(build), function(err){
+    if(err) return console.error(err)
+
+    console.log( build.version + ' file writen')
+  })
+}
