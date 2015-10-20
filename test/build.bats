@@ -76,52 +76,6 @@ make install
 OUT
 }
 
-@test "readline is linked from Homebrew" {
-  cached_tarball "node-v4.0.0"
-
-  readline_libdir="$TMP/homebrew-readline"
-  mkdir -p "$readline_libdir"
-
-  stub brew "--prefix readline : echo '$readline_libdir'"
-  stub_make_install
-
-  run_inline_definition <<DEF
-install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
-DEF
-  assert_success
-
-  unstub brew
-  unstub make
-
-  assert_build_log <<OUT
-node-v4.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=$readline_libdir
-make -j 2
-make install
-OUT
-}
-
-@test "readline is not linked from Homebrew when explicitly defined" {
-  cached_tarball "node-v4.0.0"
-
-  stub brew
-  stub_make_install
-
-  export NODE_CONFIGURE_OPTS='--with-readline-dir=/custom'
-  run_inline_definition <<DEF
-install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
-DEF
-  assert_success
-
-  unstub brew
-  unstub make
-
-  assert_build_log <<OUT
-node-v4.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=/custom
-make -j 2
-make install
-OUT
-}
-
 @test "number of CPU cores defaults to 2" {
   cached_tarball "node-v4.0.0"
 
