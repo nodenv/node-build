@@ -29,7 +29,9 @@ exports.versions = function getVersions (options) {
         getShasum(build, writeFile)
       })
     })
-  })
+
+    res.on('error', this.emit.bind(this, 'error'))
+  }).on('error', function(e) { console.error('Error with distribution listing', e.message) })
 }
 
 // private
@@ -79,7 +81,9 @@ function getShasum(build, cb){
         cb(shasumData)
       }
     })
-  })
+
+    res.on('error', this.emit.bind(this, 'error'))
+  }).on('error', function(e) { console.error('Error with ', build.version, e.message) })
 }
 
 function writeFile(err, build){
