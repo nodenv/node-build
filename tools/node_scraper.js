@@ -4,25 +4,23 @@ var path = require('path')
 
 module.exports = function getVersions (options) {
   var distributionListingUri = options.baseUrl + 'index.json'
-  Build.prefix = options.prefix || ''
 
   https.get(distributionListingUri, function (res) {
-    if (res.statusCode !== 200) {
-      return console.error('response "' + res.statusCode + '" from ' + distributionListingUri)
-    }
+    if (res.statusCode !== 200) return this.emit('error', res)
 
     var responseData = ''
 
-    res.on('data', function (data) {
+    res
+    .on('data', function (data) {
       responseData = responseData + data
     })
-
-    res.on('end', function () {
+    .on('end', function () {
       JSON.parse(responseData)
         .map(function (build) {
           return Object.assign(Object.create(Build), {
-            version: build.version,
-            baseUrl: options.baseUrl
+            baseUrl: options.baseUrl,
+            prefix: options.prefix || '',
+            version: build.version
           })
         })
         .filter(function (build) {
@@ -32,8 +30,7 @@ module.exports = function getVersions (options) {
           getShasum(build, writeFile)
         })
     })
-
-    res.on('error', this.emit.bind(this, 'error'))
+    .on('error', this.emit.bind(this, 'error'))
   }).on('error', function (e) { console.error('Error with distribution listing', e.message) })
 }
 
@@ -62,17 +59,15 @@ var Build = {
 
 function getShasum (build, cb) {
   https.get(build.shasumFileUri, function (res) {
-    if (res.statusCode !== 200) {
-      return cb('response "' + res.statusCode + '" from ' + build.shasumFileUri)
-    }
+    if (res.statusCode !== 200) this.emit('error', res)
 
     var shasumData = ''
 
-    res.on('data', function (data) {
+    res
+    .on('data', function (data) {
       shasumData = shasumData + data
     })
-
-    res.on('end', function () {
+    .on('end', function () {
       var result = shasumData.match(/(\w{64}) {2}(?:\.\/)?(((?:node|iojs)-v\d+\.\d+\.\d+).tar.gz)/i)
 
       if (result) {
@@ -85,8 +80,7 @@ function getShasum (build, cb) {
         cb(shasumData)
       }
     })
-
-    res.on('error', this.emit.bind(this, 'error'))
+    .on('error', this.emit.bind(this, 'error'))
   }).on('error', function (e) { console.error('Error with ', build.version, e.message) })
 }
 
