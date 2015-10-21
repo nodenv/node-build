@@ -68,7 +68,7 @@ system dependencies for compiling the wanted Node version (see our [recommendati
 To install a Node version for use with nodenv, run `nodenv install` with the
 exact name of the version you want to install. For example,
 
-    nodenv install 0.10.0
+    nodenv install 4.2.1
 
 Node versions will be installed into a directory of the same name under
 `$(nodenv root)/versions`.
@@ -86,7 +86,7 @@ locations.
 Run the `node-build` command with the exact name of the version you want to
 install and the full path where you want to install it. For example,
 
-    node-build 0.10.0 ~/local/node-0.10.0
+    node-build 4.2.1 ~/local/node-4.2.1
 
 To see a list of all available Node versions, run `node-build --definitions`.
 
