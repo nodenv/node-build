@@ -9,8 +9,12 @@ if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
   export PATH
 fi
 
+setup() {
+  mkdir -p "$TMP"
+}
+
 teardown() {
-  rm -fr "$TMP"/*
+  rm -fr "$TMP"
 }
 
 stub() {
