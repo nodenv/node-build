@@ -5,6 +5,7 @@ export MAKE=make
 export MAKE_OPTS='-j 2'
 export -n CFLAGS
 export -n CC
+export -n NODE_CONFIGURE_OPTS
 
 @test "CC=clang by default on OS X 10.10" {
   mkdir -p "$INSTALL_ROOT"

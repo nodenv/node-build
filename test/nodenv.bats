@@ -36,14 +36,16 @@ stub_node_build() {
 
 @test "list available versions" {
   stub_node_build \
-    "--definitions : echo 0.8.7 0.10.40 4.1.2 | tr ' ' $'\\n'"
+    "--definitions : echo 0.8.7 0.10.4 0.11.0 1.0.0 4.1.2 | tr ' ' $'\\n'"
 
   run nodenv-install --list
   assert_success
   assert_output <<OUT
 Available versions:
   0.8.7
-  0.10.40
+  0.10.4
+  0.11.0
+  1.0.0
   4.1.2
 OUT
 
@@ -53,7 +55,7 @@ OUT
 @test "nonexistent version" {
   stub brew false
   stub_node_build 'echo ERROR >&2 && exit 2' \
-    "--definitions : echo 0.8.7 0.10.36 0.10.40 4.1.2 | tr ' ' $'\\n'"
+    "--definitions : echo 0.8.7 0.10.4 0.10.6 1.0.0 4.1.2 | tr ' ' $'\\n'"
 
   run nodenv-install 0.10
   assert_failure
@@ -61,8 +63,8 @@ OUT
 ERROR
 
 The following versions contain \`0.10' in the name:
-  0.10.36
-  0.10.40
+  0.10.4
+  0.10.6
 
 See all available versions with \`nodenv install --list'.
 
@@ -144,4 +146,43 @@ OUT
 ${NODENV_ROOT}/plugins/bar/share/node-build
 ${NODENV_ROOT}/plugins/foo/share/node-build
 OUT
+}
+
+@test "not enough arguments for nodenv-install" {
+  stub_node_build
+  run nodenv-install
+  assert_failure
+  assert_output_contains 'Usage: nodenv install'
+}
+
+@test "too many arguments for nodenv-install" {
+  stub_node_build
+  run nodenv-install 4.1.1 4.1.2
+  assert_failure
+  assert_output_contains 'Usage: nodenv install'
+}
+
+@test "show help for nodenv-install" {
+  stub_node_build
+  run nodenv-install -h
+  assert_success
+  assert_output_contains 'Usage: nodenv install'
+}
+
+@test "not enough arguments nodenv-uninstall" {
+  run nodenv-uninstall
+  assert_failure
+  assert_output_contains 'Usage: nodenv uninstall'
+}
+
+@test "too many arguments for nodenv-uninstall" {
+  run nodenv-uninstall 4.1.1 4.1.2
+  assert_failure
+  assert_output_contains 'Usage: nodenv uninstall'
+}
+
+@test "show help for nodenv-uninstall" {
+  run nodenv-uninstall -h
+  assert_success
+  assert_output_contains 'Usage: nodenv uninstall'
 }
