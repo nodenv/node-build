@@ -9,7 +9,7 @@
 #   --definitions    List all built-in definitions
 #
 
-NODE_BUILD_VERSION="20150130"
+NODE_BUILD_VERSION="20150303"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
