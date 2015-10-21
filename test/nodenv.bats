@@ -150,39 +150,61 @@ OUT
 
 @test "not enough arguments for nodenv-install" {
   stub_node_build
+  stub nodenv-help 'install : true'
+
   run nodenv-install
   assert_failure
-  assert_output_contains 'Usage: nodenv install'
+  unstub nodenv-help
 }
 
 @test "too many arguments for nodenv-install" {
   stub_node_build
+  stub nodenv-help 'install : true'
+
   run nodenv-install 4.1.1 4.1.2
   assert_failure
-  assert_output_contains 'Usage: nodenv install'
+  unstub nodenv-help
 }
 
 @test "show help for nodenv-install" {
   stub_node_build
+  stub nodenv-help 'install : true'
+
   run nodenv-install -h
   assert_success
+  unstub nodenv-help
+}
+
+@test "nodenv-install has usage help preface" {
+  run head "$(which nodenv-install)"
   assert_output_contains 'Usage: nodenv install'
 }
 
 @test "not enough arguments nodenv-uninstall" {
+  stub nodenv-help 'uninstall : true'
+
   run nodenv-uninstall
   assert_failure
-  assert_output_contains 'Usage: nodenv uninstall'
+  unstub nodenv-help
 }
 
 @test "too many arguments for nodenv-uninstall" {
+  stub nodenv-help 'uninstall : true'
+
   run nodenv-uninstall 4.1.1 4.1.2
   assert_failure
-  assert_output_contains 'Usage: nodenv uninstall'
+  unstub nodenv-help
 }
 
 @test "show help for nodenv-uninstall" {
+  stub nodenv-help 'uninstall : true'
+
   run nodenv-uninstall -h
   assert_success
+  unstub nodenv-help
+}
+
+@test "nodenv-uninstall has usage help preface" {
+  run head "$(which nodenv-uninstall)"
   assert_output_contains 'Usage: nodenv uninstall'
 }

@@ -2,7 +2,7 @@
 
 load test_helper
 
-@test "not enought arguments for node-build" {
+@test "not enough arguments for node-build" {
   # use empty inline definition so nothing gets built anyway
   local definition="${TMP}/build-definition"
   echo '' > "$definition"
