@@ -151,6 +151,33 @@ num_cpu_cores() {
   echo "${num:-2}"
 }
 
+platform(){
+  local arch
+  local os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+
+  if [ "$(uname -m)" = "x86_64" ]; then
+    arch="x64"
+  else
+    arch="$(uname -p)"
+  fi
+
+  echo "${os}-${arch}"
+}
+
+distro() {
+  local platform="$1"
+  local distro_url="$2"
+
+  # unless --source
+
+  # return if distro already set
+  [ -n "$DISTRO" ] && return 0
+
+  if [ "$platform" = "$(platform)" ]; then
+    DISTRO="$distro_url"
+  fi
+}
+
 install_package() {
   install_package_using "tarball" 1 "$@"
 }
