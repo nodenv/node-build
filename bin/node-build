@@ -163,6 +163,14 @@ install_svn() {
   install_package_using "svn" 2 "$@"
 }
 
+install_distro() {
+  local distro_url="$1"
+  local distro_name=$(basename $distro_url)
+  distro_name="${distro_name%.tar.gz*}"
+
+  install_package "$distro_name" "$distro_url" copy
+}
+
 install_package_using() {
   local package_type="$1"
   local package_type_nargs="$2"
