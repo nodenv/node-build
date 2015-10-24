@@ -60,6 +60,7 @@ indent() {
 }
 
 unset FORCE
+unset SKIP_DISTRO
 unset SKIP_EXISTING
 unset KEEP
 unset VERBOSE
@@ -70,6 +71,9 @@ for option in "${OPTIONS[@]}"; do
   case "$option" in
   "h" | "help" )
     usage 0
+    ;;
+  "c" | "compile" )
+    SKIP_DISTRO="-c"
     ;;
   "l" | "list" )
     echo "Available versions:"
@@ -186,7 +190,7 @@ trap cleanup SIGINT
 
 # Invoke `node-build` and record the exit status in $STATUS.
 STATUS=0
-node-build $KEEP $VERBOSE $HAS_PATCH "$DEFINITION" "$PREFIX" || STATUS="$?"
+node-build $KEEP $VERBOSE $HAS_PATCH $SKIP_DISTRO "$DEFINITION" "$PREFIX" || STATUS="$?"
 
 # Display a more helpful message if the definition wasn't found.
 if [ "$STATUS" == "2" ]; then
