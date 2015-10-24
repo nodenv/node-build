@@ -165,7 +165,7 @@ platform(){
 }
 
 try_install_distro(){
-  if [ -n "$DISTRO" ]; then
+  if [ -n "$DISTRO" ] && [ -z "$SKIP_DISTRO" ]; then
     local distro_url="$DISTRO"
     unset DISTRO
 
@@ -643,6 +643,7 @@ sort_versions() {
 
 
 unset VERBOSE
+unset SKIP_DISTRO
 unset KEEP_BUILD_PATH
 unset HAS_PATCH
 unset IPV4
@@ -666,6 +667,9 @@ for option in "${OPTIONS[@]}"; do
   "definitions" )
     list_definitions
     exit 0
+    ;;
+  "c" | "compile" )
+    SKIP_DISTRO=true
     ;;
   "k" | "keep" )
     KEEP_BUILD_PATH=true
