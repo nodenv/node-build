@@ -1,4 +1,5 @@
 var fs = require('fs')
+var format = require('util').format
 var https = require('https')
 var path = require('path')
 
@@ -47,19 +48,19 @@ var Build = {
     return fs.existsSync(this.filename)
   },
   get shasumFileUri () {
-    return this.baseUrl + this.version + '/SHASUMS256.txt'
+    return format('%s%s/SHASUMS256.txt', this.baseUrl, this.version)
   },
   get definition () {
-    return 'install_package "' + this.name + '" "' + this.downloadUri + '"\n'
+    return format('install_package "%s" "%s"\n', this.name, this.downloadUri)
   },
   get downloadUri () {
-    return this.baseUrl + this.version + '/' + this.package + '#' + this.shasum
+    return format('%s%s/%s#%s', this.baseUrl, this.version, this.package, this.shasum)
   }
 }
 
 function getShasum (build, cb) {
   https.get(build.shasumFileUri, function (res) {
-    if (res.statusCode !== 200) this.emit('error', res)
+    if (res.statusCode !== 200) return this.emit('error', res)
 
     var shasumData = ''
 
