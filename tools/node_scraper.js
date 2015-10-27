@@ -16,7 +16,6 @@ module.exports = function getVersions (options) {
       responseData = responseData + data
     })
     .on('end', function () {
-      var self = this;
       JSON.parse(responseData)
         .map(function (build) {
           return Object.assign(Object.create(Build), {
@@ -30,7 +29,7 @@ module.exports = function getVersions (options) {
           return !build.fileExists || options.overwrite
         })
         .forEach(function (build) {
-          getChecksumsFile(build, function(err, shasumData) {
+          setTimeout(getChecksumsFile, Math.random() * 10000, build, function(err, shasumData) {
             extractShasums(build, shasumData, writeFile)
           })
         })
