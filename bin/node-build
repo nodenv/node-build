@@ -179,8 +179,6 @@ distro() {
   local platform="$1"
   local distro_url="$2"
 
-  # unless --source
-
   # return if distro already set
   [ -n "$DISTRO" ] && return 0
 
