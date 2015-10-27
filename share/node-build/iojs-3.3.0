@@ -1,1 +1,7 @@
+distro darwin-x64 "https://iojs.org/dist/v3.3.0/iojs-v3.3.0-darwin-x64.tar.gz#3ec6fb8d7a9ad30f673a8e114a98b2dcd6b802a375b87e5b3039dac51a967423"
+distro linux-armv6l "https://iojs.org/dist/v3.3.0/iojs-v3.3.0-linux-armv6l.tar.gz#571b12fa6fcf658873ee556fc61edab07c12daae092cfe6bdeb173df3449214c"
+distro linux-armv7l "https://iojs.org/dist/v3.3.0/iojs-v3.3.0-linux-armv7l.tar.gz#af44c0644128a552896247866e283d3991934025eee4bdc8c288439bb8d5516f"
+distro linux-x64 "https://iojs.org/dist/v3.3.0/iojs-v3.3.0-linux-x64.tar.gz#c9b1c51b7cc780c19df504e29e26b27ee89f7bf6f8d601da597f52e7e39767fd"
+distro linux-x86 "https://iojs.org/dist/v3.3.0/iojs-v3.3.0-linux-x86.tar.gz#197716f55592c85e04f644f9e2ef0d276cf90fecba3cf0e01bad6d3d628446dd"
+
 install_package "iojs-v3.3.0" "https://iojs.org/dist/v3.3.0/iojs-v3.3.0.tar.gz#e84a649858e6f5c1458c0d5d7bf1952f78e93a26ea6bc519222e92e43e2fadde"

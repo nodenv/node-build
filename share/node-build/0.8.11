@@ -1,1 +1,8 @@
+distro darwin-x64 "https://nodejs.org/dist/v0.8.11/node-v0.8.11-darwin-x64.tar.gz#7199b8260f3b02c362b7a347a27d9527c9fac37f4ca5d6c5e1d3c2ebd4d271c7"
+distro darwin-x86 "https://nodejs.org/dist/v0.8.11/node-v0.8.11-darwin-x86.tar.gz#7c857174ba99de693c8134055cb9d675c6953e31af2cd4380615ada6ebb4519d"
+distro linux-x64 "https://nodejs.org/dist/v0.8.11/node-v0.8.11-linux-x64.tar.gz#8586d1e89977567c5c3d75a974409a2453a5fc9f26f8ea634016dee255595347"
+distro linux-x86 "https://nodejs.org/dist/v0.8.11/node-v0.8.11-linux-x86.tar.gz#3ca70266324ac29d70b853ea1966ed81918996f65f276eb8e7144f5f494b8d1c"
+distro sunos-x64 "https://nodejs.org/dist/v0.8.11/node-v0.8.11-sunos-x64.tar.gz#9633b53df777c6b5a41dc3e6c106c51f20fbe151c793d82c80c93ca17ccc6975"
+distro sunos-x86 "https://nodejs.org/dist/v0.8.11/node-v0.8.11-sunos-x86.tar.gz#038d1b1774bdd9c260c5967380bd89df3145a7aeb190effd681ae2091f9e1676"
+
 install_package "node-v0.8.11" "https://nodejs.org/dist/v0.8.11/node-v0.8.11.tar.gz#e9594460f992b5862e21fb4d8ef27907839254c646b4ed5e8ab1ec25b4ccd29d"

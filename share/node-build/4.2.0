@@ -1,1 +1,10 @@
+distro darwin-x64 "https://nodejs.org/dist/v4.2.0/node-v4.2.0-darwin-x64.tar.gz#078c9a2c2fbfb603700d94b618df3b8b211e10f361bced5e4439142715aebde5"
+distro linux-arm64 "https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-arm64.tar.gz#ae67d6ddcb72505937982d6a0bcb031b3522f7abc11d9e2d449ea021a5f75faf"
+distro linux-armv6l "https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-armv6l.tar.gz#449b0914e195ad39db7fb497b1c6a3f7409c5c437794cabbdb962d8641f1e2f6"
+distro linux-armv7l "https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-armv7l.tar.gz#c1844dd131020b2b2982de974d73b051159776fe3ebf6fa91f08a2f5e8c46555"
+distro linux-x64 "https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-x64.tar.gz#98b60c86d541f44c5d07111f9ffc9a81848f976cfbe84f71cb9c7d6bfd34e1a4"
+distro linux-x86 "https://nodejs.org/dist/v4.2.0/node-v4.2.0-linux-x86.tar.gz#bc5e0791c23d897ea6c83976dd14eec8ac33f74188806012992aca335c4e9214"
+distro sunos-x64 "https://nodejs.org/dist/v4.2.0/node-v4.2.0-sunos-x64.tar.gz#d074ae0ab26f2f680adf7b94cfae0a8eac5ae4dcf083594a361b837fea6fdc72"
+distro sunos-x86 "https://nodejs.org/dist/v4.2.0/node-v4.2.0-sunos-x86.tar.gz#fc753685f937d338f1367614ca49158d446e29b35694fac6b8e6be262db5ec38"
+
 install_package "node-v4.2.0" "https://nodejs.org/dist/v4.2.0/node-v4.2.0.tar.gz#94ea40efeb598fed6e1a78990b698da73275c49876ec551dc36e11513c99fb6b"

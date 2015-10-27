@@ -1,1 +1,8 @@
+distro darwin-x64 "https://nodejs.org/dist/v0.8.24/node-v0.8.24-darwin-x64.tar.gz#8a15b6b40ba03fc361342faf2ddb3cc0480ebf5e63fb9adbaab6cda757697311"
+distro darwin-x86 "https://nodejs.org/dist/v0.8.24/node-v0.8.24-darwin-x86.tar.gz#1f06a3e8c887322479ae9f9a63f573e0638ed9cc1b72668d2f917062810b8278"
+distro linux-x64 "https://nodejs.org/dist/v0.8.24/node-v0.8.24-linux-x64.tar.gz#1296b795fb1d8406d7548372caef82454c460111b3ed4ef6d4b67dca6cfa4a76"
+distro linux-x86 "https://nodejs.org/dist/v0.8.24/node-v0.8.24-linux-x86.tar.gz#467135ebd9bba554d25f3174248ba35754a45bdcb82ef6064c44ee705d0b2d4b"
+distro sunos-x64 "https://nodejs.org/dist/v0.8.24/node-v0.8.24-sunos-x64.tar.gz#71578fd0ae413bdd41e336959889db70f1268084da92c37ba8467701b60ac995"
+distro sunos-x86 "https://nodejs.org/dist/v0.8.24/node-v0.8.24-sunos-x86.tar.gz#ce340c74abff8c6d462ce373ed8c6882c522a1032d327474ef17541403448b82"
+
 install_package "node-v0.8.24" "https://nodejs.org/dist/v0.8.24/node-v0.8.24.tar.gz#a0836e210da50106329e573532d5c590594ff1fcb9564fe8b55a04f04ff77705"

@@ -1,1 +1,9 @@
+distro darwin-x64 "https://nodejs.org/dist/v0.8.20/node-v0.8.20-darwin-x64.tar.gz#f81d2dff6097a80606b8807cd4eaa4c77b2c83630394a1bcfba885679b6caa1a"
+distro darwin-x86 "https://nodejs.org/dist/v0.8.20/node-v0.8.20-darwin-x86.tar.gz#7f2863ffe3cabebc33930924bfd1ebf3108c070ed052eeb02ccd292c85f6658a"
+distro linux-arm-pi "https://nodejs.org/dist/v0.8.20/node-v0.8.20-linux-arm-pi.tar.gz#a051fb79f7f7b68d38e9933669cddea093bd2a1068558db75b5c95e963199a16"
+distro linux-x64 "https://nodejs.org/dist/v0.8.20/node-v0.8.20-linux-x64.tar.gz#e78965ffe7b7b56c15fbde44b8a9da7438a3527567b895b71336015917c7923e"
+distro linux-x86 "https://nodejs.org/dist/v0.8.20/node-v0.8.20-linux-x86.tar.gz#4efa11253344c0765de7d6c0e7a89622589cf4638388463df15fc9ff24b96204"
+distro sunos-x64 "https://nodejs.org/dist/v0.8.20/node-v0.8.20-sunos-x64.tar.gz#73e8c9951ab6cc4641eadf2bdfffa5f8c8b2efe21fef2ac915f41e4e4915c8af"
+distro sunos-x86 "https://nodejs.org/dist/v0.8.20/node-v0.8.20-sunos-x86.tar.gz#3595c38edcd478d9d728fa152022511420d3864a89234b79a5b64d7ec3924598"
+
 install_package "node-v0.8.20" "https://nodejs.org/dist/v0.8.20/node-v0.8.20.tar.gz#e4461bfded531f4880839829ab3bce5b824905d6e181876e3d0309a366bf57ee"
