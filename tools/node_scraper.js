@@ -16,10 +16,12 @@ module.exports = function getVersions (options) {
       responseData = responseData + data
     })
     .on('end', function () {
+      var self = this;
       JSON.parse(responseData)
         .map(function (build) {
           return Object.assign(Object.create(Build), {
             baseUrl: options.baseUrl,
+            binaries: [],
             prefix: options.prefix || '',
             version: build.version
           })
@@ -28,7 +30,9 @@ module.exports = function getVersions (options) {
           return !build.fileExists || options.overwrite
         })
         .forEach(function (build) {
-          getShasum(build, writeFile)
+          getChecksumsFile(build, function(err, shasumData) {
+            extractShasums(build, shasumData, writeFile)
+          })
         })
     })
     .on('error', this.emit.bind(this, 'error'))
@@ -51,14 +55,28 @@ var Build = {
     return format('%s%s/SHASUMS256.txt', this.baseUrl, this.version)
   },
   get definition () {
-    return format('install_package "%s" "%s"\n', this.name, this.downloadUri)
+    return format('%sinstall_package "%s" "%s"\n', this.distros, this.name, this.downloadUri)
+  },
+  get distros () {
+    return this.binaries.map(function(binary){ return binary.definition }).join('') + (this.binaries.length ? '\n' : '')
   },
   get downloadUri () {
     return format('%s%s/%s#%s', this.baseUrl, this.version, this.package, this.shasum)
   }
 }
 
-function getShasum (build, cb) {
+var Binary = {
+  get definition () {
+    return format('distro %s "%s"\n', this.platform, this.downloadUri)
+  },
+  get downloadUri () {
+    return format('%s%s/%s#%s', this.build.baseUrl, this.build.version, this.package, this.shasum)
+  }
+}
+
+
+
+function getChecksumsFile (build, cb) {
   https.get(build.shasumFileUri, function (res) {
     if (res.statusCode !== 200) return this.emit('error', res)
 
@@ -69,20 +87,50 @@ function getShasum (build, cb) {
       shasumData = shasumData + data
     })
     .on('end', function () {
-      var result = shasumData.match(/(\w{64}) {2}(?:\.\/)?(((?:node|iojs)-v\d+\.\d+\.\d+).tar.gz)/i)
-
-      if (result) {
-        build.shasum = result[1]
-        build.package = result[2]
-        build.name = result[3]
-
-        cb(null, build)
-      } else {
-        cb(shasumData)
-      }
+      cb(null, shasumData)
     })
     .on('error', this.emit.bind(this, 'error'))
   }).on('error', function (e) { console.error('Error with ', build.version, e.message) })
+}
+
+function extractShasums (build, shasumData, cb) {
+  try {
+    extractSourceChecksum(build, shasumData)
+    extractBinaryChecksums(build, shasumData)
+    cb(null, build)
+  } catch (error) {
+    cb(err)
+  }
+}
+
+function extractSourceChecksum (build, shasumData) {
+  var result = shasumData.match(/^(\w{64}) {2}(?:\.\/)?(((?:node|iojs)-v\d+\.\d+\.\d+).tar.gz)$/im)
+
+  if (result) {
+    build.shasum = result[1]
+    build.package = result[2]
+    build.name = result[3]
+  } else {
+    throw new Error("bad checksum data", shasumData)
+  }
+}
+
+function extractBinaryChecksums (build, shasumData) {
+  var result = shasumData.match(/^(\w{64}) {2}(?:\.\/)?((?:(?:node|iojs)-v\d+\.\d+\.\d+)-(.+).tar.gz)$/gim)
+  if (!result) return
+
+  result.forEach(function(distro) {
+    var result = distro.match(/^(\w{64}) {2}(?:\.\/)?((?:(?:node|iojs)-v\d+\.\d+\.\d+)-(.+).tar.gz)$/i)
+    if(!result) return
+    build.binaries.push(
+      Object.assign(Object.create(Binary), {
+        build: build,
+        shasum: result[1],
+        package: result[2],
+        platform: result[3]
+      })
+    )
+  })
 }
 
 function writeFile (err, build) {
