@@ -115,7 +115,7 @@ function extractSourceChecksum (build, shasumData) {
 }
 
 function extractBinaryChecksums (build, shasumData) {
-  var result = shasumData.match(/^(\w{64}) {2}(?:\.\/)?((?:(?:node|iojs)-v\d+\.\d+\.\d+)-(?!headers)(.+).tar.gz)$/gim)
+  var result = shasumData.match(/^(\w{64}) {2}(?:\.\/)?((?:(?:node|iojs)-v\d+\.\d+\.\d+)-(?!headers|baddocs)(.+).tar.gz)$/gim)
   if (!result) return
 
   result.forEach(function(distro) {
