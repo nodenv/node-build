@@ -6,6 +6,7 @@
   "author": "Will McKenzie <willmckenzie@oinutter.co.uk> (http://www.oinutter.co.uk)",
   "homepage": "https://github.com/OiNutter/node-build#readme",
   "scripts": {
+    "test": "script/test",
     "write-definitions": "script/write-definitions"
   },
   "repository": {
