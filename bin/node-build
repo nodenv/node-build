@@ -11,7 +11,9 @@
 #   --definitions    List all built-in definitions
 #
 
-NODE_BUILD_VERSION="20151024"
+NODE_BUILD_VERSION="20151028"
+
+OLDIFS="$IFS"
 
 set -E
 exec 3<&2 # preserve original stderr at fd 3
@@ -102,6 +104,7 @@ os_information() {
 osx_version() {
   local -a ver
   IFS=. ver=( `sw_vers -productVersion` )
+  IFS="$OLDIFS"
   echo $(( ${ver[0]}*100 + ${ver[1]} ))
 }
 
@@ -602,7 +605,6 @@ unset IPV6
 
 NODE_BUILD_INSTALL_PREFIX="$(abs_dirname "$0")/.."
 
-OLDIFS="$IFS"
 IFS=: NODE_BUILD_DEFINITIONS=($NODE_BUILD_DEFINITIONS ${NODE_BUILD_ROOT:-$NODE_BUILD_INSTALL_PREFIX}/share/node-build)
 IFS="$OLDIFS"
 
