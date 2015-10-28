@@ -9,9 +9,9 @@ setup() {
     "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 }
 
-@test "installs binary if platform-matching distro" {
+@test "installs binary if platform-matching binary" {
   run_inline_definition <<DEF
-distro darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
+binary darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
 install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz" copy
 DEF
 
@@ -23,8 +23,8 @@ DEF
 
 @test "installs first of multiple matching binaries" {
   run_inline_definition <<DEF
-distro darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
-distro darwin-x64 "http://example.com/packages/secondary-1.0.0.tar.gz"
+binary darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
+binary darwin-x64 "http://example.com/packages/secondary-1.0.0.tar.gz"
 install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz" copy
 DEF
 
@@ -36,8 +36,8 @@ DEF
 
 @test "falls back to compilation if no matching binary" {
   run_inline_definition <<DEF
-distro linux-x86 "http://example.com/packages/binary-1.0.0.tar.gz"
-distro linux-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
+binary linux-x86 "http://example.com/packages/binary-1.0.0.tar.gz"
+binary linux-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
 install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz" copy
 DEF
 
@@ -49,7 +49,7 @@ DEF
 
 @test "falls back to compilation if binary installation fails" {
   run_inline_definition <<DEF
-distro darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz#invalidchecksum"
+binary darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz#invalidchecksum"
 install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz" copy
 DEF
 

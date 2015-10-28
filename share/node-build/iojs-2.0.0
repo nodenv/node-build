@@ -1,7 +1,7 @@
-distro darwin-x64 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-darwin-x64.tar.gz#2f56142cdb4b4ae4a17bd931e994339f981875eaa6700d5f4274335ac2144757"
-distro linux-armv6l "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-armv6l.tar.gz#6c4c0c14cae0f6eb93a80d42741136e74a30a2c74dcd9e25cbad7431ca177e2b"
-distro linux-armv7l "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-armv7l.tar.gz#8ae7bee7e223ee648e4a1897faab8602e2cbf0858d87ed5ba379ff617d08e1f1"
-distro linux-x64 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-x64.tar.gz#edf44e185b49ed01b390097ff5104f0457b59a1a37b99d0983f73ca018c58e3a"
-distro linux-x86 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-x86.tar.gz#a593b44ea4729e440e8dc63549b22a00a1bdc2c6c5a1208e7549f338713a13d5"
+binary darwin-x64 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-darwin-x64.tar.gz#2f56142cdb4b4ae4a17bd931e994339f981875eaa6700d5f4274335ac2144757"
+binary linux-armv6l "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-armv6l.tar.gz#6c4c0c14cae0f6eb93a80d42741136e74a30a2c74dcd9e25cbad7431ca177e2b"
+binary linux-armv7l "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-armv7l.tar.gz#8ae7bee7e223ee648e4a1897faab8602e2cbf0858d87ed5ba379ff617d08e1f1"
+binary linux-x64 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-x64.tar.gz#edf44e185b49ed01b390097ff5104f0457b59a1a37b99d0983f73ca018c58e3a"
+binary linux-x86 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-x86.tar.gz#a593b44ea4729e440e8dc63549b22a00a1bdc2c6c5a1208e7549f338713a13d5"
 
 install_package "iojs-v2.0.0" "https://iojs.org/dist/v2.0.0/iojs-v2.0.0.tar.gz#e4dd47b19fd41c9fa6f59c6d76f723ae79e76c3db5474e4d9dacc873dd47767a"

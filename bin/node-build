@@ -175,7 +175,7 @@ try_install_binary(){
   fi
 }
 
-distro() {
+binary() {
   local platform="$1"
   local url="$2"
 

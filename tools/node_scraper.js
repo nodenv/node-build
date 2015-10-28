@@ -66,7 +66,7 @@ var Build = {
 
 var Binary = {
   get definition () {
-    return format('distro %s "%s"\n', this.platform, this.downloadUri)
+    return format('binary %s "%s"\n', this.platform, this.downloadUri)
   },
   get downloadUri () {
     return format('%s%s/%s#%s', this.build.baseUrl, this.build.version, this.package, this.shasum)
