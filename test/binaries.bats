@@ -3,7 +3,7 @@
 load test_helper
 
 setup() {
-  stub uname '-s : echo Darwin' '-s : echo Darwin' '-m : echo x86_64'
+  stub uname '-s : echo Darwin' '-m : echo x86_64' '-s : echo Darwin'
   stub curl \
     "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"\
     "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
