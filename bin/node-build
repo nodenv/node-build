@@ -164,12 +164,12 @@ platform(){
   echo "${os}-${arch}"
 }
 
-try_install_distro(){
-  if [ -n "$DISTRO" ] && [ -z "$SKIP_BINARY" ]; then
-    local distro_url="$DISTRO"
-    unset DISTRO
+try_install_binary(){
+  if [ -n "$BINARY_URL" ] && [ -z "$SKIP_BINARY" ]; then
+    local url="$BINARY_URL"
+    unset BINARY_URL
 
-    install_binary "$distro_url"
+    install_binary "$url"
   else
     return 1
   fi
@@ -177,13 +177,13 @@ try_install_distro(){
 
 distro() {
   local platform="$1"
-  local distro_url="$2"
+  local url="$2"
 
-  # return if distro already set
-  [ -n "$DISTRO" ] && return 0
+  # return if already set
+  [ -n "$BINARY_URL" ] && return 0
 
   if [ "$platform" = "$(platform)" ]; then
-    DISTRO="$distro_url"
+    BINARY_URL="$url"
   fi
 }
 
@@ -224,7 +224,7 @@ install_package_using() {
   local make_args=( "$package_name" )
   local arg last_arg
 
-  try_install_distro && return
+  try_install_binary && return
 
   for arg in "${@:$(( $package_type_nargs + 1 ))}"; do
     if [ "$last_arg" = "--if" ]; then
