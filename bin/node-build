@@ -152,14 +152,15 @@ num_cpu_cores() {
 }
 
 platform(){
-  local arch
+  local arch="$(uname -m)"
   local os="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
-  if [ "$(uname -m)" = "x86_64" ]; then
-    arch="x64"
-  else
-    arch="$(uname -p)"
-  fi
+  arch=${arch/x86_64/x64}
+  arch=${arch/amd64/x64}
+  arch=${arch/i686-64/x64}
+
+  arch=${arch/i[36]86*/x86}
+  arch=${arch/[ix]86*/x86}
 
   echo "${os}-${arch}"
 }
