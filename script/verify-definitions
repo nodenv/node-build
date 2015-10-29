@@ -2,8 +2,6 @@
 # Usage: script/mirror verify <COMMIT-RANGE>
 set -e
 
-eval "$(grep NODE_BUILD_MIRROR_URL= ./bin/node-build | head -1)"
-
 help_text() {
   sed -ne '/^#/!q;s/.\{1,2\}//;1d;p' < "$0"
 }
@@ -59,16 +57,11 @@ verify() {
 cmd="$1"
 
 case "$cmd" in
-verify )
-  shift 1
-  "$cmd" "$@"
-  ;;
 -h | --help )
   help_text
   exit 0
   ;;
 * )
-  help_text >&2
-  exit 1
+  verify "$@"
   ;;
 esac
