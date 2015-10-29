@@ -3,6 +3,7 @@
 # Usage: node-build [-kvp] <definition> <prefix>
 #        node-build --definitions
 #
+#   -c/--compile     Force compilation even if a matching binary exists
 #   -k/--keep        Do not remove source tree after installation
 #   -v/--verbose     Verbose mode: print compilation status to stdout
 #   -p/--patch       Apply a patch from stdin before building

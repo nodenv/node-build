@@ -12,6 +12,7 @@
 #
 #   node-build options:
 #
+#   -c/--compile       Force compilation even if a matching binary exists
 #   -k/--keep          Keep source tree in $NODENV_BUILD_ROOT after installation
 #                      (defaults to $NODENV_ROOT/sources)
 #   -v/--verbose       Verbose mode: print compilation status to stdout
