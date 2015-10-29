@@ -1,17 +1,9 @@
 #!/usr/bin/env bash
-# Usage: script/mirror update <COMMIT-RANGE>
-#        script/mirror verify <COMMIT-RANGE>
-#        script/mirror stats
+# Usage: script/mirror verify <COMMIT-RANGE>
 set -e
-
-eval "$(grep NODE_BUILD_MIRROR_URL= ./bin/node-build | head -1)"
 
 help_text() {
   sed -ne '/^#/!q;s/.\{1,2\}//;1d;p' < "$0"
-}
-
-test_mirrored() {
-  curl -qsSfIL "$NODE_BUILD_MIRROR_URL/$1" >/dev/null 2>&1
 }
 
 compute_sha2() {
@@ -49,24 +41,6 @@ extract_urls() {
   $(type -p ggrep grep | head -1) -hoe 'http[^"]\+#[^"]\+' "$@" | sort | uniq
 }
 
-update() {
-  local url
-  local checksum
-  local file
-  for url in $(potentially_new_packages "$1"); do
-    checksum="${url#*#}"
-    url="${url%#*}"
-    if test_mirrored "$checksum"; then
-      echo "Already mirrored: $url"
-    else
-      echo "Mirroring: $url"
-      file="${TMPDIR:-/tmp}/$checksum"
-      download_and_verify "$url" "$file" "$checksum"
-      ./script/s3-put "$file" "${AMAZON_S3_BUCKET?}"
-    fi
-  done
-}
-
 verify() {
   local url
   local checksum
@@ -80,37 +54,14 @@ verify() {
   done
 }
 
-stats() {
-  local packages=( $(extract_urls ./share/node-build/*) )
-  local total="${#packages[@]}"
-  local confirmed=0
-  local checksum
-  for url in "${packages[@]}"; do
-    checksum="${url#*#}"
-    if test_mirrored "$checksum"; then
-      confirmed="$((confirmed + 1))"
-    else
-      echo "failed: $url" >&2
-    fi
-    echo -n "."
-  done
-  echo
-  echo "$confirmed/$total mirrored"
-}
-
 cmd="$1"
 
 case "$cmd" in
-update | verify | stats )
-  shift 1
-  "$cmd" "$@"
-  ;;
 -h | --help )
   help_text
   exit 0
   ;;
 * )
-  help_text >&2
-  exit 1
+  verify "$@"
   ;;
 esac

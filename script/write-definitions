@@ -2,7 +2,7 @@
 
 var force = process.argv[2] === '-f' || process.argv[2] === '--force'
 
-var scrape = require('./node_scraper')
+var scrape = require('./scraper')
 
 console.log('Updating node versions')
 scrape({
