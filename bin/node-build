@@ -111,6 +111,10 @@ build_failed() {
     echo " ($(os_information) using $(version))"
     echo
 
+    if [ -n "$BINARY_MESSAGE" ]; then
+      printf "$BINARY_MESSAGE"
+    fi
+
     if ! rmdir "${BUILD_PATH}" 2>/dev/null; then
       echo "Inspect or clean up the working tree at ${BUILD_PATH}"
 
@@ -168,9 +172,8 @@ try_install_binary(){
     local url="$BINARY_URL"
     unset BINARY_URL
 
+    BINARY_MESSAGE="Binary installation failed; try compiling from source with \`--compile\` flag\n\n"
     install_binary "$url"
-  else
-    return 1
   fi
 }
 
@@ -214,6 +217,8 @@ install_binary() {
 }
 
 install_package_using() {
+  try_install_binary
+
   local package_type="$1"
   local package_type_nargs="$2"
   local package_name="$3"
@@ -223,7 +228,6 @@ install_package_using() {
   local make_args=( "$package_name" )
   local arg last_arg
 
-  try_install_binary && return
 
   for arg in "${@:$(( $package_type_nargs + 1 ))}"; do
     if [ "$last_arg" = "--if" ]; then
@@ -235,7 +239,7 @@ install_package_using() {
   done
 
   pushd "$BUILD_PATH" >&4
-  "fetch_${package_type}" "${fetch_args[@]}" || return 1
+  "fetch_${package_type}" "${fetch_args[@]}"
   make_package "${make_args[@]}"
   popd >&4
 
@@ -416,7 +420,7 @@ fetch_tarball() {
     echo "Downloading ${tarball_filename}..." >&2
     http head "$mirror_url" &&
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
-    download_tarball "$package_url" "$package_filename" "$checksum" || return 1
+    download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
   { if tar $tar_args "$package_filename"; then
