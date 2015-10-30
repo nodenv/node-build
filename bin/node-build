@@ -3,6 +3,7 @@
 # Usage: node-build [-kvp] <definition> <prefix>
 #        node-build --definitions
 #
+#   -c/--compile     Force compilation even if a matching binary exists
 #   -k/--keep        Do not remove source tree after installation
 #   -v/--verbose     Verbose mode: print compilation status to stdout
 #   -p/--patch       Apply a patch from stdin before building
@@ -114,6 +115,10 @@ build_failed() {
     echo " ($(os_information) using $(version))"
     echo
 
+    if [ -n "$BINARY_ATTEMPT" ]; then
+      printf "Binary installation failed; try compiling from source with \`--compile\` flag\n\n"
+    fi
+
     if ! rmdir "${BUILD_PATH}" 2>/dev/null; then
       echo "Inspect or clean up the working tree at ${BUILD_PATH}"
 
@@ -154,6 +159,34 @@ num_cpu_cores() {
   echo "${num:-2}"
 }
 
+platform(){
+  local arch="$(uname -m)"
+  local os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+
+  case "$arch" in
+    x86_64 | amd64 | i686-64 ) arch=x64 ;;
+    i[36]86* | [ix]86pc )      arch=x86 ;;
+  esac
+
+  echo "${os}-${arch}"
+}
+
+try_binary(){
+  [ -n "$BINARY_URL" ] && [ -z "$SKIP_BINARY" ] && [ -z "$BINARY_ATTEMPT" ]
+}
+
+binary() {
+  local platform="$1"
+  local url="$2"
+
+  # return if already set
+  [ -n "$BINARY_URL" ] && return 0
+
+  if [ "$platform" = "$(platform)" ]; then
+    BINARY_URL="$url"
+  fi
+}
+
 install_package() {
   install_package_using "tarball" 1 "$@"
 }
@@ -166,6 +199,21 @@ install_svn() {
   install_package_using "svn" 2 "$@"
 }
 
+install_binary() {
+  local url name
+
+  if [ $# -eq 1 ]; then
+    url="$1"
+    name="$(basename $url)"
+    name="${name%.tar.gz*}"
+  else
+    name="$1"
+    url="$2"
+  fi
+
+  install_package "$name" "$url" copy
+}
+
 install_package_using() {
   local package_type="$1"
   local package_type_nargs="$2"
@@ -175,6 +223,12 @@ install_package_using() {
   local fetch_args=( "$package_name" "${@:1:$package_type_nargs}" )
   local make_args=( "$package_name" )
   local arg last_arg
+
+  if try_binary; then
+    BINARY_ATTEMPT=true # skip binary on recursive pass
+    install_binary "$BINARY_URL"
+    return 0
+  fi
 
   for arg in "${@:$(( $package_type_nargs + 1 ))}"; do
     if [ "$last_arg" = "--if" ]; then
@@ -598,6 +652,7 @@ sort_versions() {
 
 
 unset VERBOSE
+unset SKIP_BINARY
 unset KEEP_BUILD_PATH
 unset HAS_PATCH
 unset IPV4
@@ -620,6 +675,9 @@ for option in "${OPTIONS[@]}"; do
   "definitions" )
     list_definitions
     exit 0
+    ;;
+  "c" | "compile" )
+    SKIP_BINARY=true
     ;;
   "k" | "keep" )
     KEEP_BUILD_PATH=true

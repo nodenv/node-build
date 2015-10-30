@@ -1,1 +1,9 @@
+binary darwin-x64 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-darwin-x64.tar.gz#71d26152e960d85918001c1c8db7a66bbbc3293edd58f75a63d649fbc3c14d20"
+binary darwin-x86 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-darwin-x86.tar.gz#1ce7bd920e6a6fdbe24ed9c55a8516c7b813785f08ed5312c2969aa3a7bf56d9"
+binary linux-arm-pi "https://nodejs.org/dist/v0.9.10/node-v0.9.10-linux-arm-pi.tar.gz#438f7df584667d54e4756269d78b413d1188600b1d00c60298cdbeb9406c58ec"
+binary linux-x64 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-linux-x64.tar.gz#7983aed8394a7f159492bd715e0ea3ad0d4d22b2be388b7f9c59b4945d282188"
+binary linux-x86 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-linux-x86.tar.gz#491668b4427656722405ffc88547c09ca65aca0b3039f0d273a1aa5cc20ac62d"
+binary sunos-x64 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-sunos-x64.tar.gz#99ae3de4362861a0eec4c181fb42d585e72fd4ad30e61ff894702fd2eb0d46d0"
+binary sunos-x86 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-sunos-x86.tar.gz#3623fbe87783fff3508ddd042b9dd23a2ea76ea0e711463dea0a085cda847a0d"
+
 install_package "node-v0.9.10" "https://nodejs.org/dist/v0.9.10/node-v0.9.10.tar.gz#efdb49fc4ce2b4876c2fac00f5a2d8458f6aba42fa85001b0cb01f7a4b234ec9"

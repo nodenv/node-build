@@ -1,1 +1,9 @@
+binary darwin-x64 "https://nodejs.org/dist/v0.8.22/node-v0.8.22-darwin-x64.tar.gz#640cb11ecad00b9cddaadb2d95d760123523c26e0dcbf2abe9ef5ab3c2e41206"
+binary darwin-x86 "https://nodejs.org/dist/v0.8.22/node-v0.8.22-darwin-x86.tar.gz#e725e8a2fcebc6d799e94f40eb757c731764cfb76d12e2332858d242cfcb9eeb"
+binary linux-arm-pi "https://nodejs.org/dist/v0.8.22/node-v0.8.22-linux-arm-pi.tar.gz#0fb6c6c6a0e9e24c9343d2216e059f16dd7d7da2701efe882e2de0dc0e0e408b"
+binary linux-x64 "https://nodejs.org/dist/v0.8.22/node-v0.8.22-linux-x64.tar.gz#6228478b96ed4765bdf9576abfb19088ba8ef333cd86a9e18c31e26014cbbad5"
+binary linux-x86 "https://nodejs.org/dist/v0.8.22/node-v0.8.22-linux-x86.tar.gz#967de70216638b97f551262d19a6a63bd99023638e7cc2bf493fc827a5df9609"
+binary sunos-x64 "https://nodejs.org/dist/v0.8.22/node-v0.8.22-sunos-x64.tar.gz#8807dcc3192d3a8c0aae407b620e7ccea62ea3c8ba00a9c99118684cc9c43b77"
+binary sunos-x86 "https://nodejs.org/dist/v0.8.22/node-v0.8.22-sunos-x86.tar.gz#1eb0aa09ba0c5e99e81dd267ee63586f40ea6c3c4ea0b1134a659cb3a86472c4"
+
 install_package "node-v0.8.22" "https://nodejs.org/dist/v0.8.22/node-v0.8.22.tar.gz#3f61152cf5cd8fc1ab5c6c18101819841b947da79e1e44b51418c0ad2e6db8e8"
