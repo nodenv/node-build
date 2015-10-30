@@ -2,7 +2,7 @@
 
 load test_helper
 
-pkg_version="$(grep -e '"version":' ${BATS_TEST_DIRNAME}/../package.json | awk -v FS=':' '{print $2}' | sed 's/[", ]//g')"
+pkg_version="$(egrep '"version":' ${BATS_TEST_DIRNAME}/../package.json | awk -v FS=': ' '{v=$2; gsub(/[",]/,"",v); print v}')"
 
 @test "node-build static version" {
   stub git 'echo "ASPLODE" >&2; exit 1'

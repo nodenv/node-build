@@ -623,7 +623,7 @@ apply_node_patch() {
 
 version() {
   local git_revision
-  local pkg_version="$(cat "${NODE_BUILD_INSTALL_PREFIX}/package.json" | egrep '"version": ".*"' -o | cut -d' ' -f 2 | cut -d '"' -f 2)"
+  local pkg_version="$(cat ${NODE_BUILD_INSTALL_PREFIX}/package.json | egrep '"version":' | awk -v FS=': ' '{v=$2; gsub(/[",]/,"",v); print v}')"
 
   # Read the revision from git if the remote points to "node-build" repository
   if GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git remote -v 2>/dev/null | grep -q /node-build; then
