@@ -12,8 +12,6 @@
 #   --definitions    List all built-in definitions
 #
 
-NODE_BUILD_VERSION="20151028"
-
 OLDIFS="$IFS"
 
 set -E
@@ -659,6 +657,8 @@ unset IPV4
 unset IPV6
 
 NODE_BUILD_INSTALL_PREFIX="$(abs_dirname "$0")/.."
+
+NODE_BUILD_VERSION="$(cat "${NODE_BUILD_INSTALL_PREFIX}/package.json" | egrep '"version": ".*"' -o | cut -d' ' -f 2 | cut -d '"' -f 2)"
 
 IFS=: NODE_BUILD_DEFINITIONS=($NODE_BUILD_DEFINITIONS ${NODE_BUILD_ROOT:-$NODE_BUILD_INSTALL_PREFIX}/share/node-build)
 IFS="$OLDIFS"
