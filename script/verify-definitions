@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: script/mirror verify <COMMIT-RANGE>
+# Usage: script/verify-definitions <COMMIT-RANGE>
 set -e
 
 help_text() {
