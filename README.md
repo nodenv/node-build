@@ -108,6 +108,13 @@ custom definition files.
 
 [definitions]: https://github.com/OiNutter/node-build/tree/master/share/node-build
 
+### Binaries
+
+By default, node-build will attempt to match one of the precompiled binaries
+to your platform. If there is a binary for your platform, it will install it
+instead of compiling from source. To force compilation, pass the `-c` or
+`--compile` flag.
+
 ### Special environment variables
 
 You can set certain environment variables to control the build process.
