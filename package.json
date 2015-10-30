@@ -7,7 +7,9 @@
   "homepage": "https://github.com/OiNutter/node-build#readme",
   "scripts": {
     "test": "script/test",
-    "write-definitions": "script/write-definitions"
+    "write-definitions": "script/write-definitions",
+    "preversion": "script/release preversion",
+    "postversion": "script/release postversion"
   },
   "repository": {
     "type": "git",
