@@ -61,8 +61,11 @@ Homebrew.*
 ## Usage
 
 Before you begin, you should ensure that your build environment has the proper
-system dependencies for compiling the wanted Node version (see our [recommendations](https://github.com/sstephenson/ruby-build/wiki#suggested-build-environment)).
-(This is unnecessary if you only intend to install official binaries.)
+system dependencies for compiling the wanted Node version (see Node's
+[prerequisites][]). (This is unnecessary if you only intend to install
+official binaries.)
+
+[prerequisites]: https://github.com/nodejs/node#unix--macintosh
 
 ### Using `nodenv install` with nodenv
 
