@@ -36,7 +36,7 @@ git fetch -q origin master
 branch="${brew_name}-${version}"
 git checkout -q -B "$branch" origin/master
 
-formula="Library/Formula/${brew_name}.rb"
+formula="Library/Taps/jawshooah/homebrew-nodenv/${brew_name}.rb"
 sed -i.bak -E "
   s!^(  url ).+!\\1\"${url}\"!
   s!^(  sha256 ).+!\\1\"${checksum}\"!
