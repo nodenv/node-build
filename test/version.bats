@@ -2,13 +2,12 @@
 
 load test_helper
 
-bats_bin="${BATS_TEST_DIRNAME}/../bin/node-build"
-static_version="$(grep VERSION "$bats_bin" | head -1 | cut -d'"' -f 2)"
+pkg_version="$(grep -e '"version":' ${BATS_TEST_DIRNAME}/../package.json | awk -v FS=':' '{print $2}' | sed 's/[", ]//g')"
 
 @test "node-build static version" {
   stub git 'echo "ASPLODE" >&2; exit 1'
   run node-build --version
-  assert_success "node-build ${static_version}"
+  assert_success "node-build ${pkg_version}"
   unstub git
 }
 
@@ -26,7 +25,7 @@ static_version="$(grep VERSION "$bats_bin" | head -1 | cut -d'"' -f 2)"
     'remote -v : echo origin https://github.com/sstephenson/node-build.git' \
     "describe --tags HEAD : echo ASPLODE >&2; exit 1"
   run node-build --version
-  assert_success "node-build ${static_version}"
+  assert_success "node-build ${pkg_version}"
   unstub git
 }
 
@@ -35,5 +34,5 @@ static_version="$(grep VERSION "$bats_bin" | head -1 | cut -d'"' -f 2)"
     'remote -v : echo origin https://github.com/Homebrew/homebrew.git' \
     "describe --tags HEAD : echo v1984-12-gSHA"
   run node-build --version
-  assert_success "node-build ${static_version}"
+  assert_success "node-build ${pkg_version}"
 }
