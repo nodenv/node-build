@@ -623,12 +623,14 @@ apply_node_patch() {
 
 version() {
   local git_revision
+  local pkg_version="$(cat "${NODE_BUILD_INSTALL_PREFIX}/package.json" | egrep '"version": ".*"' -o | cut -d' ' -f 2 | cut -d '"' -f 2)"
+
   # Read the revision from git if the remote points to "node-build" repository
   if GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git remote -v 2>/dev/null | grep -q /node-build; then
     git_revision="$(GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git describe --tags HEAD 2>/dev/null || true)"
     git_revision="${git_revision#v}"
   fi
-  echo "node-build ${git_revision:-$NODE_BUILD_VERSION}"
+  echo "node-build ${git_revision:-$pkg_version}"
 }
 
 usage() {
@@ -657,8 +659,6 @@ unset IPV4
 unset IPV6
 
 NODE_BUILD_INSTALL_PREFIX="$(abs_dirname "$0")/.."
-
-NODE_BUILD_VERSION="$(cat "${NODE_BUILD_INSTALL_PREFIX}/package.json" | egrep '"version": ".*"' -o | cut -d' ' -f 2 | cut -d '"' -f 2)"
 
 IFS=: NODE_BUILD_DEFINITIONS=($NODE_BUILD_DEFINITIONS ${NODE_BUILD_ROOT:-$NODE_BUILD_INSTALL_PREFIX}/share/node-build)
 IFS="$OLDIFS"
