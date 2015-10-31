@@ -44,7 +44,7 @@ preversion() {
 postversion() {
   git push origin master "${new_tag}"
 
-  # script/brew-publish node-build "$new_tag"
+  script/brew-publish node-build "$new_tag"
 }
 
 
