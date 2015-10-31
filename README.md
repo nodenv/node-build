@@ -61,7 +61,11 @@ Homebrew.*
 ## Usage
 
 Before you begin, you should ensure that your build environment has the proper
-system dependencies for compiling the wanted Node version (see our [recommendations](https://github.com/sstephenson/ruby-build/wiki#suggested-build-environment)).
+system dependencies for compiling the wanted Node version (see Node's
+[prerequisites][]). (This is unnecessary if you only intend to install
+official binaries.)
+
+[prerequisites]: https://github.com/nodejs/node#unix--macintosh
 
 ### Using `nodenv install` with nodenv
 
@@ -103,6 +107,13 @@ See the [node-build built-in definitions][definitions] as a starting point for
 custom definition files.
 
 [definitions]: https://github.com/OiNutter/node-build/tree/master/share/node-build
+
+### Binaries
+
+By default, node-build will attempt to match one of the precompiled binaries
+to your platform. If there is a binary for your platform, it will install it
+instead of compiling from source. To force compilation, pass the `-c` or
+`--compile` flag.
 
 ### Special environment variables
 
@@ -194,12 +205,11 @@ variable when using `--keep` with `node-build`.
 
 ## Update available build versions
 
-To grab the latest versions from the node website and generate version files
-for node-build to use run the following command in the `tools` subdirectory of
-your node-build installation:
+To grab the latest versions from nodejs.org and generate definition files for
+node-build to use, run the following command:
 
 ``` shell
-node scraper.js
+npm run write-definitions
 ```
 
 Feel free to commit and send a pull request with the updated versions.
@@ -218,27 +228,3 @@ full build log for build failures.
 
 Copied from [ruby-build](https://github.com/sstephenson/ruby-build) and
 modified to work for node.
-
-### License
-
-(The MIT License)
-
-Copyright (c) 2013 Will McKenzie
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
