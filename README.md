@@ -140,7 +140,7 @@ You can set certain environment variables to control the build process.
 * `MAKE_INSTALL_OPTS` lets you pass additional options to `make install`.
 * `NODE_CONFIGURE_OPTS`, `NODE_MAKE_OPTS` and `NODE_MAKE_INSTALL_OPTS` allow
   you to specify configure and make options for buildling Node. These variables
-  will be passed to Node only, not any dependent packages (e.g. libyaml).
+  will be passed to Node only, not any dependent packages (e.g. v8).
 
 ### Applying patches to Node before compiling
 
