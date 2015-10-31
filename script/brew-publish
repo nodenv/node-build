@@ -20,7 +20,7 @@ else
   gh_project="${gh_project%.git}"
 fi
 
-url="https://${gh_project/:/\/}/archive/${version}.tar.gz"
+url="https://${gh_project/://}/archive/${version}.tar.gz"
 
 checksum="$(curl -fsSL "$url" | shasum -a 256 -b | awk '{print $1}')"
 
@@ -29,14 +29,14 @@ if [ -z "$checksum" ]; then
   exit 1
 fi
 
-pushd "$(brew --prefix)"
+pushd "$(brew --prefix)/Library/Taps/jawshooah/homebrew-nodenv"
 
 git fetch -q origin master
 
 branch="${brew_name}-${version}"
 git checkout -q -B "$branch" origin/master
 
-formula="Library/Formula/${brew_name}.rb"
+formula="${brew_name}.rb"
 sed -i.bak -E "
   s!^(  url ).+!\\1\"${url}\"!
   s!^(  sha256 ).+!\\1\"${checksum}\"!
@@ -47,6 +47,8 @@ git commit -m "${brew_name} ${version#v}" -- "$formula"
 # hackish way of getting the git remote name for user's fork
 fork_remote="$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')"
 git push -u "$fork_remote" "$branch"
+
+sleep 1
 hub pull-request -m "${brew_name} ${version#v}"
 
 git checkout -q -
