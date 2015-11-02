@@ -5,7 +5,7 @@ export NODE_BUILD_SKIP_MIRROR=1
 export NODE_BUILD_CACHE_PATH=
 
 setup() {
-  export NODE_BUILD_BUILD_PATH="${TMP}/source"
+  export NODE_BUILD_BUILD_PATH="${BATS_TMPDIR}/source"
   mkdir -p "${NODE_BUILD_BUILD_PATH}"
 }
 
@@ -28,7 +28,7 @@ DEF
   assert_output <<OUT
 Cloning http://example.com/packages/package.git...
 Installing package-dev...
-Installed package-dev to ${TMP}/install
+Installed package-dev to ${BATS_TMPDIR}/install
 OUT
   unstub git
 }
@@ -46,7 +46,7 @@ DEF
   assert_output <<OUT
 Cloning http://example.com/packages/package.git...
 Installing package-dev...
-Installed package-dev to ${TMP}/install
+Installed package-dev to ${BATS_TMPDIR}/install
 OUT
   unstub git
 }

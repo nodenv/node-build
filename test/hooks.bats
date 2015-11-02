@@ -3,8 +3,8 @@
 load test_helper
 
 setup() {
-  export NODENV_ROOT="${TMP}/nodenv"
-  export HOOK_PATH="${TMP}/i has hooks"
+  export NODENV_ROOT="${BATS_TMPDIR}/nodenv"
+  export HOOK_PATH="${BATS_TMPDIR}/i has hooks"
   mkdir -p "$HOOK_PATH"
 }
 
@@ -16,7 +16,7 @@ OUT
   stub nodenv-hooks "install : echo '$HOOK_PATH'/install.bash"
   stub nodenv-rehash "echo rehashed"
 
-  definition="${TMP}/4.0.0"
+  definition="${BATS_TMPDIR}/4.0.0"
   cat > "$definition" <<<"echo node-build"
   run nodenv-install "$definition"
 

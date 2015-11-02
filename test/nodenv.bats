@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 load test_helper
-export NODENV_ROOT="${TMP}/nodenv"
+export NODENV_ROOT="${BATS_TMPDIR}/nodenv"
 
 setup() {
   stub nodenv-hooks 'install : true'

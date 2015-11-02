@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 load test_helper
-export NODE_BUILD_CACHE_PATH="$TMP/cache"
+export NODE_BUILD_CACHE_PATH="$BATS_TMPDIR/cache"
 export MAKE=make
 export MAKE_OPTS="-j 2"
 export CC=cc
@@ -64,14 +64,14 @@ assert_build_log() {
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
-  TMPDIR="$TMP" install_fixture --patch definitions/vanilla-node <<<""
+  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<<""
   assert_success
 
   unstub make
   unstub patch
 
   assert_build_log <<OUT
-patch -p0 --force -i $TMP/node-patch.XXX
+patch -p0 --force -i $BATS_TMPDIR/node-patch.XXX
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
 make install
@@ -85,14 +85,14 @@ OUT
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
-  TMPDIR="$TMP" install_fixture --patch definitions/vanilla-node <<<"diff --git a/script.rb"
+  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<<"diff --git a/script.rb"
   assert_success
 
   unstub make
   unstub patch
 
   assert_build_log <<OUT
-patch -p1 --force -i $TMP/node-patch.XXX
+patch -p1 --force -i $BATS_TMPDIR/node-patch.XXX
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
 make install
@@ -213,7 +213,7 @@ OUT
 @test "custom relative install destination" {
   export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
 
-  cd "$TMP"
+  cd "$BATS_TMPDIR"
   install_fixture definitions/without-checksum ./here
   assert_success
   assert [ -x ./here/bin/package ]
@@ -247,7 +247,7 @@ OUT
 @test "can use NODE_CONFIGURE to apply a patch" {
   cached_tarball "node-v4.0.0"
 
-  executable "${TMP}/custom-configure" <<CONF
+  executable "${BATS_TMPDIR}/custom-configure" <<CONF
 #!$BASH
 apply -p1 -i /my/patch.diff
 exec ./configure "\$@"
@@ -256,7 +256,7 @@ CONF
   stub apply 'echo apply "$@" >> build.log'
   stub_make_install
 
-  export NODE_CONFIGURE="${TMP}/custom-configure"
+  export NODE_CONFIGURE="${BATS_TMPDIR}/custom-configure"
   run_inline_definition <<DEF
 install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
@@ -288,21 +288,21 @@ OUT
 }
 
 @test "non-writable TMPDIR aborts build" {
-  export TMPDIR="${TMP}/build"
+  export TMPDIR="${BATS_TMPDIR}/build"
   mkdir -p "$TMPDIR"
   chmod -w "$TMPDIR"
 
-  touch "${TMP}/build-definition"
-  run node-build "${TMP}/build-definition" "$INSTALL_ROOT"
+  touch "${BATS_TMPDIR}/build-definition"
+  run node-build "${BATS_TMPDIR}/build-definition" "$INSTALL_ROOT"
   assert_failure "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
 }
 
 @test "non-executable TMPDIR aborts build" {
-  export TMPDIR="${TMP}/build"
+  export TMPDIR="${BATS_TMPDIR}/build"
   mkdir -p "$TMPDIR"
   chmod -x "$TMPDIR"
 
-  touch "${TMP}/build-definition"
-  run node-build "${TMP}/build-definition" "$INSTALL_ROOT"
+  touch "${BATS_TMPDIR}/build-definition"
+  run node-build "${BATS_TMPDIR}/build-definition" "$INSTALL_ROOT"
   assert_failure "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
 }
