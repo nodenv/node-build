@@ -1,6 +1,7 @@
-load helpers/stub/stub
-
 export TMP="$BATS_TEST_DIRNAME/tmp"
+
+BATS_TMPDIR="$TMP"
+load helpers/stub/stub
 
 if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
   export FIXTURE_ROOT="$BATS_TEST_DIRNAME/fixtures"
