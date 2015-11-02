@@ -1,3 +1,5 @@
+load helpers/stub/stub
+
 export TMP="$BATS_TEST_DIRNAME/tmp"
 
 if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
@@ -11,37 +13,6 @@ fi
 
 teardown() {
   rm -fr "$TMP"/*
-}
-
-stub() {
-  local program="$1"
-  local prefix="$(echo "$program" | tr a-z- A-Z_)"
-  shift
-
-  export "${prefix}_STUB_PLAN"="${TMP}/${program}-stub-plan"
-  export "${prefix}_STUB_RUN"="${TMP}/${program}-stub-run"
-  export "${prefix}_STUB_END"=
-
-  mkdir -p "${TMP}/bin"
-  ln -sf "${BATS_TEST_DIRNAME}/stubs/stub" "${TMP}/bin/${program}"
-
-  touch "${TMP}/${program}-stub-plan"
-  for arg in "$@"; do printf "%s\n" "$arg" >> "${TMP}/${program}-stub-plan"; done
-}
-
-unstub() {
-  local program="$1"
-  local prefix="$(echo "$program" | tr a-z- A-Z_)"
-  local path="${TMP}/bin/${program}"
-
-  export "${prefix}_STUB_END"=1
-
-  local STATUS=0
-  "$path" || STATUS="$?"
-
-  rm -f "$path"
-  rm -f "${TMP}/${program}-stub-plan" "${TMP}/${program}-stub-run"
-  return "$STATUS"
 }
 
 run_inline_definition() {
