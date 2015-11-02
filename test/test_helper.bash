@@ -7,7 +7,7 @@ if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
   export INSTALL_ROOT="$TMP/install"
   PATH=/usr/bin:/usr/sbin:/bin/:/sbin
   PATH="$BATS_TEST_DIRNAME/../bin:$PATH"
-  PATH="$TMP/bin:$PATH"
+  PATH="$BATS_TMPDIR/bin:$PATH"
   export PATH
 fi
 
