@@ -2,7 +2,9 @@
 
 load test_helper
 
-pkg_version="$(egrep '"version":' ${BATS_TEST_DIRNAME}/../package.json | awk -v FS=': ' '{v=$2; gsub(/[",]/,"",v); print v}')"
+regex='"version":[ \t]*"([^"]*)"'
+[[ $(cat "${BATS_TEST_DIRNAME}/../package.json") =~ $regex ]]
+pkg_version=${BASH_REMATCH[1]}
 
 @test "node-build static version" {
   stub git 'echo "ASPLODE" >&2; exit 1'
