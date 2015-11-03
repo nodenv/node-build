@@ -1,7 +1,5 @@
 sudo: false
-install: git clone --depth 1 https://github.com/sstephenson/bats.git
-script: PATH="./bats/bin:$PATH" script/test
-language: c
+language: node_js
 notifications:
   email:
     on_success: never
