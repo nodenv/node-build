@@ -24,7 +24,8 @@
   },
   "devDependencies": {
     "bats": "^0.4.2",
-    "bats-assert": "^1.0.1"
+    "bats-assert": "^1.0.1",
+    "bats-mock": "^1.0.1"
   },
   "license": "MIT"
 }
