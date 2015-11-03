@@ -17,7 +17,8 @@
   },
   "scripts": {
     "test": "bats ${CI:+--tap} test",
-    "posttest": "script/verify-definitions",
+    "posttest": "npm run -s verify-definitions -- $TRAVIS_COMMIT_RANGE",
+    "verify-definitions": "script/verify-definitions",
     "write-definitions": "script/write-definitions",
     "preversion": "script/release preversion",
     "postversion": "script/release postversion"
