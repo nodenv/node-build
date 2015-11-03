@@ -16,7 +16,7 @@
     "url": "https://github.com/OiNutter/node-build/issues"
   },
   "scripts": {
-    "test": "script/test",
+    "test": "bats ${CI:+--tap} test",
     "posttest": "script/verify-definitions",
     "write-definitions": "script/write-definitions",
     "preversion": "script/release preversion",
