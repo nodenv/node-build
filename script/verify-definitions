@@ -54,14 +54,14 @@ verify() {
   done
 }
 
-cmd="$1"
+arg="${1:-$TRAVIS_COMMIT_RANGE}"
 
-case "$cmd" in
--h | --help )
+case "$arg" in
+-h | --help | '' )
   help_text
   exit 0
   ;;
 * )
-  verify "$@"
+  verify "$arg"
   ;;
 esac
