@@ -17,6 +17,7 @@
   },
   "scripts": {
     "test": "script/test",
+    "posttest": "script/verify-definitions",
     "write-definitions": "script/write-definitions",
     "preversion": "script/release preversion",
     "postversion": "script/release postversion"
