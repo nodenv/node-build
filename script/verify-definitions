@@ -30,12 +30,12 @@ download_and_verify() {
 
 changed_files() {
   local commit_range="$1"
-  git diff --name-only --diff-filter=ACMR "$commit_range"
+  git diff --name-only --diff-filter=ACMR "$commit_range" -- ./share/node-build
 }
 
 potentially_new_packages() {
   local commit_range="$1"
-  local files="$(changed_files "$commit_range" -- ./share/node-build)"
+  local files="$(changed_files "$commit_range")"
   [ -n "$files" ] && extract_urls $files
 }
 
