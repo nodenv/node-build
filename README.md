@@ -56,7 +56,7 @@ command.
 *This is the recommended method of installation if you installed nodenv with
 Homebrew.*
 
-    brew install --HEAD node-build
+    brew install node-build
 
 ## Usage
 
@@ -206,7 +206,7 @@ variable when using `--keep` with `node-build`.
 ## Update available build versions
 
 To grab the latest versions from nodejs.org and generate definition files for
-node-build to use, run the following command:
+node-build to use, run the following command from node-build's directory:
 
 ``` shell
 npm run write-definitions
