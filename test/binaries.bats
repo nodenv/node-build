@@ -16,9 +16,13 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output_contains 'Downloading binary-1.0.0.tar.gz'
-  assert_output_contains 'Installing binary-1.0.0...'
-  assert_output_contains 'Installed binary-1.0.0'
+  assert_output <<OUT
+Downloading binary-1.0.0.tar.gz...
+-> http://example.com/packages/binary-1.0.0.tar.gz
+Installing binary-1.0.0...
+Installed binary-1.0.0 to ${BATS_TMPDIR}/install
+OUT
+  refute_line 'Installing package-1.0.0...'
 }
 
 @test "installs first of multiple matching binaries" {
@@ -29,9 +33,13 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output_contains 'Downloading binary-1.0.0.tar.gz'
-  assert_output_contains 'Installing binary-1.0.0...'
-  assert_output_contains 'Installed binary-1.0.0'
+  assert_output <<OUT
+Downloading binary-1.0.0.tar.gz...
+-> http://example.com/packages/binary-1.0.0.tar.gz
+Installing binary-1.0.0...
+Installed binary-1.0.0 to ${BATS_TMPDIR}/install
+OUT
+  refute_line 'Installing package-1.0.0...'
 }
 
 @test "falls back to compilation if no matching binary" {
@@ -42,9 +50,13 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output_contains 'Downloading package-1.0.0.tar.gz'
-  assert_output_contains 'Installing package-1.0.0...'
-  assert_output_contains 'Installed package-1.0.0'
+  assert_output <<OUT
+Downloading package-1.0.0.tar.gz...
+-> http://example.com/packages/package-1.0.0.tar.gz
+Installing package-1.0.0...
+Installed package-1.0.0 to ${BATS_TMPDIR}/install
+OUT
+  refute_line 'Installing binary-1.0.0...'
 }
 
 @test "emits --compile help if binary installation fails" {
@@ -54,7 +66,9 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_failure
-  assert_output_contains 'Downloading binary-1.0.0.tar.gz'
-  assert_output_contains 'BUILD FAILED'
-  assert_output_contains 'Binary installation failed; try compiling from source with `--compile` flag'
+  assert_line 'Downloading binary-1.0.0.tar.gz...'
+  assert_line '-> http://example.com/packages/binary-1.0.0.tar.gz'
+  assert_line 'Binary installation failed; try compiling from source with `--compile` flag'
+  assert_line 'checksum mismatch: binary-1.0.0.tar.gz (file is corrupt)'
+  assert_line 'expected invalidchecksum, got f4197ffa561a3e97712d985904b46fed16c12e4819a44ab9d42fcaeebdfcab6c'
 }

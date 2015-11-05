@@ -31,6 +31,7 @@ CON
 exec 4<&1
 build_package_standard node
 DEF
+
   assert_success
   assert_output <<OUT
 ./configure --prefix=$INSTALL_ROOT
