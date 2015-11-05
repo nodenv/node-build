@@ -29,11 +29,13 @@ download_and_verify() {
 }
 
 changed_files() {
-  git diff --name-only --diff-filter=ACMR "$@"
+  local commit_range="$1"
+  git diff --name-only --diff-filter=ACMR "$commit_range" -- ./share/node-build
 }
 
 potentially_new_packages() {
-  local files="$(changed_files "$1" -- ./share/node-build)"
+  local commit_range="$1"
+  local files="$(changed_files "$commit_range")"
   [ -n "$files" ] && extract_urls $files
 }
 
@@ -42,10 +44,10 @@ extract_urls() {
 }
 
 verify() {
-  local url
-  local checksum
-  local file
-  for url in $(potentially_new_packages "$1"); do
+  local url checksum file
+  local commit_range="$1"
+  echo "Verifying changes from $commit_range"
+  for url in $(potentially_new_packages "$commit_range"); do
     checksum="${url#*#}"
     url="${url%#*}"
     echo "Verifying checksum for $url"
@@ -54,10 +56,8 @@ verify() {
   done
 }
 
-cmd="$1"
-
-case "$cmd" in
--h | --help )
+case "$1" in
+-h | --help | '' )
   help_text
   exit 0
   ;;

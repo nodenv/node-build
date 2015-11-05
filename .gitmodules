@@ -1,6 +1,0 @@
-[submodule "test/helpers/assertions"]
-	path = test/helpers/assertions
-	url = https://github.com/jasonkarns/bats-assert
-[submodule "test/helpers/mocks"]
-	path = test/helpers/mocks
-	url = https://github.com/jasonkarns/bats-mock.git
