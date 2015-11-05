@@ -8,6 +8,7 @@ load test_helper
   echo '' > "$definition"
 
   run node-build "$definition"
+
   assert_failure
   assert_output_contains 'Usage: node-build'
 }
@@ -18,6 +19,7 @@ load test_helper
   echo '' > "$definition"
 
   run node-build "$definition" "${BATS_TMPDIR}/install" ""
+
   assert_failure
   assert_output_contains 'Usage: node-build'
 }

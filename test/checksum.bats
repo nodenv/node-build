@@ -10,8 +10,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/without-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub shasum
@@ -23,8 +24,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub shasum
@@ -36,8 +38,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-invalid-checksum
-  [ "$status" -eq 1 ]
-  [ ! -f "${INSTALL_ROOT}/bin/package" ]
+
+  assert_failure
+  refute [ -f "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub shasum
@@ -49,8 +52,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub shasum
@@ -62,8 +66,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-sha1-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub sha1
@@ -75,8 +80,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-sha1-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub sha1
@@ -88,8 +94,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-md5-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub md5
@@ -101,8 +108,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-md5-checksum
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+
+  assert_success
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub md5
@@ -114,8 +122,9 @@ export NODE_BUILD_CACHE_PATH=
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
-  [ "$status" -eq 1 ]
-  [ ! -f "${INSTALL_ROOT}/bin/package" ]
+
+  assert_failure
+  refute [ -f "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
   unstub shasum
@@ -125,10 +134,8 @@ export NODE_BUILD_CACHE_PATH=
   stub shasum true "echo ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   stub curl false
   stub wget false
-
   export -n NODE_BUILD_CACHE_PATH
   export NODE_BUILD_BUILD_PATH="${BATS_TMPDIR}/build"
-
   mkdir -p "$NODE_BUILD_BUILD_PATH"
   ln -s "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_BUILD_PATH"
 
@@ -137,7 +144,7 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub shasum
 }
@@ -147,10 +154,8 @@ DEF
     "echo invalid" \
     "echo ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
-
   export -n NODE_BUILD_CACHE_PATH
   export NODE_BUILD_BUILD_PATH="${BATS_TMPDIR}/build"
-
   mkdir -p "$NODE_BUILD_BUILD_PATH"
   touch "${NODE_BUILD_BUILD_PATH}/package-1.0.0.tar.gz"
 
@@ -159,7 +164,7 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  [ -x "${INSTALL_ROOT}/bin/package" ]
+  assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub shasum
 }
