@@ -1,6 +1,11 @@
 #!/bin/sh
+# Usage: PREFIX=/usr/local ./install.sh
+#
+# Installs node-build under $PREFIX.
 
 set -e
+
+cd "$(dirname "$0")"
 
 if [ -z "${PREFIX}" ]; then
   PREFIX="/usr/local"
@@ -9,15 +14,7 @@ fi
 BIN_PATH="${PREFIX}/bin"
 SHARE_PATH="${PREFIX}/share/node-build"
 
-mkdir -p "${BIN_PATH}"
-mkdir -p "${SHARE_PATH}"
+mkdir -p "$BIN_PATH" "$SHARE_PATH"
 
-for file in bin/*; do
-  cp "${file}" "${BIN_PATH}"
-done
-
-for file in share/node-build/*; do
-  cp "${file}" "${SHARE_PATH}"
-done
-
-echo "Installed node-build at ${PREFIX}"
+install -p bin/* "$BIN_PATH"
+install -p -m 0644 share/node-build/* "$SHARE_PATH"

@@ -17,8 +17,17 @@ if [ "$1" = "--complete" ]; then
   exec nodenv versions --bare
 fi
 
+usage() {
+  nodenv-help uninstall 2>/dev/null
+  [ -z "$1" ] || exit "$1"
+}
+
 if [ -z "$NODENV_ROOT" ]; then
   NODENV_ROOT="${HOME}/.nodenv"
+fi
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  usage 0
 fi
 
 unset FORCE
@@ -27,16 +36,32 @@ if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
   shift
 fi
 
+[ "$#" -eq 1 ] || usage 1 >&2
+
 DEFINITION="$1"
 case "$DEFINITION" in
 "" | -* )
-  # We can remove the sed fallback once nodenv 0.4.0 is widely available.
-  { nodenv-help uninstall 2>/dev/null ||
-    sed -ne '/^#/!q;s/.\{1,2\}//;1,4d;p' < "$0"
-  } >&2
-  exit 1
+  usage 1 >&2
   ;;
 esac
+
+declare -a before_hooks after_hooks
+
+before_uninstall() {
+  local hook="$1"
+  before_hooks["${#before_hooks[@]}"]="$hook"
+}
+
+after_uninstall() {
+  local hook="$1"
+  after_hooks["${#after_hooks[@]}"]="$hook"
+}
+
+OLDIFS="$IFS"
+IFS=$'\n' scripts=(`nodenv-hooks uninstall`)
+IFS="$OLDIFS"
+for script in "${scripts[@]}"; do source "$script"; done
+
 
 VERSION_NAME="${DEFINITION##*/}"
 PREFIX="${NODENV_ROOT}/versions/${VERSION_NAME}"
@@ -54,7 +79,11 @@ if [ -z "$FORCE" ]; then
   esac
 fi
 
+for hook in "${before_hooks[@]}"; do eval "$hook"; done
+
 if [ -d "$PREFIX" ]; then
   rm -rf "$PREFIX"
-  nodenv rehash
+  nodenv-rehash
 fi
+
+for hook in "${after_hooks[@]}"; do eval "$hook"; done

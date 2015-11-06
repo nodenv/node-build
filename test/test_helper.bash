@@ -1,45 +1,38 @@
-export PATH="$BATS_TEST_DIRNAME/../bin:$PATH"
-export TMP="$BATS_TEST_DIRNAME/tmp"
-export FIXTURE_ROOT="$BATS_TEST_DIRNAME/fixtures"
-export INSTALL_ROOT="$TMP/install"
+BATS_TMPDIR="$BATS_TEST_DIRNAME/tmp"
+
+load ../node_modules/bats-assert/all
+load ../node_modules/bats-mock/stub
+
+if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
+  export FIXTURE_ROOT="$BATS_TEST_DIRNAME/fixtures"
+  export INSTALL_ROOT="$BATS_TMPDIR/install"
+  PATH=/usr/bin:/usr/sbin:/bin/:/sbin
+  PATH="$BATS_TEST_DIRNAME/../bin:$PATH"
+  PATH="$BATS_MOCK_BINDIR:$PATH"
+  export PATH
+fi
 
 teardown() {
-  rm -fr "$TMP"/*
+  rm -fr "$BATS_TMPDIR"/*
 }
 
-stub() {
-  local program="$1"
-  local prefix="$(echo "$program" | tr a-z A-Z)"
-  shift
-
-  export "${prefix}_STUB_PLAN"="${TMP}/${program}-stub-plan"
-  export "${prefix}_STUB_RUN"="${TMP}/${program}-stub-run"
-  export "${prefix}_STUB_END"=
-
-  export PATH="${BATS_TEST_DIRNAME}/stubs/${program}:$PATH"
-
-  rm -f "${TMP}/${program}-stub-plan" "${TMP}/${program}-stub-run"
-  touch "${TMP}/${program}-stub-plan"
-  for arg in "$@"; do printf "%s\n" "$arg" >> "${TMP}/${program}-stub-plan"; done
-}
-
-unstub() {
-  local program="$1"
-  local prefix="$(echo "$program" | tr a-z A-Z)"
-
-  export "${prefix}_STUB_END"=1
-
-  local path="${BATS_TEST_DIRNAME}/stubs/$program"
-  local escaped_path="${path//\//\\/}"
-  export PATH="${PATH/${escaped_path}:}"
-
-  "${path}/$program"
+run_inline_definition() {
+  local definition="${BATS_TMPDIR}/build-definition"
+  cat > "$definition"
+  run node-build "$definition" "${1:-$INSTALL_ROOT}"
 }
 
 install_fixture() {
+  local args
+
+  while [ "${1#-}" != "$1" ]; do
+    args="$args $1"
+    shift 1
+  done
+
   local name="$1"
   local destination="$2"
   [ -n "$destination" ] || destination="$INSTALL_ROOT"
 
-  run node-build "$FIXTURE_ROOT/$name" "$destination"
+  run node-build $args "$FIXTURE_ROOT/$name" "$destination"
 }

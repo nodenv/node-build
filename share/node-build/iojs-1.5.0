@@ -1,1 +1,7 @@
-install_git "iojs-1.5.0" "https://github.com/iojs/io.js.git" "v1.5.0" standard
+binary darwin-x64 "https://iojs.org/dist/v1.5.0/iojs-v1.5.0-darwin-x64.tar.gz#2942d66bf1c7ad85095038c4d5b411c8453fcbf31bd1a18393bbb8690edadce5"
+binary linux-armv6l "https://iojs.org/dist/v1.5.0/iojs-v1.5.0-linux-armv6l.tar.gz#c6330c0c49f4dcbb9f35b76b239e8fc978a5e50f3b4faf3af1e283090ea657e4"
+binary linux-armv7l "https://iojs.org/dist/v1.5.0/iojs-v1.5.0-linux-armv7l.tar.gz#39785bdc23f89895ef18c53d9fa4bca0ee4b8490c3d607daf0950c68067a48b8"
+binary linux-x64 "https://iojs.org/dist/v1.5.0/iojs-v1.5.0-linux-x64.tar.gz#3f88989f5613adcc7451bf3ce7467063a6d81c94ed88221ca081c37f12ee183d"
+binary linux-x86 "https://iojs.org/dist/v1.5.0/iojs-v1.5.0-linux-x86.tar.gz#2ce1d22367bc9d3918e6ddd70aa5e3e8bc9148b3d47f3c21628a8b2e9f3071fb"
+
+install_package "iojs-v1.5.0" "https://iojs.org/dist/v1.5.0/iojs-v1.5.0.tar.gz#83fc43cff80ebbbcb670110037fb2999202b00398ad5c63c7e76a8080b6a3b8a"

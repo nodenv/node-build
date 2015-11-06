@@ -9,6 +9,9 @@ of Node on UNIX-like systems.
 You can also use node-build without nodenv in environments where you need
 precise control over Node version installation.
 
+See the [list of releases](https://github.com/OiNutter/node-build/releases)
+for changes in each version.
+
 
 ## Installation
 
@@ -53,16 +56,23 @@ command.
 *This is the recommended method of installation if you installed nodenv with
 Homebrew.*
 
-    brew install --HEAD node-build
+    brew install node-build
 
 ## Usage
+
+Before you begin, you should ensure that your build environment has the proper
+system dependencies for compiling the wanted Node version (see Node's
+[prerequisites][]). (This is unnecessary if you only intend to install
+official binaries.)
+
+[prerequisites]: https://github.com/nodejs/node#unix--macintosh
 
 ### Using `nodenv install` with nodenv
 
 To install a Node version for use with nodenv, run `nodenv install` with the
 exact name of the version you want to install. For example,
 
-    nodenv install 0.10.0
+    nodenv install 4.2.1
 
 Node versions will be installed into a directory of the same name under
 `$(nodenv root)/versions`.
@@ -80,7 +90,7 @@ locations.
 Run the `node-build` command with the exact name of the version you want to
 install and the full path where you want to install it. For example,
 
-    node-build 0.10.0 ~/local/node-0.10.0
+    node-build 4.2.1 ~/local/node-4.2.1
 
 To see a list of all available Node versions, run `node-build --definitions`.
 
@@ -98,6 +108,13 @@ custom definition files.
 
 [definitions]: https://github.com/pongstr/node-build/tree/master/share/node-build
 
+### Binaries
+
+By default, node-build will attempt to match one of the precompiled binaries
+to your platform. If there is a binary for your platform, it will install it
+instead of compiling from source. To force compilation, pass the `-c` or
+`--compile` flag.
+
 ### Special environment variables
 
 You can set certain environment variables to control the build process.
@@ -107,38 +124,47 @@ You can set certain environment variables to control the build process.
   built. By default, this is a subdirectory of `TMPDIR`.
 * `NODE_BUILD_CACHE_PATH`, if set, specifies a directory to use for caching
   downloaded package files.
-* `NODE_BUILD_MIRROR_URL` overrides the default mirror URL root to one of your
-  choosing.
-* `NODE_BUILD_SKIP_MIRROR`, if set, forces node-build to download packages from
-  their original source URLs instead of using a mirror.
+* `NODE_BUILD_ROOT` overrides the default location from where build definitions
+  in `share/node-build/` are looked up.
+* `NODE_BUILD_DEFINITIONS` can be a list of colon-separated paths that get
+  additionally searched when looking up build definitions.
 * `CC` sets the path to the C compiler.
 * `CONFIGURE_OPTS` lets you pass additional options to `./configure`.
 * `MAKE` lets you override the command to use for `make`. Useful for specifying
   GNU make (`gmake`) on some systems.
 * `MAKE_OPTS` (or `MAKEOPTS`) lets you pass additional options to `make`.
-* `NODE_CONFIGURE_OPTS` and `NODE_MAKE_OPTS` allow you to specify configure and
-  make options for building Node. These variables will be passed to Node only,
-  not any dependent packages (e.g. libyaml).
+* `MAKE_INSTALL_OPTS` lets you pass additional options to `make install`.
+* `NODE_CONFIGURE_OPTS`, `NODE_MAKE_OPTS` and `NODE_MAKE_INSTALL_OPTS` allow
+  you to specify configure and make options for buildling Node. These variables
+  will be passed to Node only, not any dependent packages (e.g. v8).
+
+### Applying patches to Node before compiling
+
+Both `nodenv install` and `node-build` support the `--patch` (`-p`) flag that
+signals that a patch from stdin should be applied to Node or iojs
+source code before the `./configure` and compilation steps.
+
+Example usage:
+
+```sh
+# applying a single patch
+$ nodenv install --patch 0.10.36 < /path/to/node.patch
+
+# applying a patch from HTTP
+$ nodenv install --patch 0.10.36 < <(curl -sSL http://git.io/node.patch)
+
+# applying multiple patches
+$ cat fix1.patch fix2.patch | nodenv install --patch 0.10.36
+```
 
 ### Checksum verification
 
-If you have the `sha1`, `openssl`, or `sha1sum` tool installed, node-build will
-automatically verify the SHA1 checksum of each downloaded package before
+If you have the `shasum`, `openssl`, or `sha256sum` tool installed, node-build will
+automatically verify the SHA2 checksum of each downloaded package before
 installing it.
 
 Checksums are optional and specified as anchors on the package URL in each
 definition. (All bundled definitions include checksums.)
-
-### Package download mirrors
-
-You can point node-build to another mirror by specifying the
-`NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to run your
-own local mirror, for example. Package mirror URLs are constructed by joining
-this variable with the MD5 checksum of the package file.
-
-If you don't have a SHA1 program installed, node-build will skip the download
-mirror and use official URLs instead. You can force node-build to bypass the
-mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
 
 ### Package download caching
 
@@ -164,12 +190,11 @@ variable when using `--keep` with `node-build`.
 
 ## Update available build versions
 
-To grab the latest versions from the node website and generate version files
-for node-build to use run the following command in the `tools` subdirectory of
-your node-build installation:
+To grab the latest versions from nodejs.org and generate definition files for
+node-build to use, run the following command from node-build's directory:
 
 ``` shell
-node scraper.js
+npm run write-definitions
 ```
 
 Feel free to commit and send a pull request with the updated versions.
@@ -188,27 +213,3 @@ full build log for build failures.
 
 Copied from [ruby-build](https://github.com/sstephenson/ruby-build) and
 modified to work for node.
-
-### License
-
-(The MIT License)
-
-Copyright (c) 2013 Will McKenzie
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.

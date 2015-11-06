@@ -1,1 +1,8 @@
-install_package "node-v0.10.34" "http://nodejs.org/dist/v0.10.34/node-v0.10.34.tar.gz#a342eb4d653ab48ba016c0c0c259565c822881cc"
+binary darwin-x64 "https://nodejs.org/dist/v0.10.34/node-v0.10.34-darwin-x64.tar.gz#a3aa311213c3491b550b9b96835d4b4e18754524a2f82c6a1bb7fcdf3a6773e3"
+binary darwin-x86 "https://nodejs.org/dist/v0.10.34/node-v0.10.34-darwin-x86.tar.gz#538882716236f49cb3e059edaa53397de68e47942cbcbd506bf91b4ba8f6ffb2"
+binary linux-x64 "https://nodejs.org/dist/v0.10.34/node-v0.10.34-linux-x64.tar.gz#d9242c1b04327e8b4069ab1da96794383e562b0610942da501656e53243d04dc"
+binary linux-x86 "https://nodejs.org/dist/v0.10.34/node-v0.10.34-linux-x86.tar.gz#3fe743566843fbd164cbb7e2ac6ab198025dd5d3d42821c1b33054b3b327cc32"
+binary sunos-x64 "https://nodejs.org/dist/v0.10.34/node-v0.10.34-sunos-x64.tar.gz#4e1d09ec38413380b5297edc3dc5a1fe4b28bddda3c189dbaceabadb42cae98f"
+binary sunos-x86 "https://nodejs.org/dist/v0.10.34/node-v0.10.34-sunos-x86.tar.gz#36db9122efa7130fa5bcdb1d9660f145c3880432f86c9ced52bd898c53a448f6"
+
+install_package "node-v0.10.34" "https://nodejs.org/dist/v0.10.34/node-v0.10.34.tar.gz#d7f8473b5849873039f7e62595e12dcdb78c8dffda317e1253b3123876bf3415"
