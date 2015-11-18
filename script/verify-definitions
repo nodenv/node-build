@@ -7,8 +7,9 @@ help_text() {
 }
 
 compute_sha2() {
-  local output="$(openssl dgst -sha256)"
-  echo "${output##* }" | tr '[A-Z]' '[a-z]'
+  local output
+  output="$(openssl dgst -sha256)"
+  echo "${output##* }" | tr '[:upper:]' '[:lower:]'
 }
 
 download_package() {
@@ -35,7 +36,8 @@ changed_files() {
 
 potentially_new_packages() {
   local commit_range="$1"
-  local files="$(changed_files "$commit_range")"
+  local files
+  files="$(changed_files "$commit_range")"
   [ -n "$files" ] && extract_urls $files
 }
 
@@ -47,6 +49,7 @@ verify() {
   local url checksum file
   local commit_range="$1"
   echo "Verifying changes from $commit_range"
+  changed_files "$commit_range"
   for url in $(potentially_new_packages "$commit_range"); do
     checksum="${url#*#}"
     url="${url%#*}"
@@ -57,11 +60,16 @@ verify() {
 }
 
 case "$1" in
--h | --help | '' )
-  help_text
-  exit 0
-  ;;
-* )
-  verify "$@"
-  ;;
+  '' )
+    echo "COMMIT-RANGE required" >&2
+    help_text >&2
+    exit 1
+    ;;
+  -h | --help )
+    help_text
+    exit 0
+    ;;
+  * )
+    verify "$@"
+    ;;
 esac
