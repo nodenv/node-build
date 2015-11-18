@@ -1,6 +1,6 @@
 # node-build
 
-[![Build Status](https://travis-ci.org/OiNutter/node-build.png?branch=master)](https://travis-ci.org/OiNutter/node-build)
+[![Build Status](https://travis-ci.org/OiNutter/node-build.svg?branch=master)](https://travis-ci.org/OiNutter/node-build)
 
 node-build is an [nodenv](https://github.com/OiNutter/nodenv) plugin that
 provides a `nodenv install` command to compile and install different versions
