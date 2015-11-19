@@ -191,13 +191,15 @@ variable when using `--keep` with `node-build`.
 ## Update available build versions
 
 To grab the latest versions from nodejs.org and generate definition files for
-node-build to use, run the following command from node-build's directory:
+node-build to use, check out the
+[node-build-update-defs](https://github.com/jasonkarns/node-build-update-defs)
+plugin. Once installed:
 
 ``` shell
-npm run write-definitions
+nodenv update-version-defs
 ```
 
-Feel free to commit and send a pull request with the updated versions.
+No need to wait for node-build to provide the latest definitions!
 
 ## Getting Help
 
