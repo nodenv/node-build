@@ -306,3 +306,16 @@ OUT
   run node-build "${BATS_TMPDIR}/build-definition" "$INSTALL_ROOT"
   assert_failure "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
 }
+
+@test "initializes LDFLAGS directories" {
+  cached_tarball "node-v4.0.0"
+
+  export LDFLAGS="-L ${BATS_TEST_DIRNAME}/what/evs"
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz" ldflags_dirs
+DEF
+  assert_success
+
+  assert [ -d "${INSTALL_ROOT}/lib" ]
+  assert [ -d "${BATS_TEST_DIRNAME}/what/evs" ]
+}
