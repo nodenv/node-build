@@ -602,6 +602,21 @@ fix_directory_permissions() {
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
 }
 
+# Ensure that directories listed in LDFLAGS exist
+build_package_ldflags_dirs() {
+  local arg dir
+  set - $LDFLAGS
+  while [ $# -gt 0 ]; do
+    dir=""
+    case "$1" in
+    -L  ) dir="$2" ;;
+    -L* ) dir="${1#-L}" ;;
+    esac
+    [ -z "$dir" ] || mkdir -p "$dir"
+    shift 1
+  done
+}
+
 apply_node_patch() {
   local patchfile
   case "$1" in
