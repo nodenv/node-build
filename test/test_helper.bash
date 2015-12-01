@@ -13,7 +13,7 @@ if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
 fi
 
 teardown() {
-  rm -fr "$BATS_TMPDIR"/*
+  rm -fr "${BATS_TMPDIR:?}"/*
 }
 
 run_inline_definition() {
