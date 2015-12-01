@@ -1,1 +1,2 @@
+CONFIGURE_OPTS="--engine-mozilla"
 install_package jxcore-0.3.0 "https://github.com/jxcore/jxcore/archive/v0.3.0.tar.gz#1e76648ecd012a2370354369f6161666763b4bc028544e9dc0cb27c035a90f24"
