@@ -607,6 +607,13 @@ build_package_jxcore_spidermonkey() {
   CONFIGURE_OPTS="--engine-mozilla $CONFIGURE_OPTS"
 }
 
+build_package_jxcore_npm() {
+  local oldprefix="$PREFIX_PATH"
+  PREFIX_PATH="$PREFIX_PATH/libexec/npm"
+  build_package_copy
+  PREFIX_PATH="$oldprefix"
+}
+
 before_install_package() {
   local stub=1
 }
@@ -621,6 +628,7 @@ fix_jxcore_directory_structure() {
     pushd "$PREFIX_PATH/bin"
     [ -e jx ] || mv ../jx .
     ln -sf jx node
+    ln -sf ../libexec/npm/bin/npm-cli.js npm
     popd
   } >&4
 }
