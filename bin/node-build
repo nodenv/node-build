@@ -202,8 +202,9 @@ install_binary() {
 
   if [ $# -eq 1 ]; then
     url="$1"
-    name="$(basename $url)"
+    name="$(basename "$url")"
     name="${name%.tar.gz*}"
+    name="${name%.zip*}"
   else
     name="$1"
     url="$2"
