@@ -402,6 +402,7 @@ fetch_tarball() {
     package_url="${package_url%%#*}"
   fi
 
+  local tar="tar"
   local tar_args="xzf"
   local package_filename="${package_name}.tar.gz"
 
@@ -410,13 +411,18 @@ fetch_tarball() {
     tar_args="${tar_args/z/j}"
   fi
 
+  if [ "$package_url" != "${package_url%zip}" ]; then
+    tar="unzip"
+    tar_args="oq"
+  fi
+
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
     local tarball_filename=$(basename $package_url)
     echo "Downloading ${tarball_filename}..." >&2
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
-  { if tar $tar_args "$package_filename"; then
+  { if $tar -$tar_args "$package_filename"; then
       if [ -z "$KEEP_BUILD_PATH" ]; then
         rm -f "$package_filename"
       else
