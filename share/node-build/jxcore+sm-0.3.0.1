@@ -1,1 +1,5 @@
+after_install_package() {
+  fix_jxcore_directory_structure
+}
+
 install_package jxcore-0.3.0.1 "https://github.com/jxcore/jxcore/archive/v0.3.0.1.tar.gz#fd25b575b4dd42be87f9681dbcf9812836bc6389f6d90073913092085e902a44" jxcore_spidermonkey standard
