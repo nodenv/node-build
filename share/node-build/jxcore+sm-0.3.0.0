@@ -2,6 +2,6 @@ after_install_package() {
   fix_jxcore_directory_structure
 }
 
-binary darwin-x64 "https://jxcore.s3.amazonaws.com/0300/jx_osx64sm.zip#45785211d3aeb1ec2ad1a1deb4c5d7e7bd435fe2"
+binary darwin-x64 "https://jxcore.s3.amazonaws.com/0300/jx_osx64sm.zip#91d8a838879c32efafc35f0302dcaff7e23117c092f79c0db2bcc23d00adf427"
 
 install_package jxcore-0.3.0 "https://github.com/jxcore/jxcore/archive/v0.3.0.tar.gz#1e76648ecd012a2370354369f6161666763b4bc028544e9dc0cb27c035a90f24" jxcore_spidermonkey standard
