@@ -613,6 +613,16 @@ after_install_package() {
   local stub=1
 }
 
+fix_jxcore_directory_structure() {
+  {
+    mkdir -p "$PREFIX_PATH/bin"
+    pushd "$PREFIX_PATH/bin"
+    [ -e jx ] || mv ../jx .
+    ln -sf jx node
+    popd
+  } >&4
+}
+
 fix_directory_permissions() {
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
 }
