@@ -1,7 +1,6 @@
-after_install_package() {
-  fix_jxcore_directory_structure
-}
-
 binary darwin-x64 "https://jxcore.s3.amazonaws.com/0304/jx_osx64v8.zip#b94c8577f1c3916a17644f5380237c04bf13a926977ebd2afe65f144295261e5"
 
 install_package jxcore-0.3.0.4 "https://github.com/jxcore/jxcore/archive/v0.3.0.4.tar.gz#84e67ee008abb6794940806ab2992536144d9e831643181ea0230f4e8f1aade7"
+install_package npm "https://s3.amazonaws.com/nodejx/npmjx304.tar.gz#e12617fe36c58c59ee5d06e99f421f21b8a3215d5d780597e5218e2c6b63f17a" jxcore_npm
+
+fix_jxcore_directory_structure
