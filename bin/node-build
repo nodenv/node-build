@@ -609,7 +609,7 @@ build_package_jxcore_spidermonkey() {
 
 build_package_jxcore_npm() {
   local oldprefix="$PREFIX_PATH"
-  PREFIX_PATH="$PREFIX_PATH/libexec/npm"
+  PREFIX_PATH="$PREFIX_PATH/libexec/.jx/npm"
   build_package_copy
   PREFIX_PATH="$oldprefix"
 }
@@ -628,9 +628,22 @@ fix_jxcore_directory_structure() {
     pushd "$PREFIX_PATH/bin"
     [ -e jx ] || mv ../jx .
     ln -sf jx node
-    ln -sf ../libexec/npm/bin/npm-cli.js npm
+    fix_jxcore_npm
     popd
   } >&4
+}
+
+fix_jxcore_npm() {
+  # symlink bin/npm to jxnpm
+  ln -sf ../libexec/.jx/npm/bin/npm-cli.js npm
+  # jx needs the version lock file or whatever
+  echo 1 > ../libexec/.jx/"$(jx -jxv)"
+  # configure jx to use this local npm and not install to ~/.jx
+  cat > jx.config <<JX
+{
+  "npmjxPath": "$PREFIX_PATH/libexec"
+}
+JX
 }
 
 fix_directory_permissions() {
