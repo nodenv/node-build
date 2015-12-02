@@ -20,7 +20,7 @@ else
   gh_project="${gh_project%.git}"
 fi
 
-url="https://${gh_project/:/\/}/archive/${version}.tar.gz"
+url="https://${gh_project/://}/archive/${version}.tar.gz"
 
 checksum="$(curl -fsSL "$url" | shasum -a 256 -b | awk '{print $1}')"
 
