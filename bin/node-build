@@ -585,6 +585,11 @@ build_package_standard() {
   } >&4 2>&1
 }
 
+build_package_autoconf() {
+  { autoconf
+  } >&4 2>&1
+}
+
 build_package_copy() {
   mkdir -p "$PREFIX_PATH"
   cp -fR . "$PREFIX_PATH"
