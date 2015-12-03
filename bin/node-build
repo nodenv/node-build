@@ -626,7 +626,7 @@ fix_jxcore_directory_structure() {
   {
     mkdir -p "$PREFIX_PATH/bin"
     pushd "$PREFIX_PATH/bin"
-    [ -e jx ] || mv ../jx .
+    mv -f ../jx .
     ln -sf jx node
     fix_jxcore_npm
     popd
