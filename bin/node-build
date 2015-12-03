@@ -638,7 +638,9 @@ fix_jxcore_directory_structure() {
   {
     mkdir -p "$PREFIX_PATH/bin"
     pushd "$PREFIX_PATH/bin"
-    mv -f ../jx .
+    if [ -x ../jx ]; then
+      mv -f ../jx .
+    fi
     ln -sf jx node
     ln -sf ../libexec/.jx/npm/bin/npm-cli.js npm
     popd
