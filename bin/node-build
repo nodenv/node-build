@@ -616,7 +616,7 @@ build_package_jxcore_npm() {
   PREFIX_PATH="$oldprefix"
 
   # jx needs this version lock file of sorts
-  echo 1 > "$npmjxpath/.jx/$(jx -jxv)"
+  echo 1 > "$npmjxpath/.jx/$($PREFIX_PATH/bin/jx -jxv)"
 
   # configure jx to use this local npm and not install to ~/.jx
   cat > "$PREFIX_PATH/bin/jx.config" <<JX
