@@ -14,6 +14,7 @@ set -e
 
 # Provide nodenv completions
 if [ "$1" = "--complete" ]; then
+  echo --force
   exec nodenv versions --bare
 fi
 
