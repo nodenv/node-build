@@ -40,6 +40,13 @@ shopt -u nullglob
 
 # Provide nodenv completions
 if [ "$1" = "--complete" ]; then
+  echo --list
+  echo --force
+  echo --skip-existing
+  echo --compile
+  echo --keep
+  echo --verbose
+  echo --patch
   exec node-build --definitions
 fi
 
