@@ -1,0 +1,8 @@
+after_install_package() {
+  fix_jxcore_directory_structure
+}
+
+binary darwin-x64 "https://jxcore.s3.amazonaws.com/jxcore-binary.tar.gz"
+
+install_package jxcore-source "https://github.com/jxcore/jxcore/archive/jxcore-source.tar.gz" copy
+install_package jxcore-npm "https://nodejx.s3.amazonaws.com/jxcore-npm.tar.gz" jxcore_npm

@@ -202,8 +202,9 @@ install_binary() {
 
   if [ $# -eq 1 ]; then
     url="$1"
-    name="$(basename $url)"
+    name="$(basename "$url")"
     name="${name%.tar.gz*}"
+    name="${name%.zip*}"
   else
     name="$1"
     url="$2"
@@ -225,6 +226,8 @@ install_package_using() {
   if try_binary; then
     BINARY_ATTEMPT=true # skip binary on recursive pass
     install_binary "$BINARY_URL"
+    BINARY_ATTEMPT=
+    SKIP_BINARY=true # skip binary for subsequent packages
     return 0
   fi
 
@@ -401,6 +404,7 @@ fetch_tarball() {
     package_url="${package_url%%#*}"
   fi
 
+  local tar="tar"
   local tar_args="xzf"
   local package_filename="${package_name}.tar.gz"
 
@@ -409,13 +413,18 @@ fetch_tarball() {
     tar_args="${tar_args/z/j}"
   fi
 
+  if [ "$package_url" != "${package_url%zip}" ]; then
+    tar="unzip"
+    tar_args="oq"
+  fi
+
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
     local tarball_filename=$(basename $package_url)
     echo "Downloading ${tarball_filename}..." >&2
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
-  { if tar $tar_args "$package_filename"; then
+  { if $tar -$tar_args "$package_filename"; then
       if [ -z "$KEEP_BUILD_PATH" ]; then
         rm -f "$package_filename"
       else
@@ -595,12 +604,52 @@ build_package_copy() {
   cp -fR . "$PREFIX_PATH"
 }
 
+build_package_jxcore_v8_328() {
+  CONFIGURE_OPTS="--engine-v8-3-28 $CONFIGURE_OPTS"
+}
+
+build_package_jxcore_spidermonkey() {
+  CONFIGURE_OPTS="--engine-mozilla $CONFIGURE_OPTS"
+}
+
+build_package_jxcore_npm() {
+  local npmjxpath="$PREFIX_PATH/libexec"
+  local oldprefix="$PREFIX_PATH"
+
+  PREFIX_PATH="$npmjxpath/.jx/npm"
+  build_package_copy
+  PREFIX_PATH="$oldprefix"
+
+  # jx needs this version lock file of sorts
+  echo 1 > "$npmjxpath/.jx/$($PREFIX_PATH/bin/jx -jxv)"
+
+  # configure jx to use this local npm and not install to ~/.jx
+  cat > "$PREFIX_PATH/bin/jx.config" <<JX
+{
+  "npmjxPath": "$npmjxpath"
+}
+JX
+}
+
 before_install_package() {
   local stub=1
 }
 
 after_install_package() {
   local stub=1
+}
+
+fix_jxcore_directory_structure() {
+  {
+    mkdir -p "$PREFIX_PATH/bin"
+    pushd "$PREFIX_PATH/bin"
+    if [ -x ../jx ]; then
+      mv -f ../jx .
+    fi
+    ln -sf jx node
+    ln -sf ../libexec/.jx/npm/bin/npm-cli.js npm
+    popd
+  } >&4
 }
 
 fix_directory_permissions() {

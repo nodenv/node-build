@@ -319,3 +319,79 @@ DEF
   assert [ -d "${INSTALL_ROOT}/lib" ]
   assert [ -d "${BATS_TEST_DIRNAME}/what/evs" ]
 }
+
+@test "directory structure is fixed for jxcore source builds" {
+  export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
+  stub_make_install
+
+  install_fixture --compile definitions/jxcore
+  assert_success
+
+  assert [ -d "${INSTALL_ROOT}/bin" ]
+  assert [ -L "${INSTALL_ROOT}/bin/node" ]
+}
+
+@test "directory structure is fixed for jxcore binary builds" {
+  export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
+  stub_make_install
+
+  install_fixture definitions/jxcore
+  assert_success
+
+  refute [ -e "${INSTALL_ROOT}/jx" ]
+  assert [ -d "${INSTALL_ROOT}/bin" ]
+  assert [ -x "${INSTALL_ROOT}/bin/jx" ]
+  assert [ -L "${INSTALL_ROOT}/bin/npm" ]
+  assert [ -L "${INSTALL_ROOT}/bin/node" ]
+}
+
+@test "jxcore's custom npm is installed and configured" {
+  export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
+  stub_make_install
+
+  install_fixture definitions/jxcore
+  assert_success
+
+  assert [ -e "${INSTALL_ROOT}/bin/jx.config" ]
+  assert [ -d "${INSTALL_ROOT}/libexec/.jx/npm" ]
+  assert [ -e "${INSTALL_ROOT}/libexec/.jx/v 0.3.0.7" ]
+  assert grep "\"npmjxPath\": \"${INSTALL_ROOT}/libexec\"" "${INSTALL_ROOT}/bin/jx.config"
+}
+
+@test "jxcore can specify spidermonkey engine" {
+  cached_tarball "jxcore-sm-1.0.0"
+
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "jxcore-sm-1.0.0" "http://jxcore.s3.amazonaws.com/jxcore-sm-1.0.0.tar.gz" jxcore_spidermonkey standard
+DEF
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+jxcore-sm-1.0.0: --prefix=$INSTALL_ROOT --engine-mozilla
+make -j 2
+make install
+OUT
+}
+
+@test "jxcore can specify v8 3.28 engine" {
+  cached_tarball "jxcore-v8-1.0.0"
+
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "jxcore-v8-1.0.0" "http://jxcore.s3.amazonaws.com/jxcore-v8-1.0.0.tar.gz" jxcore_v8_328 standard
+DEF
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+jxcore-v8-1.0.0: --prefix=$INSTALL_ROOT --engine-v8-3-28
+make -j 2
+make install
+OUT
+}
