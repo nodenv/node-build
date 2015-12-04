@@ -320,6 +320,30 @@ DEF
   assert [ -d "${BATS_TEST_DIRNAME}/what/evs" ]
 }
 
+@test "directory structure is fixed for jxcore source builds" {
+  export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
+  stub_make_install
+
+  install_fixture --compile definitions/jxcore
+  assert_success
+
+  assert [ -d "${INSTALL_ROOT}/bin" ]
+  assert [ -L "${INSTALL_ROOT}/bin/node" ]
+}
+
+@test "directory structure is fixed for jxcore binary builds" {
+  export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
+  stub_make_install
+
+  install_fixture definitions/jxcore
+  assert_success
+
+  refute [ -e "${INSTALL_ROOT}/jx" ]
+  assert [ -d "${INSTALL_ROOT}/bin" ]
+  assert [ -x "${INSTALL_ROOT}/bin/jx" ]
+  assert [ -L "${INSTALL_ROOT}/bin/node" ]
+}
+
 @test "jxcore can specify spidermonkey engine" {
   cached_tarball "jxcore-sm-1.0.0"
 
