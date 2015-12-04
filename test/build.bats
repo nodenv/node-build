@@ -341,7 +341,21 @@ DEF
   refute [ -e "${INSTALL_ROOT}/jx" ]
   assert [ -d "${INSTALL_ROOT}/bin" ]
   assert [ -x "${INSTALL_ROOT}/bin/jx" ]
+  assert [ -L "${INSTALL_ROOT}/bin/npm" ]
   assert [ -L "${INSTALL_ROOT}/bin/node" ]
+}
+
+@test "jxcore's custom npm is installed and configured" {
+  export NODE_BUILD_CACHE_PATH="$FIXTURE_ROOT"
+  stub_make_install
+
+  install_fixture definitions/jxcore
+  assert_success
+
+  assert [ -e "${INSTALL_ROOT}/bin/jx.config" ]
+  assert [ -d "${INSTALL_ROOT}/libexec/.jx/npm" ]
+  assert [ -e "${INSTALL_ROOT}/libexec/.jx/v 0.3.0.7" ]
+  assert grep "\"npmjxPath\": \"${INSTALL_ROOT}/libexec\"" "${INSTALL_ROOT}/bin/jx.config"
 }
 
 @test "jxcore can specify spidermonkey engine" {
