@@ -142,6 +142,13 @@ OUT
   run nodenv-install --complete
   assert_success
   assert_output <<OUT
+--list
+--force
+--skip-existing
+--compile
+--keep
+--verbose
+--patch
 
 ${NODENV_ROOT}/plugins/bar/share/node-build
 ${NODENV_ROOT}/plugins/foo/share/node-build
