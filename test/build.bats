@@ -319,3 +319,41 @@ DEF
   assert [ -d "${INSTALL_ROOT}/lib" ]
   assert [ -d "${BATS_TEST_DIRNAME}/what/evs" ]
 }
+
+@test "jxcore can specify spidermonkey engine" {
+  cached_tarball "jxcore-sm-1.0.0"
+
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "jxcore-sm-1.0.0" "http://jxcore.s3.amazonaws.com/jxcore-sm-1.0.0.tar.gz" jxcore_spidermonkey standard
+DEF
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+jxcore-sm-1.0.0: --prefix=$INSTALL_ROOT --engine-mozilla
+make -j 2
+make install
+OUT
+}
+
+@test "jxcore can specify v8 3.28 engine" {
+  cached_tarball "jxcore-v8-1.0.0"
+
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "jxcore-v8-1.0.0" "http://jxcore.s3.amazonaws.com/jxcore-v8-1.0.0.tar.gz" jxcore_v8_328 standard
+DEF
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+jxcore-v8-1.0.0: --prefix=$INSTALL_ROOT --engine-v8-3-28
+make -j 2
+make install
+OUT
+}
