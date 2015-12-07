@@ -3,6 +3,12 @@ after_install_package() {
 }
 
 binary darwin-x64 "https://jxcore.s3.amazonaws.com/0304/jx_osx64sm.zip#59921d445b8fcc853923ba704e50ef0b567fa5c4899bd8b320e9f4e2ac7b4668"
+binary debian-x86 "https://jxcore.s3.amazonaws.com/0304/jx_deb32sm.zip#2c42a9a03c7666f3aa75e49e40694160f094756aca38384a85350316b53ddde2"
+binary debian-x64 "https://jxcore.s3.amazonaws.com/0304/jx_deb64sm.zip#9a1efc0f1cf43cc2dcf3a62a509b52c5032210994cdfb4c3aac16d1976dcb001"
+binary redhat-x64 "https://jxcore.s3.amazonaws.com/0304/jx_rh64sm.zip#fdf8e13b87301e07bd68dd694175e6ad535ac07ab160e873558c24ac1f03ad38"
+binary suse-x64   "https://jxcore.s3.amazonaws.com/0304/jx_suse64sm.zip#ff724ecdced97cea21790463d40ba81659f71f6c05803568f98a70e387b671dc"
+binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0304/jx_ub32sm.zip#0d44fc932924e4b5e27feae5e0f795a8075627e8e418d8f5ad2c5a533defc0f2"
+binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0304/jx_ub64sm.zip#cec1b83501ebc39bc2109941bc7edb8826edda66282de6929ac3127978bd4d94"
 
 install_package jxcore-0.3.0.4 "https://github.com/jxcore/jxcore/archive/v0.3.0.4.tar.gz#84e67ee008abb6794940806ab2992536144d9e831643181ea0230f4e8f1aade7" jxcore_spidermonkey standard
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx304.tar.gz#e12617fe36c58c59ee5d06e99f421f21b8a3215d5d780597e5218e2c6b63f17a" jxcore_npm
