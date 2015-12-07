@@ -5,6 +5,8 @@ after_install_package() {
 binary darwin-x64    "https://jxcore.s3.amazonaws.com/0300/jx_osx64v8.zip#ab9f44ad9dae9742a74fbdbba7140af8cb9b4159f579881c2f37eeb7039f0323"
 binary debian-x86    "https://jxcore.s3.amazonaws.com/0300/jx_deb32v8.zip#e81b11821b27ba7231f52eafb8757a8f906d614bffec8896b192cf27381fb285"
 binary debian-x64    "https://jxcore.s3.amazonaws.com/0300/jx_deb64v8.zip#b5bbbe05bc8106ecbf26c9e699e5b8b5d300b54fcb861be4b28af7729423bec7"
+binary debian-armv7l "https://jxcore.s3.amazonaws.com/0300/jx_debARMv8.zip#8b77932ee38fbc6954543ef81d2e959d0e03bf64b9e8b92daa8350faa776067e"
+binary debian-mips   "https://jxcore.s3.amazonaws.com/0300/jx_debMIPSv8.zip#f8fc94df341601f8e02f13a8a06bfc322c1fe11fa02e79a13d735d805ec39a18"
 binary redhat-x64    "https://jxcore.s3.amazonaws.com/0300/jx_rh64v8.zip#66b2a58a4ca1cf3ec0b1161e64df430899ecc7dcfb7ebd4430ae741df1959b58"
 binary suse-x64      "https://jxcore.s3.amazonaws.com/0300/jx_suse64v8.zip#ce7a7ca9db3b51500fdfa6b940e575f8d93f41f43774679c23c6436c922a6e9c"
 binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0300/jx_ub32v8.zip#d54228a58ae658fb50e866c4236801faf1f13a26b429a8a4de9ec7c325948024"
