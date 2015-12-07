@@ -3,16 +3,16 @@ after_install_package() {
 }
 
 binary darwin-x64    "https://jxcore.s3.amazonaws.com/0302/jx_osx64sm.zip#0616d37bcc4ff650829fdb91ffc131a3ec2e2f55ae3de2762e6bb42931df7bda"
-binary debian-x86    "https://jxcore.s3.amazonaws.com/0302/jx_deb32sm.zip#74d931db2b06de0323799270c60da20d19e0450eb42afe3f985811c22c1d359b"
-binary debian-x64    "https://jxcore.s3.amazonaws.com/0302/jx_deb64sm.zip#8c74f3b903351c7286dba54882145036cf9665d681124ad8dd2d8c2c14880aa7"
 binary debian-armv7l "https://jxcore.s3.amazonaws.com/0302/jx_debARMsm.zip#709de7d319fe8b44decd5e76f46ce434f6f410700f6c27077ffc050a13d37786"
 binary debian-mips   "https://jxcore.s3.amazonaws.com/0302/jx_debMIPSsm.zip#00875e2f41d6fa461c41a95b88099cc43af085b1268db5b15247c91d29d67b23"
+binary debian-x64    "https://jxcore.s3.amazonaws.com/0302/jx_deb64sm.zip#8c74f3b903351c7286dba54882145036cf9665d681124ad8dd2d8c2c14880aa7"
+binary debian-x86    "https://jxcore.s3.amazonaws.com/0302/jx_deb32sm.zip#74d931db2b06de0323799270c60da20d19e0450eb42afe3f985811c22c1d359b"
 binary freebsd9-x64  "https://jxcore.s3.amazonaws.com/0302/jx_bsd964sm.zip#b6acafa0d36cbe973450db92b50cacff8d291a3e02332d6fcb9ea772eb0c0d0c"
 binary freebsd10-x64 "https://jxcore.s3.amazonaws.com/0302/jx_bsd1064sm.zip#57ce03254d8e7ecec6b99b65f8cc1f6f827e8f66f9241b5c5475abc8fb554d72"
 binary redhat-x64    "https://jxcore.s3.amazonaws.com/0302/jx_rh64sm.zip#00f91648377bf2e1de88eeeb19ccec7062b15133428298fb70a489cf5c78aa87"
 binary suse-x64      "https://jxcore.s3.amazonaws.com/0302/jx_suse64sm.zip#0943b465a101fb6314ebd5451bc83bb762cc7a81a21bda17483cbcea6e459d5e"
+binary ubuntu-x64    "https://jxcore.s3.amazonaws.com/0302/jx_ub64sm.zip#433ac458be0ac02e1ffb6f6e1db1034f35ac746286d48a40b8b65875e211e689"
 binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0302/jx_ub32sm.zip#2d25443d6895dfd9f62eb9e281081eba6d5ba6fd239eeabd02a65137ef61dada"
-binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0302/jx_ub64sm.zip#433ac458be0ac02e1ffb6f6e1db1034f35ac746286d48a40b8b65875e211e689"
 
 install_package jxcore-0.3.0.2 "https://github.com/jxcore/jxcore/archive/v0.3.0.2.tar.gz#79baa480676ef44a93d2cf6081b4d001ecf09cb746b73143cf264e8ba8601b96" jxcore_spidermonkey standard
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx300.tar.gz#cfb8b86a39b790cabb236aa5c8bde99e4c743579c2d0118468b3e86ed9ec6298" jxcore_npm

@@ -3,14 +3,14 @@ after_install_package() {
 }
 
 binary darwin-x64    "https://jxcore.s3.amazonaws.com/0300/jx_osx64sm.zip#91d8a838879c32efafc35f0302dcaff7e23117c092f79c0db2bcc23d00adf427"
-binary debian-x86    "https://jxcore.s3.amazonaws.com/0300/jx_deb32sm.zip#6b0159e5be678c232838f6baeb16eabafa9ff9a4bdb5131ce9a744370a36a933"
-binary debian-x64    "https://jxcore.s3.amazonaws.com/0300/jx_deb64sm.zip#fd9b390bcd9a90679032709a9f5160ad740429b5e06aea88b56695721c790984"
 binary debian-armv7l "https://jxcore.s3.amazonaws.com/0300/jx_debARMsm.zip#983d9f2af729baadac1380ced7b503a5026a3d0851407ca4626ab83ec104115c"
 binary debian-mips   "https://jxcore.s3.amazonaws.com/0300/jx_debMIPSsm.zip#338a77ddfff589a1af3f83914d0e0fe2bf57c89c3c8110574afacc0607fdce7e"
+binary debian-x64    "https://jxcore.s3.amazonaws.com/0300/jx_deb64sm.zip#fd9b390bcd9a90679032709a9f5160ad740429b5e06aea88b56695721c790984"
+binary debian-x86    "https://jxcore.s3.amazonaws.com/0300/jx_deb32sm.zip#6b0159e5be678c232838f6baeb16eabafa9ff9a4bdb5131ce9a744370a36a933"
 binary redhat-x64    "https://jxcore.s3.amazonaws.com/0300/jx_rh64sm.zip#4838b1dbcbd2db0009ab0f74499af1efe0a25d373d36aaa357ab386eee3c178b"
 binary suse-x64      "https://jxcore.s3.amazonaws.com/0300/jx_suse64sm.zip#5a6cc2f6168311df740b59f49e151abca34e65de4d7f1ce0986fadc9df1e4993"
+binary ubuntu-x64    "https://jxcore.s3.amazonaws.com/0300/jx_ub64sm.zip#9c30cd5dbf5afb166d06e0118536af2a49fae14f49d67adee06459934a75c934"
 binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0300/jx_ub32sm.zip#63965f2165154af1e6c9d9e343ac9b7a586459138ed6656313958ff3ab838e83"
-binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0300/jx_ub64sm.zip#9c30cd5dbf5afb166d06e0118536af2a49fae14f49d67adee06459934a75c934"
 
 install_package jxcore-0.3.0 "https://github.com/jxcore/jxcore/archive/v0.3.0.tar.gz#1e76648ecd012a2370354369f6161666763b4bc028544e9dc0cb27c035a90f24" jxcore_spidermonkey standard
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx300.tar.gz#cfb8b86a39b790cabb236aa5c8bde99e4c743579c2d0118468b3e86ed9ec6298" jxcore_npm
