@@ -2,13 +2,15 @@ after_install_package() {
   fix_jxcore_directory_structure
 }
 
-binary darwin-x64 "https://jxcore.s3.amazonaws.com/0301/jx_osx64v8.zip#cc2389007ffebeb91b49312989423280296fdced43493e0e6339bd2f8fa4ae13"
-binary debian-x86 "https://jxcore.s3.amazonaws.com/0301/jx_deb32v8.zip#803038a89e4f2f5fb75bc07f692c04c85b78dae13d4ac728519efc7a56073eca"
-binary debian-x64 "https://jxcore.s3.amazonaws.com/0301/jx_deb64v8.zip#44488230dc60c5e5061e59bef909da014cae28de89c21f513ec80e865e02b93f"
-binary redhat-x64 "https://jxcore.s3.amazonaws.com/0301/jx_rh64v8.zip#04d641d7de863d3c072aba3f82eaa4e11a492f0b21467cb8dd940e029a095500"
-binary suse-x64   "https://jxcore.s3.amazonaws.com/0301/jx_suse64v8.zip#b454a40bb330bd0abb2a4b2465440d9de9d84127d8a8e3c763106b31f868e29d"
-binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0301/jx_ub32v8.zip#59bc363ab28d044a098ef42927582f87b3a9c8cad894bed0d73caae3a7539dbd"
-binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0301/jx_ub64v8.zip#36ac32276d9fdfee9778718cbb0571ec4bc61680e91c5042a6cd8870d0308a9b"
+binary darwin-x64    "https://jxcore.s3.amazonaws.com/0301/jx_osx64v8.zip#cc2389007ffebeb91b49312989423280296fdced43493e0e6339bd2f8fa4ae13"
+binary debian-x86    "https://jxcore.s3.amazonaws.com/0301/jx_deb32v8.zip#803038a89e4f2f5fb75bc07f692c04c85b78dae13d4ac728519efc7a56073eca"
+binary debian-x64    "https://jxcore.s3.amazonaws.com/0301/jx_deb64v8.zip#44488230dc60c5e5061e59bef909da014cae28de89c21f513ec80e865e02b93f"
+binary freebsd9-x64  "https://jxcore.s3.amazonaws.com/0301/jx_bsd964v8.zip#94b6f671251047aef3ee0c3b3336ff75a34d749ad6b955887c3fde17fb2055d4"
+binary freebsd10-x64 "https://jxcore.s3.amazonaws.com/0301/jx_bsd1064v8.zip#fa2438a4ee7f3203cd770b6d3c9063ff5efa88180e6a1f35f99b5429eabfe168"
+binary redhat-x64    "https://jxcore.s3.amazonaws.com/0301/jx_rh64v8.zip#04d641d7de863d3c072aba3f82eaa4e11a492f0b21467cb8dd940e029a095500"
+binary suse-x64      "https://jxcore.s3.amazonaws.com/0301/jx_suse64v8.zip#b454a40bb330bd0abb2a4b2465440d9de9d84127d8a8e3c763106b31f868e29d"
+binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0301/jx_ub32v8.zip#59bc363ab28d044a098ef42927582f87b3a9c8cad894bed0d73caae3a7539dbd"
+binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0301/jx_ub64v8.zip#36ac32276d9fdfee9778718cbb0571ec4bc61680e91c5042a6cd8870d0308a9b"
 
 install_package jxcore-0.3.0.1 "https://github.com/jxcore/jxcore/archive/v0.3.0.1.tar.gz#fd25b575b4dd42be87f9681dbcf9812836bc6389f6d90073913092085e902a44"
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx300.tar.gz#cfb8b86a39b790cabb236aa5c8bde99e4c743579c2d0118468b3e86ed9ec6298" jxcore_npm
