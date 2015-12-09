@@ -3,6 +3,7 @@ after_install_package() {
 }
 
 binary darwin-x64    "https://jxcore.s3.amazonaws.com/0300/jx_osx64sm.zip#91d8a838879c32efafc35f0302dcaff7e23117c092f79c0db2bcc23d00adf427"
+binary debian-arm64  "https://jxcore.s3.amazonaws.com/0300/jx_debARMsm.zip#983d9f2af729baadac1380ced7b503a5026a3d0851407ca4626ab83ec104115c"
 binary debian-armv7l "https://jxcore.s3.amazonaws.com/0300/jx_debARMsm.zip#983d9f2af729baadac1380ced7b503a5026a3d0851407ca4626ab83ec104115c"
 binary debian-mips   "https://jxcore.s3.amazonaws.com/0300/jx_debMIPSsm.zip#338a77ddfff589a1af3f83914d0e0fe2bf57c89c3c8110574afacc0607fdce7e"
 binary debian-x64    "https://jxcore.s3.amazonaws.com/0300/jx_deb64sm.zip#fd9b390bcd9a90679032709a9f5160ad740429b5e06aea88b56695721c790984"
