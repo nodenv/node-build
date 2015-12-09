@@ -2,7 +2,18 @@ after_install_package() {
   fix_jxcore_directory_structure
 }
 
-binary darwin-x64 "https://jxcore.s3.amazonaws.com/0307/jx_osx64v8.zip#e1429ac931225c1efa7a5f3b184b0b7a8d28871a64248beb0d9b9de688d23e24"
+binary darwin-x64    "https://jxcore.s3.amazonaws.com/0307/jx_osx64v8.zip#e1429ac931225c1efa7a5f3b184b0b7a8d28871a64248beb0d9b9de688d23e24"
+binary debian-arm64  "https://jxcore.s3.amazonaws.com/0307/jx_debARMv8.zip#387b37b65c6edcc33a082c6a05857df32c94439183439c537b09f17cf52be168"
+binary debian-armv7l "https://jxcore.s3.amazonaws.com/0307/jx_debARMv8.zip#387b37b65c6edcc33a082c6a05857df32c94439183439c537b09f17cf52be168"
+binary debian-mips   "https://jxcore.s3.amazonaws.com/0307/jx_debMIPSv8.zip#a60bebda247c784b3d3558862cf0f9c1de13291ea536f5e1f5a12d30304901ef"
+binary debian-x64    "https://jxcore.s3.amazonaws.com/0307/jx_deb64v8.zip#68e1ef5b5adada431d12bdb45caf66bd3c2ceb0469fd4f6e2966ed282bd41052"
+binary debian-x86    "https://jxcore.s3.amazonaws.com/0307/jx_deb32v8.zip#8ee27b604596ccc2229501864055d213f4045582ca993fa66ba16b4b60cc8f94"
+binary freebsd9-x64  "https://jxcore.s3.amazonaws.com/0307/jx_bsd964v8.zip#d3ef3e7f6a31e7e37e5bb9a953c05741e434b92d6cdc4bcaf8cc55058fe33c6c"
+binary freebsd10-x64 "https://jxcore.s3.amazonaws.com/0307/jx_bsd1064v8.zip#68b2a3ba84ae5c11cecb5516105a45e9e6dba97e8b9330216e3f450377280422"
+binary redhat-x64    "https://jxcore.s3.amazonaws.com/0307/jx_rh64v8.zip#929d1266a5979f30eff590c276f0e18cefbd0771f4dd47eaa7294ebee5b0335c"
+binary suse-x64      "https://jxcore.s3.amazonaws.com/0307/jx_suse64v8.zip#139eab46f51910392519576b06c9a51aeba7cf4a74547e79b857c979bfce9394"
+binary ubuntu-x64    "https://jxcore.s3.amazonaws.com/0307/jx_ub64v8.zip#60368d54f71d6a66bbeebabb8cabcdd81c20bf1a6daa7bdca0d98062e1087330"
+binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0307/jx_ub32v8.zip#3b33c65c7196c1621612cb4f047abf26f81184eb172550363146a3c7e7724d37"
 
 install_package jxcore-0.3.0.7 "https://github.com/jxcore/jxcore/archive/v0.3.0.7.tar.gz#a5d3daeb736981cafc41eee70c62994bdc9001a88a6a15771624c018c74463c3"
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx307.tar.gz#7b99397f17f5fdb592842ccd62e25806b2a05ae9997c4508b47412f194e8ba6e" jxcore_npm
