@@ -17,7 +17,6 @@ OLDIFS="$IFS"
 set -E
 exec 3<&2 # preserve original stderr at fd 3
 
-
 lib() {
   parse_options() {
     OPTIONS=()
@@ -157,16 +156,27 @@ num_cpu_cores() {
   echo "${num:-2}"
 }
 
-platform(){
-  local arch="$(uname -m)"
-  local os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+platform() {
+  local arch os
 
+  arch="$(uname -m)"
   case "$arch" in
     x86_64 | amd64 | i686-64 ) arch=x64 ;;
     i[36]86* | [ix]86pc )      arch=x86 ;;
   esac
 
-  echo "${os}-${arch}"
+  os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+
+  echo "${arch}:${os}"
+}
+
+matches_platform() {
+  local match="$1"
+  local -a platform
+  IFS=: platform=( $(platform) )
+  IFS="$OLDIFS"
+
+  [ "${platform[1]}-${platform[0]}" = "$match" ]
 }
 
 try_binary(){
@@ -180,7 +190,7 @@ binary() {
   # return if already set
   [ -n "$BINARY_URL" ] && return 0
 
-  if [ "$platform" = "$(platform)" ]; then
+  if matches_platform "$platform"; then
     BINARY_URL="$url"
   fi
 }
