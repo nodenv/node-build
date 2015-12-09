@@ -1,6 +1,5 @@
-sudo: false
 language: node_js
-node_js: stable
+node_js: node
 script:
   - npm test
   - npm run -s verify-definitions -- $TRAVIS_COMMIT_RANGE
