@@ -157,17 +157,30 @@ num_cpu_cores() {
 }
 
 platform() {
-  local arch os
+  local arch os distro
 
   arch="$(uname -m)"
   case "$arch" in
+    arm64 | aarch64 )          arch=arm64 ;;
     x86_64 | amd64 | i686-64 ) arch=x64 ;;
     i[36]86* | [ix]86pc )      arch=x86 ;;
   esac
 
   os="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
-  echo "${arch}:${os}"
+  if type -p lsb_release >/dev/null; then
+    case "$(lsb_release -sir)" in
+      *Ubuntu*    ) distro=ubuntu ;;
+      *Debian*    ) distro=debian ;;
+      *SUSE*      ) distro=suse ;;
+      *"Red Hat"* ) distro=redhat ;;
+      *Gentoo*    ) distro=gentoo ;;
+    esac
+  elif [ "$os" = freebsd ]; then
+    distro="$os$(uname -r | sed 's/[^[:digit:]].*//')"
+  fi
+
+  echo "${arch}:${os}:${distro}"
 }
 
 matches_platform() {
@@ -176,7 +189,8 @@ matches_platform() {
   IFS=: platform=( $(platform) )
   IFS="$OLDIFS"
 
-  [ "${platform[1]}-${platform[0]}" = "$match" ]
+  [ "${platform[1]}-${platform[0]}" = "$match" ] ||
+  [ "${platform[2]}-${platform[0]}" = "$match" ]
 }
 
 try_binary(){

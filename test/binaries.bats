@@ -25,6 +25,23 @@ OUT
   refute_line 'Installing package-1.0.0...'
 }
 
+@test "matches distro if os doesn't match" {
+  stub lsb_release '-sir : echo 15.10 Ubuntu'
+  run_inline_definition <<DEF
+binary ubuntu-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
+install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz" copy
+DEF
+
+  assert_success
+  assert_output <<OUT
+Downloading binary-1.0.0.tar.gz...
+-> http://example.com/packages/binary-1.0.0.tar.gz
+Installing binary-1.0.0...
+Installed binary-1.0.0 to ${BATS_TMPDIR}/install
+OUT
+  refute_line 'Installing package-1.0.0...'
+}
+
 @test "installs first of multiple matching binaries" {
   run_inline_definition <<DEF
 binary darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz"
