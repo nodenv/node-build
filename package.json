@@ -18,7 +18,7 @@
   "scripts": {
     "test": "bats ${CI:+--tap} test",
     "verify-definitions": "script/verify-definitions",
-    "write-definitions": "script/write-definitions",
+    "write-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
     "preversion": "script/release preversion",
     "postversion": "script/release postversion"
   },
