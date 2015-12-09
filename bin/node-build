@@ -175,6 +175,8 @@ platform() {
       *"Red Hat"* ) distro=redhat ;;
       *Gentoo*    ) distro=gentoo ;;
     esac
+  elif [ "$os" = freebsd ]; then
+    distro="$os$(uname -r | sed 's/[^[:digit:]].*//')"
   fi
 
   echo "${arch}:${os}:${distro}"
