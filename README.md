@@ -213,5 +213,5 @@ full build log for build failures.
 
 ### Credits
 
-Copied from [ruby-build](https://github.com/sstephenson/ruby-build) and
+Copied from [ruby-build](https://github.com/rbenv/ruby-build) and
 modified to work for node.
