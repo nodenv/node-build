@@ -15,5 +15,5 @@ binary suse-x64 "https://jxcore.s3.amazonaws.com/0310/jx_suse64sm.zip#c40e1a128d
 binary ubuntu-x64 "https://jxcore.s3.amazonaws.com/0310/jx_ub64sm.zip#e299ee14fae34f19bb8f838b188aca36266a305950625e909e615923dd15c4be"
 binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0310/jx_ub32sm.zip#ac85fe3ac35149aeb4449d6899e82a98ac5e6ebc8fc43fa6c16bdcf666979ab8"
 
-install_package jxcore-0.3.1.0 "https://github.com/jxcore/jxcore/archive/v0.3.1.0.tar.gz#35bfbeb9dda17b7c53da8419edfeabc78d250e5ce187cbbf98eb341023ac19ca" jxcore_spidermonkey standard
+install_package jxcore-0.3.1.0 "https://github.com/jxcore/jxcore/archive/v0.3.1.0.tar.gz#cae9dac0602667b5b5dedf2ac23445e2875c2bfb91cbdfd7b370790f8a0c96df" jxcore_spidermonkey standard
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx310.tar.gz#1071b88dbacbe366ded078ad4ae4e387ec61fe8c1cf48e248f8b82924bb9d54f" jxcore_npm
