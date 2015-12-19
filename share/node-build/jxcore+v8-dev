@@ -1,0 +1,6 @@
+after_install_package() {
+  fix_jxcore_directory_structure
+}
+
+install_git jxcore-dev "https://github.com/jxcore/jxcore.git" "master"
+install_package npm "https://s3.amazonaws.com/nodejx/npmjx310.tar.gz#1071b88dbacbe366ded078ad4ae4e387ec61fe8c1cf48e248f8b82924bb9d54f" jxcore_npm
