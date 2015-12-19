@@ -1,0 +1,19 @@
+after_install_package() {
+  fix_jxcore_directory_structure
+}
+
+binary darwin-x64 "https://jxcore.s3.amazonaws.com/0310/jx_osx64v8.zip#2a01100ec6f08d4c89c0a1a7e9f569afd7a3511f17d4e1ac392daddaeb8b58a4"
+binary debian-arm64 "https://jxcore.s3.amazonaws.com/0310/jx_debARMv8.zip#8fdaa694a1ba9de6b4d15235fcebb03dcbb984b05610dac1c06b863323109a33"
+binary debian-armv7l "https://jxcore.s3.amazonaws.com/0310/jx_debARMv8.zip#8fdaa694a1ba9de6b4d15235fcebb03dcbb984b05610dac1c06b863323109a33"
+binary debian-mips "https://jxcore.s3.amazonaws.com/0310/jx_debMIPSv8.zip#14094559e1a73e2e97eaa99cdd7cd42cd6da25f33b987ab0317b686e836c4be0"
+binary debian-x64 "https://jxcore.s3.amazonaws.com/0310/jx_deb64v8.zip#d7bb5b83662bfcf3149c897ce4b2613711f21a87e5e6dae0e23d36082c804de5"
+binary debian-x86 "https://jxcore.s3.amazonaws.com/0310/jx_deb32v8.zip#4cc13f61219454722ea15982a8b16da4f6fdb21dfc444da6fc96f1eb63a54bf5"
+binary freebsd9-x64 "https://jxcore.s3.amazonaws.com/0310/jx_bsd964v8.zip#f6535c54fe8b36580782114300420453fbf36b75101c2976643e85beec035d8c"
+binary freebsd10-x64 "https://jxcore.s3.amazonaws.com/0310/jx_bsd1064v8.zip#124038dc5e66cac1ff5e7ff98e81da4843de0e1bc1e8a1824f1bbcd5145937d3"
+binary redhat-x64 "https://jxcore.s3.amazonaws.com/0310/jx_rh64v8.zip#bc3000c7f095429fd3f13a45e8cd1f5acadd2872e17b53f77bf77b4eb0f70af5"
+binary suse-x64 "https://jxcore.s3.amazonaws.com/0310/jx_suse64v8.zip#a9f1303861ddf3ae7d2eaf4d65606ed5585e6166de65341cb4ca6c0bbe877bfd"
+binary ubuntu-x64 "https://jxcore.s3.amazonaws.com/0310/jx_ub64v8.zip#e21abde7d6c5f7d8366c530e09de66a8fec617710988ae24b301a2dd4ea9dbcb"
+binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0310/jx_ub32v8.zip#d533f8fe93000b3ef595cded488ae52b7817fb6cf3860d1d28e7067694ec5e85"
+
+install_package jxcore-0.3.1.0 "https://github.com/jxcore/jxcore/archive/v0.3.1.0.tar.gz#cae9dac0602667b5b5dedf2ac23445e2875c2bfb91cbdfd7b370790f8a0c96df"
+install_package npm "https://s3.amazonaws.com/nodejx/npmjx310.tar.gz#1071b88dbacbe366ded078ad4ae4e387ec61fe8c1cf48e248f8b82924bb9d54f" jxcore_npm
