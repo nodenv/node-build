@@ -96,6 +96,11 @@ os_information() {
   fi
 }
 
+is_mac() {
+  [ "$(uname -s)" = "Darwin" ] || return 1
+  [ $# -eq 0 ] || [ "$(osx_version)" "$@" ]
+}
+
 #  9.1  -> 901
 # 10.9  -> 1009
 # 10.10 -> 1010
@@ -606,7 +611,7 @@ build_package_standard() {
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
       export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
     fi
-    if [ -z "$CC" ] && [ "$(uname -s)" = "Darwin" ] && [ "$(osx_version)" -ge 1010 ]; then
+    if [ -z "$CC" ] && is_mac -ge 1010; then
       export CC=clang
     fi
     ${!PACKAGE_CONFIGURE:-./configure} --prefix="${!PACKAGE_PREFIX_PATH:-$PREFIX_PATH}" \
