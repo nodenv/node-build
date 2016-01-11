@@ -2,7 +2,7 @@ after_install_package() {
   fix_jxcore_directory_structure
 }
 
-binary darwin-x64 "https://jxcore.s3.amazonaws.com/0310/jx_osx64v8.zip#2a01100ec6f08d4c89c0a1a7e9f569afd7a3511f17d4e1ac392daddaeb8b58a4"
+binary darwin-x64 "https://jxcore.s3.amazonaws.com/0310/jx_osx64v8.zip#4961cc3d890b331e3b780e85ba6b60188b975ab4d5bbce64f7d9008b0c8d8b4b"
 binary debian-arm64 "https://jxcore.s3.amazonaws.com/0310/jx_debARMv8.zip#8fdaa694a1ba9de6b4d15235fcebb03dcbb984b05610dac1c06b863323109a33"
 binary debian-armv7l "https://jxcore.s3.amazonaws.com/0310/jx_debARMv8.zip#8fdaa694a1ba9de6b4d15235fcebb03dcbb984b05610dac1c06b863323109a33"
 binary debian-mips "https://jxcore.s3.amazonaws.com/0310/jx_debMIPSv8.zip#14094559e1a73e2e97eaa99cdd7cd42cd6da25f33b987ab0317b686e836c4be0"
