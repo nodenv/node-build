@@ -2,18 +2,18 @@ after_install_package() {
   fix_jxcore_directory_structure
 }
 
-binary darwin-x64    "https://jxcore.s3.amazonaws.com/0305/jx_osx64v8.zip#83094ec594cdaae1e94f4dcd5d81018c056902ae2134cd727e7b448899b9ae92"
-binary debian-arm64  "https://jxcore.s3.amazonaws.com/0305/jx_debARMv8.zip#f68cc7c7018ccb844563dcf73679fe252f7e7bdc093c8be931536a721a1e3d0e"
-binary debian-armv7l "https://jxcore.s3.amazonaws.com/0305/jx_debARMv8.zip#f68cc7c7018ccb844563dcf73679fe252f7e7bdc093c8be931536a721a1e3d0e"
-binary debian-mips   "https://jxcore.s3.amazonaws.com/0305/jx_debMIPSv8.zip#22b93299635e43143a1d39f75ed8d5af9292ab52040da964d5ff9e465c67146f"
-binary debian-x64    "https://jxcore.s3.amazonaws.com/0305/jx_deb64v8.zip#e52a9ffc9dbd681ef934ac9217185856ec8c574a1a57dfb38a03652a4719ff09"
-binary debian-x86    "https://jxcore.s3.amazonaws.com/0305/jx_deb32v8.zip#f665495b9f49ecd8e0712eea4fc725c68c1101566e9e7fcb92ec1c98df47f4e7"
-binary freebsd9-x64  "https://jxcore.s3.amazonaws.com/0305/jx_bsd964v8.zip#b58c568b701f88dfd4e03b9cd2a1d30bdc31078aacdb5640bd9d0c26b75f6216"
+binary freebsd9-x64 "https://jxcore.s3.amazonaws.com/0305/jx_bsd964v8.zip#b58c568b701f88dfd4e03b9cd2a1d30bdc31078aacdb5640bd9d0c26b75f6216"
 binary freebsd10-x64 "https://jxcore.s3.amazonaws.com/0305/jx_bsd1064v8.zip#b6acd152291a7c95e8603bf795181d8978b638eee279e09296f6a5b8ce6386dd"
-binary redhat-x64    "https://jxcore.s3.amazonaws.com/0305/jx_rh64v8.zip#fb3d04e5e283f299acce328d498c19e90647228dc57b576262615846c59652fd"
-binary suse-x64      "https://jxcore.s3.amazonaws.com/0305/jx_suse64v8.zip#4afad1d2c114a43da9cd2b0a6331d6f9fa29070ed2c1c6665ab5e52af52ce97f"
-binary ubuntu-x64    "https://jxcore.s3.amazonaws.com/0305/jx_ub64v8.zip#44ffa659f01c3ea4d886a4a4bab17afaff87c5f6f447fe1ebedaa63ec4fd4990"
-binary ubuntu-x86    "https://jxcore.s3.amazonaws.com/0305/jx_ub32v8.zip#fc893263bf8252bef52e8ba4ebab1c195fb18437db941c20168755e5e3a02685"
+binary debian-x86 "https://jxcore.s3.amazonaws.com/0305/jx_deb32v8.zip#f665495b9f49ecd8e0712eea4fc725c68c1101566e9e7fcb92ec1c98df47f4e7"
+binary debian-x64 "https://jxcore.s3.amazonaws.com/0305/jx_deb64v8.zip#e52a9ffc9dbd681ef934ac9217185856ec8c574a1a57dfb38a03652a4719ff09"
+binary debian-arm64 "https://jxcore.s3.amazonaws.com/0305/jx_debARMv8.zip#f68cc7c7018ccb844563dcf73679fe252f7e7bdc093c8be931536a721a1e3d0e"
+binary debian-armv7l "https://jxcore.s3.amazonaws.com/0305/jx_debARMv8.zip#f68cc7c7018ccb844563dcf73679fe252f7e7bdc093c8be931536a721a1e3d0e"
+binary debian-mips "https://jxcore.s3.amazonaws.com/0305/jx_debMIPSv8.zip#22b93299635e43143a1d39f75ed8d5af9292ab52040da964d5ff9e465c67146f"
+binary darwin-x64 "https://jxcore.s3.amazonaws.com/0305/jx_osx64v8.zip#83094ec594cdaae1e94f4dcd5d81018c056902ae2134cd727e7b448899b9ae92"
+binary redhat-x64 "https://jxcore.s3.amazonaws.com/0305/jx_rh64v8.zip#fb3d04e5e283f299acce328d498c19e90647228dc57b576262615846c59652fd"
+binary suse-x64 "https://jxcore.s3.amazonaws.com/0305/jx_suse64v8.zip#4afad1d2c114a43da9cd2b0a6331d6f9fa29070ed2c1c6665ab5e52af52ce97f"
+binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0305/jx_ub32v8.zip#fc893263bf8252bef52e8ba4ebab1c195fb18437db941c20168755e5e3a02685"
+binary ubuntu-x64 "https://jxcore.s3.amazonaws.com/0305/jx_ub64v8.zip#44ffa659f01c3ea4d886a4a4bab17afaff87c5f6f447fe1ebedaa63ec4fd4990"
 
 install_package jxcore-0.3.0.5 "https://github.com/jxcore/jxcore/archive/v0.3.0.5.tar.gz#a7c7759f66609f32bc2aed5f3674e251d66710bb742417faf5c0059319cc00b5"
 install_package npm "https://s3.amazonaws.com/nodejx/npmjx305.tar.gz#fdefdb122e6ca0ea23a11730c7e032742a86b2c7e9e46421304bc6b7ce99a7fa" jxcore_npm
