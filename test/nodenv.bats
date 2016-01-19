@@ -147,8 +147,9 @@ OUT
 --skip-existing
 --compile
 --keep
---verbose
 --patch
+--verbose
+--version
 
 ${NODENV_ROOT}/plugins/bar/share/node-build
 ${NODENV_ROOT}/plugins/foo/share/node-build

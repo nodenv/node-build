@@ -2,9 +2,10 @@
 #
 # Summary: Install a Node version using node-build
 #
-# Usage: nodenv install [-f] [-kvp] <version>
-#        nodenv install [-f] [-kvp] <definition-file>
+# Usage: nodenv install [-f|-s] [-kpv] <version>
+#        nodenv install [-f|-s] [-kpv] <definition-file>
 #        nodenv install -l|--list
+#        nodenv install --version
 #
 #   -l/--list          List all available versions
 #   -f/--force         Install even if the version appears to be installed already
@@ -15,8 +16,9 @@
 #   -c/--compile       Force compilation even if a matching binary exists
 #   -k/--keep          Keep source tree in $NODENV_BUILD_ROOT after installation
 #                      (defaults to $NODENV_ROOT/sources)
-#   -v/--verbose       Verbose mode: print compilation status to stdout
 #   -p/--patch         Apply a patch from stdin before building
+#   -v/--verbose       Verbose mode: print compilation status to stdout
+#   --version          Show version of ruby-build
 #
 # For detailed information on installing Node versions with
 # node-build, including a list of environment variables for adjusting
@@ -24,10 +26,6 @@
 #
 set -e
 [ -n "$NODENV_DEBUG" ] && set -x
-
-if [ -z "$NODENV_ROOT" ]; then
-  NODENV_ROOT="${HOME}/.nodenv"
-fi
 
 # Add `share/node-build/` directory from each nodenv plugin to the list of
 # paths where build definitions are looked up.
@@ -45,8 +43,9 @@ if [ "$1" = "--complete" ]; then
   echo --skip-existing
   echo --compile
   echo --keep
-  echo --verbose
   echo --patch
+  echo --verbose
+  echo --version
   exec node-build --definitions
 fi
 
