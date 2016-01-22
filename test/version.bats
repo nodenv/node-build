@@ -15,7 +15,7 @@ pkg_version=${BASH_REMATCH[1]}
 
 @test "node-build git version" {
   stub git \
-    'remote -v : echo origin https://github.com/OiNutter/node-build.git' \
+    'remote -v : echo origin https://github.com/nodenv/node-build.git' \
     "describe --tags HEAD : echo v1984-12-gSHA"
   run node-build --version
   assert_success "node-build 1984-12-gSHA"
@@ -24,7 +24,7 @@ pkg_version=${BASH_REMATCH[1]}
 
 @test "git describe fails" {
   stub git \
-    'remote -v : echo origin https://github.com/OiNutter/node-build.git' \
+    'remote -v : echo origin https://github.com/nodenv/node-build.git' \
     "describe --tags HEAD : echo ASPLODE >&2; exit 1"
   run node-build --version
   assert_success "node-build ${pkg_version}"

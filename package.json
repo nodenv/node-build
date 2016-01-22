@@ -7,13 +7,13 @@
   "contributors": [
     "Jason Karns <jason@karns.name> (http://jason.karns.name/)"
   ],
-  "homepage": "https://github.com/OiNutter/node-build#readme",
+  "homepage": "https://github.com/nodenv/node-build#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OiNutter/node-build.git"
+    "url": "https://github.com/nodenv/node-build.git"
   },
   "bugs": {
-    "url": "https://github.com/OiNutter/node-build/issues"
+    "url": "https://github.com/nodenv/node-build/issues"
   },
   "scripts": {
     "test": "bats ${CI:+--tap} test",

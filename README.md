@@ -1,15 +1,15 @@
 # node-build
 
-[![Build Status](https://travis-ci.org/OiNutter/node-build.svg?branch=master)](https://travis-ci.org/OiNutter/node-build)
+[![Build Status](https://travis-ci.org/nodenv/node-build.svg?branch=master)](https://travis-ci.org/nodenv/node-build)
 
-node-build is an [nodenv](https://github.com/OiNutter/nodenv) plugin that
+node-build is an [nodenv](https://github.com/nodenv/nodenv) plugin that
 provides a `nodenv install` command to compile and install different versions
 of Node on UNIX-like systems.
 
 You can also use node-build without nodenv in environments where you need
 precise control over Node version installation.
 
-See the [list of releases](https://github.com/OiNutter/node-build/releases)
+See the [list of releases](https://github.com/nodenv/node-build/releases)
 for changes in each version.
 
 
@@ -20,7 +20,7 @@ for changes in each version.
 Installing node-build as a nodenv plugin will give you access to the `nodenv
 install` command.
 
-    git clone https://github.com/OiNutter/node-build.git $(nodenv root)/plugins/node-build
+    git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-build
 
 This will install the latest development version of node-build into the
 `$(nodenv root)/plugins/node-build` directory. From that directory, you can
@@ -34,7 +34,7 @@ Installing node-build as a standalone program will give you access to the
 have nodenv installed, you will also be able to use the `nodenv install`
 command.
 
-    git clone https://github.com/OiNutter/node-build.git
+    git clone https://github.com/nodenv/node-build.git
     cd node-build
     ./install.sh
 
@@ -106,7 +106,7 @@ versions of Node that are not yet supported by node-build.
 See the [node-build built-in definitions][definitions] as a starting point for
 custom definition files.
 
-[definitions]: https://github.com/OiNutter/node-build/tree/master/share/node-build
+[definitions]: https://github.com/nodenv/node-build/tree/master/share/node-build
 
 ### Binaries
 
@@ -192,7 +192,7 @@ variable when using `--keep` with `node-build`.
 
 To grab the latest versions from nodejs.org and generate definition files for
 node-build to use, check out the
-[node-build-update-defs](https://github.com/jasonkarns/node-build-update-defs)
+[node-build-update-defs](https://github.com/nodenv/node-build-update-defs)
 plugin. Once installed:
 
 ``` shell
@@ -205,10 +205,10 @@ No need to wait for node-build to provide the latest definitions!
 
 Please see the [node-build wiki][wiki] for solutions to common problems.
 
-[wiki]: https://github.com/OiNutter/node-build/wiki
+[wiki]: https://github.com/nodenv/node-build/wiki
 
 If you can't find an answer on the wiki, open an issue on the [issue
-tracker](https://github.com/OiNutter/node-build/issues). Be sure to include the
+tracker](https://github.com/nodenv/node-build/issues). Be sure to include the
 full build log for build failures.
 
 ### Credits
