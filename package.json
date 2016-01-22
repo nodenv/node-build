@@ -19,9 +19,9 @@
     "test": "bats ${CI:+--tap} test",
     "verify-definitions": "script/verify-definitions",
     "write-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
-    "publish:brew": "brew-publish $npm_package_name",
+    "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
     "preversion": "script/release preversion",
-    "postversion": "script/release postversion"
+    "postversion": "git push origin master v$npm_package_version && npm run publish:brew"
   },
   "devDependencies": {
     "bats": "^0.4.2",
