@@ -19,13 +19,15 @@
     "test": "bats ${CI:+--tap} test",
     "verify-definitions": "script/verify-definitions",
     "write-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
+    "publish:brew": "brew-publish $npm_package_name",
     "preversion": "script/release preversion",
     "postversion": "script/release postversion"
   },
   "devDependencies": {
     "bats": "^0.4.2",
     "bats-assert": "^1.0.1",
-    "bats-mock": "^1.0.1"
+    "bats-mock": "^1.0.1",
+    "brew-publish": "git+https://github.com/jasonkarns/brew-publish.git"
   },
   "license": "MIT"
 }
