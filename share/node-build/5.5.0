@@ -1,0 +1,10 @@
+binary darwin-x64 "https://nodejs.org/dist/v5.5.0/node-v5.5.0-darwin-x64.tar.gz#d4fd29e2d501963235104fc715fb0b55b302a40b605f432c456069606b939a46"
+binary linux-arm64 "https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-arm64.tar.gz#a9ebfce36675cc8d5e1bea6fa57de7fd80e8016f5957340831fcd03560e59845"
+binary linux-armv6l "https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-armv6l.tar.gz#a156dfda7fa00ac7ea86ac3cff8d445c44bcec3c677db375776a0489ad7155bd"
+binary linux-armv7l "https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-armv7l.tar.gz#cf9832efa0cac6365b4fec83df5dee8ecb67d39931c4e7cdaaa4cb933fb4b78b"
+binary linux-x64 "https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-x64.tar.gz#3e593d91b6d2ad871efaaf8e9a17b3608ca98904959bcfb7c42e6acce89e80f4"
+binary linux-x86 "https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-x86.tar.gz#e384f8beb392cd5df882cd3401e449371190bc139010d391888c2f3346fb5107"
+binary sunos-x64 "https://nodejs.org/dist/v5.5.0/node-v5.5.0-sunos-x64.tar.gz#e8abb364fc8db51e3a6c8dc14f24ec2c289940386c18da4ecb33462021c1bcef"
+binary sunos-x86 "https://nodejs.org/dist/v5.5.0/node-v5.5.0-sunos-x86.tar.gz#c49c8ce8c997da2cf1ee1cccb55ed457d31aa85d4ec6f58edd868daaf29ddc45"
+
+install_package "node-v5.5.0" "https://nodejs.org/dist/v5.5.0/node-v5.5.0.tar.gz#d69b18cc20699a35434858fb853997616762280610a510ec4b4ff1a94798b432"
