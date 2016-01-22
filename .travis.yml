@@ -1,6 +1,9 @@
 sudo: false
 language: node_js
 node_js: node
+branches:
+  only:
+    - master
 script:
   - npm test
   - npm run -s verify-definitions -- $TRAVIS_COMMIT_RANGE
