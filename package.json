@@ -1,6 +1,6 @@
 {
   "name": "node-build",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "private": true,
   "description": "Install NodeJS versions",
   "author": "Will McKenzie <willmckenzie@oinutter.co.uk> (http://www.oinutter.co.uk)",
