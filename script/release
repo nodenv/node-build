@@ -9,7 +9,7 @@
 # version (handled by npm)
 # - bumps version in package.json
 # - commits and tags
-# postversion
+# postversion (handled by npm-script)
 # - pushes master + tag to GitHub
 # - opens pull request to update the Homebrew formula
 #
@@ -17,46 +17,22 @@
 
 set -e
 
-new_tag="v${npm_package_version}"
+git fetch -q --tags origin master
 
-preversion() {
-  git fetch -q --tags origin master
+existing="$(git tag --points-at HEAD)"
+if [ -n "$existing" ]; then
+  echo "Aborting: HEAD is already tagged as '${existing}'" >&2
+  exit 1
+fi
 
-  local existing="$(git tag --points-at HEAD)"
-  if [ -n "$existing" ]; then
-    echo "Aborting: HEAD is already tagged as '${existing}'" >&2
-    exit 1
-  fi
+current_branch="$(git symbolic-ref --short HEAD)"
+if [ "$current_branch" != master ]; then
+  echo "Aborting: Not currently on master branch" >&2
+  exit 1
+fi
 
-  local current_branch="$(git symbolic-ref --short HEAD)"
-  if [ "$current_branch" != master ]; then
-    echo "Aborting: Not currently on master branch" >&2
-    exit 1
-  fi
-
-  previous_tag="$(git describe --tags --abbrev=0)"
-  if git diff --quiet "${previous_tag}..HEAD" -- bin share; then
-    echo "Aborting: No features to release since '${previous_tag}'" >&2
-    exit 1
-  fi
-}
-
-postversion() {
-  git push origin master "${new_tag}"
-
-  script/brew-publish node-build "$new_tag"
-}
-
-
-cmd="$1"
-
-case "$cmd" in
-  preversion | postversion )
-    shift 1
-    "$cmd" "$@"
-    ;;
-  * )
-    echo "should be invoked via npm-version" >&2
-    exit 1
-    ;;
-esac
+previous_tag="$(git describe --tags --abbrev=0)"
+if git diff --quiet "${previous_tag}..HEAD" -- bin share; then
+  echo "Aborting: No features to release since '${previous_tag}'" >&2
+  exit 1
+fi
