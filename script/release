@@ -19,13 +19,13 @@ set -e
 
 git fetch -q --tags origin master
 
-local existing="$(git tag --points-at HEAD)"
+existing="$(git tag --points-at HEAD)"
 if [ -n "$existing" ]; then
   echo "Aborting: HEAD is already tagged as '${existing}'" >&2
   exit 1
 fi
 
-local current_branch="$(git symbolic-ref --short HEAD)"
+current_branch="$(git symbolic-ref --short HEAD)"
 if [ "$current_branch" != master ]; then
   echo "Aborting: Not currently on master branch" >&2
   exit 1
