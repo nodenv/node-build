@@ -98,7 +98,7 @@ OUT
 }
 
 @test "no build definitions from plugins" {
-  assert [ ! -e "${NODENV_ROOT}/plugins" ]
+  refute [ -e "${NODENV_ROOT}/plugins" ]
   stub_node_build 'echo $NODE_BUILD_DEFINITIONS'
 
   run nodenv-install 4.1.2
