@@ -176,5 +176,5 @@ DEF
   assert_failure
   refute [ -f "${INSTALL_ROOT}/bin/package" ]
   assert_output_contains "unexpected checksum length: 29 (checksum_of_unexpected_length)"
-  assert_output_contains "expected 0 (no checksum), 32 (MD5), or 64 (SHA2-256)"
+  assert_output_contains "expected 0 (no checksum), 32 (MD5), 40 (SHA-1), or 64 (SHA2-256)"
 }
