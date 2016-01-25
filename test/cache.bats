@@ -9,7 +9,6 @@ setup() {
 
 
 @test "packages are saved to download cache" {
-  stub shasum true
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/without-checksum
@@ -18,12 +17,10 @@ setup() {
   assert [ -e "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" ]
 
   unstub curl
-  unstub shasum
 }
 
 
 @test "cached package without checksum" {
-  stub shasum true
   stub curl
   cp "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_CACHE_PATH"
 
@@ -33,7 +30,6 @@ setup() {
   assert [ -e "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz" ]
 
   unstub curl
-  unstub shasum
 }
 
 
@@ -73,7 +69,6 @@ setup() {
 
 
 @test "nonexistent cache directory is ignored" {
-  stub shasum true
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
   export NODE_BUILD_CACHE_PATH="${BATS_TMPDIR}/nonexistent"
 
@@ -84,5 +79,4 @@ setup() {
   refute [ -d "$NODE_BUILD_CACHE_PATH" ]
 
   unstub curl
-  unstub shasum
 }

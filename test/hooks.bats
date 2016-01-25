@@ -52,5 +52,5 @@ rehashed
 after.
 OUT
 
-  assert [ ! -d "${NODENV_ROOT}/versions/4.0.0" ]
+  refute [ -d "${NODENV_ROOT}/versions/4.0.0" ]
 }

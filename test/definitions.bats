@@ -13,7 +13,7 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
 
 @test "custom NODE_BUILD_ROOT: nonexistent" {
   export NODE_BUILD_ROOT="$BATS_TMPDIR"
-  assert [ ! -e "${NODE_BUILD_ROOT}/share/node-build" ]
+  refute [ -e "${NODE_BUILD_ROOT}/share/node-build" ]
   run node-build --definitions
   assert_success ""
 }
