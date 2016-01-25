@@ -78,7 +78,7 @@ OUT
 
 @test "emits --compile help if binary installation fails" {
   run_inline_definition <<DEF
-binary darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz#invalidchecksum"
+binary darwin-x64 "http://example.com/packages/binary-1.0.0.tar.gz#invalid_checksum_of_md5_length32"
 install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.gz" copy
 DEF
 
@@ -87,5 +87,5 @@ DEF
   assert_line '-> http://example.com/packages/binary-1.0.0.tar.gz'
   assert_line 'Binary installation failed; try compiling from source with `--compile` flag'
   assert_line 'checksum mismatch: binary-1.0.0.tar.gz (file is corrupt)'
-  assert_line 'expected invalidchecksum, got f4197ffa561a3e97712d985904b46fed16c12e4819a44ab9d42fcaeebdfcab6c'
+  assert_line 'expected invalid_checksum_of_md5_length32, got 6cb4716cde6cbeddb155043334005e27'
 }
