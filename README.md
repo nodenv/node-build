@@ -213,5 +213,6 @@ full build log for build failures.
 
 ### Credits
 
-Copied from [ruby-build](https://github.com/rbenv/ruby-build) and
-modified to work for node.
+Forked from [Sam Stephenson](https://github.com/sstephenson)'s
+[ruby-build](https://github.com/rbenv/ruby-build) by [Will
+McKenzie](https://github.com/oinutter) and modified for node.
