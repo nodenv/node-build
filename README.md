@@ -211,7 +211,7 @@ If you can't find an answer on the wiki, open an issue on the [issue
 tracker](https://github.com/nodenv/node-build/issues). Be sure to include the
 full build log for build failures.
 
-### Credits
+## Credits
 
 Forked from [Sam Stephenson](https://github.com/sstephenson)'s
 [ruby-build](https://github.com/rbenv/ruby-build) by [Will
