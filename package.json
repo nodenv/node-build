@@ -5,8 +5,9 @@
   "description": "Install NodeJS versions",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
-  "author": "Will McKenzie <willmckenzie@oinutter.co.uk> (http://www.oinutter.co.uk)",
+  "author": "Sam Stephenson <sstephenson@gmail.com> (http://sstephenson.us)",
   "contributors": [
+    "Will McKenzie <willmckenzie@oinutter.co.uk> (http://www.oinutter.co.uk)",
     "Jason Karns <jason@karns.name> (http://jason.karns.name)"
   ],
   "repository": {
@@ -33,16 +34,5 @@
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
     "brew-publish": "git+https://github.com/jasonkarns/brew-publish.git"
-  },
-  "keywords": [
-    "nodenv",
-    "plugin",
-    "node",
-    "nodejs",
-    "iojs",
-    "jxcore",
-    "versions",
-    "build",
-    "install"
-  ]
+  }
 }
