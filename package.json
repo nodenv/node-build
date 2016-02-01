@@ -33,6 +33,6 @@
     "bats": "^0.4.2",
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
-    "brew-publish": "git+https://github.com/jasonkarns/brew-publish.git"
+    "brew-publish": "git+https://github.com/jasonkarns/brew-publish.git#v1.1.0"
   }
 }
