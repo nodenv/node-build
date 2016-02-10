@@ -1,0 +1,10 @@
+binary darwin-x64 "https://nodejs.org/dist/v5.6.0/node-v5.6.0-darwin-x64.tar.gz#1ef8f5b627cf980b0d242d5b70be3c6fbefc8e61ecfcaf97930965d68c927bd9"
+binary linux-arm64 "https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-arm64.tar.gz#3b22bb5e1579d6e45f31da88c17baeb17a12ecb297c1c69447de6030d626b08d"
+binary linux-armv6l "https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-armv6l.tar.gz#5df9773a946ac571dad2bbec0d5a9e05201ea16c6512731b36018ffc9d06f902"
+binary linux-armv7l "https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-armv7l.tar.gz#7e258c59576beddd475fc33a8e57b153f0455cf1a5d801aedc6cee17137e9bae"
+binary linux-x64 "https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-x64.tar.gz#6b10e446b5a1227673b87d840e9a500f5d2dbd2b806d96e2d81d634c3381a5f1"
+binary linux-x86 "https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-x86.tar.gz#f6fc3391f48a3fc2d077dc0e1673fc3934eb2b9465cbeab334e3967d1503ba49"
+binary sunos-x64 "https://nodejs.org/dist/v5.6.0/node-v5.6.0-sunos-x64.tar.gz#a7010c2f7ddc5f6fff7f4d04e1f0973edd387ebba891c8905323daf2ba499a4c"
+binary sunos-x86 "https://nodejs.org/dist/v5.6.0/node-v5.6.0-sunos-x86.tar.gz#30ca440291a06e6f7af77ba072dbe4ce771e80dcd6ce4366ff1c6fa18df45f75"
+
+install_package "node-v5.6.0" "https://nodejs.org/dist/v5.6.0/node-v5.6.0.tar.gz#3af2cc5e5970afc83e59f2065fea2e2df846a544a100cd3c0527f0db05bec27f"
