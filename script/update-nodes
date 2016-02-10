@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Usage: script/update-nodes [-r <remote>]
+# Usage: script/update-nodes [-r [<remote>]]
 #
 # scrapes, commits, pushes, and pull-requests new node definitions
 #
