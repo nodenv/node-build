@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Usage: script/brew-publish [-b <branch-name>] [-r <remote>]
+#
+# Scrapes node versions; commits new node definitions to $branch_name.
+# Pushes branch to $remote, and opens pull request to nodenv/node-build
+#
+# * inspired by: https://github.com/jasonkarns/brew-publish *
+
+set -e
+
+branch=new-nodes
+
+while getopts ":r" opt; do
+  case $opt in
+  b) branch="${OPTARG:-$branch}" ;;
+  r) brew_remote="${OPTARG:-origin}" ;;
+  :) abort "Option -$OPTARG requires an argument." ;;
+  \?) abort "Invalid option: -$OPTARG" ;;
+  esac
+done
+
+if ! type -p hub >/dev/null; then
+  abort "ERROR: You have to install hub to proceed."
+fi
+
+git fetch -q --unshallow origin master 2>/dev/null || git fetch -q origin master
+
+git checkout -q -B "$branch" origin/master
+
+npm run-script write-definitions
+
+for new_node_def in $(git ls-files --others --exclude-standard -- share/node-build/); do
+  git add -- "$new_node_def" && git commit -m "$(basename "$new_node_def")" --only -- "$new_node_def"
+done
+
+if [ -z "$brew_remote" ]; then
+  # hackish way of getting the git remote name for user's fork
+  brew_remote="$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')"
+fi
+
+git push -u "$brew_remote" HEAD
+
+hub pull-request -m "$branch"
+
+git checkout -q -
