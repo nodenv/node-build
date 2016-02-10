@@ -1,0 +1,8 @@
+binary darwin-x64 "https://nodejs.org/dist/v0.10.42/node-v0.10.42-darwin-x64.tar.gz#356b4891c7060b6a68cf126837689807c30d43b709120b7fe6f167404612eb5a"
+binary darwin-x86 "https://nodejs.org/dist/v0.10.42/node-v0.10.42-darwin-x86.tar.gz#ff61d24f80db9c5e6b007103751cdb8ac6cb3ff4180972ce1532bcb934847e0c"
+binary linux-x64 "https://nodejs.org/dist/v0.10.42/node-v0.10.42-linux-x64.tar.gz#a9b80fb22efc483b6aef282ebb0254b5d9b092ed8091521977af593069a81d53"
+binary linux-x86 "https://nodejs.org/dist/v0.10.42/node-v0.10.42-linux-x86.tar.gz#5e528360a59314e2357184a8582d4d9dd1aa1c77687145bcf11b23e28f4ddd00"
+binary sunos-x64 "https://nodejs.org/dist/v0.10.42/node-v0.10.42-sunos-x64.tar.gz#af15246d6889db4449dc46d5c4a549bb56b19481cbb801d30a09153ba71b88e1"
+binary sunos-x86 "https://nodejs.org/dist/v0.10.42/node-v0.10.42-sunos-x86.tar.gz#3333f1fd394bdde5aafa424d945b002b0d0876e17396f864af9c230c81aac08b"
+
+install_package "node-v0.10.42" "https://nodejs.org/dist/v0.10.42/node-v0.10.42.tar.gz#ebc1d53698f80c5a7b0b948e1108d7858f93d2d9ebf4541c12688d85704de105"
