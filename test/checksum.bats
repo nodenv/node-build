@@ -2,6 +2,7 @@
 
 load test_helper
 export NODE_BUILD_CACHE_PATH=
+export NODE_BUILD_ARIA2_OPTS=
 
 
 @test "package URL without checksum" {

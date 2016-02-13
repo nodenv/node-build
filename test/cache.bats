@@ -2,6 +2,7 @@
 
 load test_helper
 export NODE_BUILD_CACHE_PATH="$BATS_TMPDIR/cache"
+export NODE_BUILD_ARIA2_OPTS=
 
 setup() {
   mkdir -p "$NODE_BUILD_CACHE_PATH"

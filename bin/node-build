@@ -405,45 +405,27 @@ http() {
 }
 
 http_head_aria2c() {
-  options=""
-  [ -n "${IPV4}" ] && options="--disable-ipv6=true"
-  [ -n "${IPV6}" ] && options="--disable-ipv6=false"
-  aria2c --dry-run ${options} "$1" >&4 2>&1
+  aria2c --dry-run ${ARIA2_OPTS} "$1" >&4 2>&1
 }
 
 http_get_aria2c() {
-  options=""
-  [ -n "${IPV4}" ] && options="--disable-ipv6=true"
-  [ -n "${IPV6}" ] && options="--disable-ipv6=false"
-  aria2c -o "${2:--}" ${options} "$1"
+  aria2c -o "${2:--}" ${ARIA2_OPTS} "$1"
 }
 
 http_head_curl() {
-  options=""
-  [ -n "${IPV4}" ] && options="--ipv4"
-  [ -n "${IPV6}" ] && options="--ipv6"
-  curl -qsILf ${options} "$1" >&4 2>&1
+  curl -qsILf ${CURL_OPTS} "$1" >&4 2>&1
 }
 
 http_get_curl() {
-  options=""
-  [ -n "${IPV4}" ] && options="--ipv4"
-  [ -n "${IPV6}" ] && options="--ipv6"
-  curl -q -o "${2:--}" -sSLf ${options} "$1"
+  curl -q -o "${2:--}" -sSLf ${CURL_OPTS} "$1"
 }
 
 http_head_wget() {
-  options=""
-  [ -n "${IPV4}" ] && options="--inet4-only"
-  [ -n "${IPV6}" ] && options="--inet6-only"
-  wget -q --spider ${options} "$1" >&4 2>&1
+  wget -q --spider ${WGET_OPTS} "$1" >&4 2>&1
 }
 
 http_get_wget() {
-  options=""
-  [ -n "${IPV4}" ] && options="--inet4-only"
-  [ -n "${IPV6}" ] && options="--inet6-only"
-  wget -nv ${options} -O "${2:--}" "$1"
+  wget -nv ${WGET_OPTS} -O "${2:--}" "$1"
 }
 
 fetch_tarball() {
@@ -904,6 +886,10 @@ if [ -n "$NODE_BUILD_CACHE_PATH" ] && [ -d "$NODE_BUILD_CACHE_PATH" ]; then
 else
   unset NODE_BUILD_CACHE_PATH
 fi
+
+ARIA2_OPTS="${NODE_BUILD_ARIA2_OPTS} ${IPV4+--disable-ipv6=true} ${IPV6+--disable-ipv6=false}"
+CURL_OPTS="${NODE_BUILD_CURL_OPTS} ${IPV4+--ipv4} ${IPV6+--ipv6}"
+WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
 
 SEED="$(date "+%Y%m%d%H%M%S").$$"
 LOG_PATH="${TMP}/node-build.${SEED}.log"
