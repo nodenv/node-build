@@ -10,7 +10,7 @@ export -n NODE_CONFIGURE_OPTS
 setup() {
   mkdir -p "$INSTALL_ROOT"
   stub sha1 false
-  stub curl false
+  stub aria2c false
 }
 
 executable() {
