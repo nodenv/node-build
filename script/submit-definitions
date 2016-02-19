@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Usage: script/update-nodes [-r [<remote>]]
+#
+# scrapes, commits, pushes, and pull-requests new node definitions
+#
+# * inspired by: https://github.com/jasonkarns/brew-publish *
+
+set -e
+
+while getopts ":r" opt; do
+  case $opt in
+  r) remote="${OPTARG:-origin}" ;;
+  :) abort "Option -$OPTARG requires an argument." ;;
+  \?) abort "Invalid option: -$OPTARG" ;;
+  esac
+done
+
+if ! type -p hub >/dev/null; then
+  abort "ERROR: You have to install hub to proceed."
+fi
+
+if [ -z "$remote" ]; then
+  # hackish way of getting the git remote name for user's fork
+  remote="$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')"
+fi
+
+git fetch -q --unshallow origin master 2>/dev/null || git fetch -q origin master
+
+git checkout -q origin/master
+
+npm run-script write-definitions
+
+for node_def in $(git ls-files --others --exclude-standard -- share/node-build/); do
+  node_name="$(basename "$node_def")"
+
+  git checkout -q -B "$node_name" origin/master
+  git add -- "$node_def"
+  git commit -m "$node_name" --only -- "$node_def"
+  git push -u "$remote" HEAD
+  hub pull-request -m "$node_name"
+  git checkout -q -
+done
+
+git checkout -q master
