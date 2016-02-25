@@ -28,6 +28,7 @@
     "submit-definitions": "script/submit-definitions -r",
     "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
     "preversion": "script/release",
+    "version": "script/update-version",
     "postversion": "git push origin master v$npm_package_version && npm run publish:brew"
   },
   "devDependencies": {

@@ -6,8 +6,9 @@
 # - ensures it isn't already tagged
 # - ensures currently on master branch
 # - ensures there are bin or definition changes to release
-# version (handled by npm)
+# version (handled by npm and script/update-version)
 # - bumps version in package.json
+# - bumps NODE_BUILD_VERSION in bin/node-build
 # - commits and tags
 # postversion (handled by npm-script)
 # - pushes master + tag to GitHub
