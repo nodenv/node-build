@@ -14,6 +14,8 @@
 #   --version        Show version of node-build
 #
 
+NODE_BUILD_VERSION=2.2.0
+
 OLDIFS="$IFS"
 
 set -E
@@ -729,14 +731,13 @@ apply_node_patch() {
 
 version() {
   local git_revision
-  local pkg_version="$(grep '"version":' "${NODE_BUILD_INSTALL_PREFIX}/package.json" | awk -v FS=': ' '{v=$2; gsub(/[",]/,"",v); print v}')"
 
   # Read the revision from git if the remote points to "node-build" repository
   if GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git remote -v 2>/dev/null | grep -q /node-build; then
     git_revision="$(GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git describe --tags HEAD 2>/dev/null || true)"
     git_revision="${git_revision#v}"
   fi
-  echo "node-build ${git_revision:-$pkg_version}"
+  echo "node-build ${git_revision:-$NODE_BUILD_VERSION}"
 }
 
 usage() {
