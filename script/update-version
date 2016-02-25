@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Usage: script/update-version
+#
+# Updates NODE_BUILD_VERSION in bin/node-build and stages the change
+# Intended to run automatically via 'npm run-script version'
+
+set -e
+
+node_build_script=bin/node-build
+pkg_version=$(grep '"version":' package.json | head -1 | awk -v FS=': ' '{v=$2; gsub(/[",]/,"",v); print v}')
+
+# Use perl instead of sed for portability
+perl -pi -e "s,(NODE_BUILD_VERSION=).*$,\${1}${pkg_version}," -- "${node_build_script}"
+
+git add "${node_build_script}"
