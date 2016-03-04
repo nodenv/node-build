@@ -29,7 +29,7 @@ git fetch -q --unshallow origin master 2>/dev/null || git fetch -q origin master
 
 git checkout -q origin/master
 
-npm run-script write-definitions
+npm run-script scrape-definitions
 
 for node_def in $(git ls-files --others --exclude-standard -- share/node-build/); do
   node_name="$(basename "$node_def")"
