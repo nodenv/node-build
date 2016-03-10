@@ -13,6 +13,8 @@
 # postversion (handled by npm-script)
 # - pushes master + tag to GitHub
 # - opens pull request to update the Homebrew formula
+#
+# TODO: publish release notes to GitHub
 
 set -e
 
@@ -35,9 +37,3 @@ if git diff --quiet "${previous_tag}..HEAD" -- bin share; then
   echo "Aborting: No features to release since '${previous_tag}'" >&2
   exit 1
 fi
-
-{ echo "ruby-build ${npm_package_version}"
-  echo
-  git log --no-merges --format='%w(0,0,2)* %B' --reverse "${previous_tag}..HEAD^" -- bin share/node-build
-} | hub release create -dF - -c "$(git rev-parse HEAD)" "v${npm_package_version}" || true
-hub browse -- "releases/v${npm_package_version}"
