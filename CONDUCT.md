@@ -67,9 +67,9 @@ members of the project's leadership.
 
 ## Project Maintainers
 
-* Sam Stephenson <<sstephenson@gmail.com>>
-* Mislav Marohnić <<mislav.marohnic@gmail.com>>
-* Erik Michaels-Ober <<sferik@gmail.com>>
+* Will McKenzie <<willmckenzie@oinutter.co.uk>>
+* Jason Karns <<jason@karns.name>>
+* Josh Hagins <<hagins.josh@gmail.com>>
 
 ## Attribution
 
