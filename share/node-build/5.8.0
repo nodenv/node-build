@@ -1,0 +1,11 @@
+binary darwin-x64 "https://nodejs.org/dist/v5.8.0/node-v5.8.0-darwin-x64.tar.gz#8c16f21a1c8882ba5875d0da617c817aa5005e514bd460dbf32aaeb3ffa477fe"
+binary linux-arm64 "https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-arm64.tar.gz#0c2c0fa859c5be13cd1404f3fb14d37e38a67fb2fc075c7a37d4ae70374544bf"
+binary linux-armv6l "https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-armv6l.tar.gz#54c362af9bc80b9e283bee7807fb2b1e9207ac77e61207b13fcf9f9acecd293f"
+binary linux-armv7l "https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-armv7l.tar.gz#cdb0355fc41ac7010926f1a35f07f0dfe94020572d70296f91e60d18ab4873f5"
+binary linux-ppc64le "https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-ppc64le.tar.gz#59f4745346786fdad8d58022b5eefc7cd5ec143d5cce03c66c1243e531fd10e8"
+binary linux-x64 "https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-x64.tar.gz#3d33efa2421ed0769cc23ac172203b7db9fe4914a186009ddbac28c9aadb0896"
+binary linux-x86 "https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-x86.tar.gz#b302ce9d5d156857576d892cfe8108363b30c20bd3133011fb2050d56bb238e8"
+binary sunos-x64 "https://nodejs.org/dist/v5.8.0/node-v5.8.0-sunos-x64.tar.gz#235783950678e3f343c5ce8e567a4600141ff9ad87aca0364bea659a82563f6c"
+binary sunos-x86 "https://nodejs.org/dist/v5.8.0/node-v5.8.0-sunos-x86.tar.gz#5edb23172d0a2b064dddb090ed5dae06a12db50dcc71f652748076d994f607ba"
+
+install_package "node-v5.8.0" "https://nodejs.org/dist/v5.8.0/node-v5.8.0.tar.gz#e8cd580cec1c62053e6357633b9e46d49df1fd5b9fc5c804ca59ba80d722b898"
