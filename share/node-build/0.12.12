@@ -1,0 +1,8 @@
+binary darwin-x64 "https://nodejs.org/dist/v0.12.12/node-v0.12.12-darwin-x64.tar.gz#b9b7b7c8f9c35fd6492bd5e60ec485ca8bf60f678651c7b6c46a3d8cf561e13c"
+binary darwin-x86 "https://nodejs.org/dist/v0.12.12/node-v0.12.12-darwin-x86.tar.gz#a2faf1180ffa50dbce0ca0a63b4285982b9fd87623dcda400c8f7e2be3abaa0a"
+binary linux-x64 "https://nodejs.org/dist/v0.12.12/node-v0.12.12-linux-x64.tar.gz#a3d51cc26060fe46f9ebe69c750b20fe1f6f27a936db6046a73b8a9715bf3559"
+binary linux-x86 "https://nodejs.org/dist/v0.12.12/node-v0.12.12-linux-x86.tar.gz#5c69b9f4d51fe7e54afe3c1a83263a03270ad5b09070c8d0769c4e1942c8fec9"
+binary sunos-x64 "https://nodejs.org/dist/v0.12.12/node-v0.12.12-sunos-x64.tar.gz#ef361aec4a2c1e3789662e7605928717af76b4d0ed360d4facb75a606ac0a2de"
+binary sunos-x86 "https://nodejs.org/dist/v0.12.12/node-v0.12.12-sunos-x86.tar.gz#f6d0fa1fe8cfc197fbe86c8f7517b42d610efb341218fad1b24bc7f08cc4433f"
+
+install_package "node-v0.12.12" "https://nodejs.org/dist/v0.12.12/node-v0.12.12.tar.gz#61e4c176fd882498778b1a3907a5fe5c9e95e6cc8438b0d053d953aed3620273"
