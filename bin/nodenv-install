@@ -18,7 +18,7 @@
 #                      (defaults to $NODENV_ROOT/sources)
 #   -p/--patch         Apply a patch from stdin before building
 #   -v/--verbose       Verbose mode: print compilation status to stdout
-#   --version          Show version of ruby-build
+#   --version          Show version of node-build
 #
 # For detailed information on installing Node versions with
 # node-build, including a list of environment variables for adjusting
