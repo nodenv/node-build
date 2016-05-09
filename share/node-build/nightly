@@ -1,0 +1,18 @@
+nightlies="https://nodejs.org/download/nightly"
+
+read -ra manifest < <(http get "${nightlies}/index.tab" | tail -n +2 | sort -r -k 2 | head -1)
+
+version="${manifest[0]}"
+date="${manifest[1]}"
+
+IFS=',' read -ra files <<< "${manifest[2]}"
+for file in "${files[@]}"; do
+  case "$file" in
+    headers | src | osx-*-pkg | win-* ) continue;;
+    osx-x64-tar ) file="darwin-x64";;
+  esac
+
+  binary "$file" "${nightlies}/${version}/node-${version}-${file}.tar.gz"
+done
+
+install_package "$version" "${nightlies}/${version}/node-${version}.tar.gz"
