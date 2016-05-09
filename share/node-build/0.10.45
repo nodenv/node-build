@@ -5,4 +5,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.10.45/node-v0.10.45-linux-x86.tar.g
 binary sunos-x64 "https://nodejs.org/dist/v0.10.45/node-v0.10.45-sunos-x64.tar.gz#019a1c40daff7b05efb2bd27c586d9ba9c5fe5048550b74e67e171d1495d4e30"
 binary sunos-x86 "https://nodejs.org/dist/v0.10.45/node-v0.10.45-sunos-x86.tar.gz#39a0790a7e533dd77f473c009c11458a5205cfc438777139a5e9658be63dfee2"
 
-install_package "node-v0.10.45" "https://nodejs.org/dist/v0.10.45/node-v0.10.45.tar.gz#d184bb74758d4ac69826823934cda1d46e81402fc16ebdb2ecacdc1a8fe0b568"
+install_package "node-v0.10.45" "https://nodejs.org/dist/v0.10.45/node-v0.10.45.tar.gz#d184bb74758d4ac69826823934cda1d46e81402fc16ebdb2ecacdc1a8fe0b568" warn_unsupported

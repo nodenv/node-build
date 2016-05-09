@@ -1,1 +1,1 @@
-install_git "0.12-dev" "https://github.com/nodejs/node.git" "v0.12-staging" standard
+install_git "0.12-dev" "https://github.com/nodejs/node.git" "v0.12-staging" standard warn_unsupported
