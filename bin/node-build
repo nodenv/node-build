@@ -233,15 +233,10 @@ install_svn() {
 install_binary() {
   local url name
 
-  if [ $# -eq 1 ]; then
-    url="$1"
-    name="$(basename "$url")"
-    name="${name%.tar.gz*}"
-    name="${name%.zip*}"
-  else
-    name="$1"
-    url="$2"
-  fi
+  url="$1"
+  name="$(basename "$url")"
+  name="${name%.tar.gz*}"
+  name="${name%.zip*}"
 
   install_package "$name" "$url" copy
 }
