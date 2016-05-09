@@ -5,6 +5,16 @@ read -ra manifest < <(http get "${nightlies}/index.tab" | tail -n +2 | sort -r -
 version="${manifest[0]}"
 date="${manifest[1]}"
 
+latest="$(http get "${nightlies}/index.tab" | grep "$date")"
+
+if [ $(wc -l <<<"$latest") -gt 1 ]; then
+  {
+    echo "More than one nightly release:"
+    echo "$latest"
+  } >&2
+  exit 1
+fi
+
 IFS=',' read -ra files <<< "${manifest[2]}"
 for file in "${files[@]}"; do
   case "$file" in
