@@ -251,14 +251,6 @@ install_package_using() {
   local make_args=( "$package_name" )
   local arg last_arg
 
-  if try_binary; then
-    BINARY_ATTEMPT=true # skip binary on recursive pass
-    install_binary "$BINARY_URL"
-    BINARY_ATTEMPT=
-    SKIP_BINARY=true # skip binary for subsequent packages
-    return 0
-  fi
-
   for arg in "${@:$(( $package_type_nargs + 1 ))}"; do
     if [ "$last_arg" = "--if" ]; then
       "$arg" || return 0
@@ -267,6 +259,14 @@ install_package_using() {
     fi
     last_arg="$arg"
   done
+
+  if try_binary; then
+    BINARY_ATTEMPT=true # skip binary on recursive pass
+    install_binary "$BINARY_URL"
+    BINARY_ATTEMPT=
+    SKIP_BINARY=true # skip binary for subsequent packages
+    return 0
+  fi
 
   pushd "$BUILD_PATH" >&4
   "fetch_${package_type}" "${fetch_args[@]}"
