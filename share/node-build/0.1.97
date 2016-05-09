@@ -1,1 +1,1 @@
-install_package "node-v0.1.97" "https://nodejs.org/dist/v0.1.97/node-v0.1.97.tar.gz#8ad00afa4d43c479a5025293ef83fd69e94ddef5ee2795263ca46222d1c2a954"
+install_package "node-v0.1.97" "https://nodejs.org/dist/v0.1.97/node-v0.1.97.tar.gz#8ad00afa4d43c479a5025293ef83fd69e94ddef5ee2795263ca46222d1c2a954" warn_eol

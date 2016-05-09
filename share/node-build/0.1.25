@@ -1,1 +1,1 @@
-install_package "node-v0.1.25" "https://nodejs.org/dist/v0.1.25/node-v0.1.25.tar.gz#48cb603bd55182c22a0030db78be146e137bcf396ff78dc1b7fe748adc9d59a6"
+install_package "node-v0.1.25" "https://nodejs.org/dist/v0.1.25/node-v0.1.25.tar.gz#48cb603bd55182c22a0030db78be146e137bcf396ff78dc1b7fe748adc9d59a6" warn_eol

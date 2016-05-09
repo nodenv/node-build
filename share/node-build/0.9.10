@@ -6,4 +6,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-linux-x86.tar.gz#
 binary sunos-x64 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-sunos-x64.tar.gz#99ae3de4362861a0eec4c181fb42d585e72fd4ad30e61ff894702fd2eb0d46d0"
 binary sunos-x86 "https://nodejs.org/dist/v0.9.10/node-v0.9.10-sunos-x86.tar.gz#3623fbe87783fff3508ddd042b9dd23a2ea76ea0e711463dea0a085cda847a0d"
 
-install_package "node-v0.9.10" "https://nodejs.org/dist/v0.9.10/node-v0.9.10.tar.gz#efdb49fc4ce2b4876c2fac00f5a2d8458f6aba42fa85001b0cb01f7a4b234ec9"
+install_package "node-v0.9.10" "https://nodejs.org/dist/v0.9.10/node-v0.9.10.tar.gz#efdb49fc4ce2b4876c2fac00f5a2d8458f6aba42fa85001b0cb01f7a4b234ec9" warn_eol

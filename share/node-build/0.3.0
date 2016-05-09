@@ -1,1 +1,1 @@
-install_package "node-v0.3.0" "https://nodejs.org/dist/v0.3.0/node-v0.3.0.tar.gz#aa53c3d136ceaa02108ad013d9d9917e6e2ea22f10e3bd7414f4ba6f6a1427b5"
+install_package "node-v0.3.0" "https://nodejs.org/dist/v0.3.0/node-v0.3.0.tar.gz#aa53c3d136ceaa02108ad013d9d9917e6e2ea22f10e3bd7414f4ba6f6a1427b5" warn_eol

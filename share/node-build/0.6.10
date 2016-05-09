@@ -1,1 +1,1 @@
-install_package "node-v0.6.10" "https://nodejs.org/dist/v0.6.10/node-v0.6.10.tar.gz#d1d060ab53c6079409403530009a2095036f19920aabd3a1c20542e0db586bd5"
+install_package "node-v0.6.10" "https://nodejs.org/dist/v0.6.10/node-v0.6.10.tar.gz#d1d060ab53c6079409403530009a2095036f19920aabd3a1c20542e0db586bd5" warn_eol

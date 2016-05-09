@@ -5,4 +5,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.8.10/node-v0.8.10-linux-x86.tar.gz#
 binary sunos-x64 "https://nodejs.org/dist/v0.8.10/node-v0.8.10-sunos-x64.tar.gz#15d6adf4d457a820ef62d07e52a00b42d8ce23a59cc55a54a3cc564e86f5c56a"
 binary sunos-x86 "https://nodejs.org/dist/v0.8.10/node-v0.8.10-sunos-x86.tar.gz#1efe7482197330c59067a9646d67c0af3fa638ccec32cd3d3c71ecc6729511f2"
 
-install_package "node-v0.8.10" "https://nodejs.org/dist/v0.8.10/node-v0.8.10.tar.gz#ce495ab8fee58b4df49d46be2b08fabdd2fcb3880982aedda8e88751e2a2011b"
+install_package "node-v0.8.10" "https://nodejs.org/dist/v0.8.10/node-v0.8.10.tar.gz#ce495ab8fee58b4df49d46be2b08fabdd2fcb3880982aedda8e88751e2a2011b" warn_eol

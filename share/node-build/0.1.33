@@ -1,1 +1,1 @@
-install_package "node-v0.1.33" "https://nodejs.org/dist/v0.1.33/node-v0.1.33.tar.gz#4a5db1dbacb22baf3a43a77a9c089bd3eb6b903ccc83e874541c48984310c5a7"
+install_package "node-v0.1.33" "https://nodejs.org/dist/v0.1.33/node-v0.1.33.tar.gz#4a5db1dbacb22baf3a43a77a9c089bd3eb6b903ccc83e874541c48984310c5a7" warn_eol

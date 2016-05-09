@@ -1,1 +1,1 @@
-install_package "node-v0.1.30" "https://nodejs.org/dist/v0.1.30/node-v0.1.30.tar.gz#37ee475b43609b9052300472ea33cf027f6777975bc90611837e54ecdad3f22c"
+install_package "node-v0.1.30" "https://nodejs.org/dist/v0.1.30/node-v0.1.30.tar.gz#37ee475b43609b9052300472ea33cf027f6777975bc90611837e54ecdad3f22c" warn_eol

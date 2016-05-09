@@ -1,1 +1,1 @@
-install_package "node-v0.1.15" "https://nodejs.org/dist/v0.1.15/node-v0.1.15.tar.gz#aaf90fb73ba9246adce7ea066ecbf954cb8fa1868246b73871adbe1dd3fcc8e0"
+install_package "node-v0.1.15" "https://nodejs.org/dist/v0.1.15/node-v0.1.15.tar.gz#aaf90fb73ba9246adce7ea066ecbf954cb8fa1868246b73871adbe1dd3fcc8e0" warn_eol

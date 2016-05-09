@@ -1,1 +1,1 @@
-install_package "node-v0.1.29" "https://nodejs.org/dist/v0.1.29/node-v0.1.29.tar.gz#b56ddee6fbd89f674df7d38295563f4124e728dbf2dc4e7fb359fd1f6fe9bb06"
+install_package "node-v0.1.29" "https://nodejs.org/dist/v0.1.29/node-v0.1.29.tar.gz#b56ddee6fbd89f674df7d38295563f4124e728dbf2dc4e7fb359fd1f6fe9bb06" warn_eol

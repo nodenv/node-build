@@ -1,1 +1,1 @@
-install_package "node-v0.1.19" "https://nodejs.org/dist/v0.1.19/node-v0.1.19.tar.gz#5eff91296a705f72bed6dd493e20af49fd56987e16928f45005605bc6736480a"
+install_package "node-v0.1.19" "https://nodejs.org/dist/v0.1.19/node-v0.1.19.tar.gz#5eff91296a705f72bed6dd493e20af49fd56987e16928f45005605bc6736480a" warn_eol

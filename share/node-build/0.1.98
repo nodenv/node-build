@@ -1,1 +1,1 @@
-install_package "node-v0.1.98" "https://nodejs.org/dist/v0.1.98/node-v0.1.98.tar.gz#6ce54b2e81ba1f4085d165bf3e853111a77e2a20de9493a0d7092665a5c9fda8"
+install_package "node-v0.1.98" "https://nodejs.org/dist/v0.1.98/node-v0.1.98.tar.gz#6ce54b2e81ba1f4085d165bf3e853111a77e2a20de9493a0d7092665a5c9fda8" warn_eol
