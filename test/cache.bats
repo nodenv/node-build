@@ -10,7 +10,7 @@ setup() {
 
 
 @test "packages are saved to download cache" {
-  stub aria2c "-o * http://example.com/* : cp $FIXTURE_ROOT/\${3##*/} \$2"
+  stub aria2c "--allow-overwrite=true -o * http://example.com/* : cp $FIXTURE_ROOT/\${4##*/} \$3"
 
   install_fixture definitions/without-checksum
 
@@ -53,7 +53,7 @@ setup() {
 @test "cached package with invalid checksum falls back to original URL and updates cache" {
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   stub shasum true "echo invalid" "echo $checksum"
-  stub aria2c "-o * http://example.com/* : cp $FIXTURE_ROOT/\${3##*/} \$2"
+  stub aria2c "--allow-overwrite=true -o * http://example.com/* : cp $FIXTURE_ROOT/\${3##*/} \$3"
 
   touch "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz"
 
@@ -70,7 +70,7 @@ setup() {
 
 
 @test "nonexistent cache directory is ignored" {
-  stub aria2c "-o * http://example.com/* : cp $FIXTURE_ROOT/\${3##*/} \$2"
+  stub aria2c "--allow-overwrite=true -o * http://example.com/* : cp $FIXTURE_ROOT/\${3##*/} \$3"
   export NODE_BUILD_CACHE_PATH="${BATS_TMPDIR}/nonexistent"
 
   install_fixture definitions/without-checksum
