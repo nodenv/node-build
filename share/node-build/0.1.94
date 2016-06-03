@@ -1,1 +1,1 @@
-install_package "node-v0.1.94" "https://nodejs.org/dist/v0.1.94/node-v0.1.94.tar.gz#93d19477e069171307f66dffc665c900d80382bca021536451c785f78dba1b3d"
+install_package "node-v0.1.94" "https://nodejs.org/dist/v0.1.94/node-v0.1.94.tar.gz#93d19477e069171307f66dffc665c900d80382bca021536451c785f78dba1b3d" warn_eol

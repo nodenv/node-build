@@ -1,1 +1,1 @@
-install_package "node-v0.1.20" "https://nodejs.org/dist/v0.1.20/node-v0.1.20.tar.gz#4f6684d831554508b2ec4ab3ebe3c417a5f55174a3a00cb5ad67b90d473942fc"
+install_package "node-v0.1.20" "https://nodejs.org/dist/v0.1.20/node-v0.1.20.tar.gz#4f6684d831554508b2ec4ab3ebe3c417a5f55174a3a00cb5ad67b90d473942fc" warn_eol

@@ -5,4 +5,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x86.tar.g
 binary sunos-x64 "https://nodejs.org/dist/v0.10.22/node-v0.10.22-sunos-x64.tar.gz#550bf8a08074e0260a8c700b377fc7e14253d3f690d8c7d8dc9becc02d406bc7"
 binary sunos-x86 "https://nodejs.org/dist/v0.10.22/node-v0.10.22-sunos-x86.tar.gz#bb556888914f3d249176dc3a30bf3dbb9a7ce4073f326549b1379f191c1aa610"
 
-install_package "node-v0.10.22" "https://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz#157fc58b3f1d109baefac4eb1d32ae747de5e6d55d87d0e9bec8f8dd10679e7e"
+install_package "node-v0.10.22" "https://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz#157fc58b3f1d109baefac4eb1d32ae747de5e6d55d87d0e9bec8f8dd10679e7e" warn_unsupported

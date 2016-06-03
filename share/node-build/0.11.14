@@ -5,4 +5,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.11.14/node-v0.11.14-linux-x86.tar.g
 binary sunos-x64 "https://nodejs.org/dist/v0.11.14/node-v0.11.14-sunos-x64.tar.gz#96cbb3f5b8a19cde8fc9855baf1e2c5664cfdaf9062675661c5920f51eb85319"
 binary sunos-x86 "https://nodejs.org/dist/v0.11.14/node-v0.11.14-sunos-x86.tar.gz#eae7646ae5d94f055698a271daa5092dcc02fe284de01cc9e0688190d6e06a83"
 
-install_package "node-v0.11.14" "https://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz#ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
+install_package "node-v0.11.14" "https://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz#ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83" warn_eol

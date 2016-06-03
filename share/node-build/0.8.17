@@ -6,4 +6,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.8.17/node-v0.8.17-linux-x86.tar.gz#
 binary sunos-x64 "https://nodejs.org/dist/v0.8.17/node-v0.8.17-sunos-x64.tar.gz#9bf6565ffbcf47b1e2f328b73bac0748659e5ed0b94b07dd8462c232af2cc91b"
 binary sunos-x86 "https://nodejs.org/dist/v0.8.17/node-v0.8.17-sunos-x86.tar.gz#ddf05292902728bec9494fe0ce460cbb182e0638aebf5bc9d28d929e7c78d87d"
 
-install_package "node-v0.8.17" "https://nodejs.org/dist/v0.8.17/node-v0.8.17.tar.gz#8f070b42ffb84fde9d3ed2f802b08664b94dda327a36bf08a80c8b7efcf8b29e"
+install_package "node-v0.8.17" "https://nodejs.org/dist/v0.8.17/node-v0.8.17.tar.gz#8f070b42ffb84fde9d3ed2f802b08664b94dda327a36bf08a80c8b7efcf8b29e" warn_eol

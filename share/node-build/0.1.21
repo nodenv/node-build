@@ -1,1 +1,1 @@
-install_package "node-v0.1.21" "https://nodejs.org/dist/v0.1.21/node-v0.1.21.tar.gz#f7a7cc74c7b3eff74056bfa4710ae0bde65bf2d86ed9f9fdbc0406e14c0a5100"
+install_package "node-v0.1.21" "https://nodejs.org/dist/v0.1.21/node-v0.1.21.tar.gz#f7a7cc74c7b3eff74056bfa4710ae0bde65bf2d86ed9f9fdbc0406e14c0a5100" warn_eol

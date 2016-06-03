@@ -1,1 +1,1 @@
-install_package "node-v0.4.11" "https://nodejs.org/dist/v0.4.11/node-v0.4.11.tar.gz#e009522d52c4a844c46e51c63b852899d1b7e6d949d1a139cdc16b4f6c4ab63f"
+install_package "node-v0.4.11" "https://nodejs.org/dist/v0.4.11/node-v0.4.11.tar.gz#e009522d52c4a844c46e51c63b852899d1b7e6d949d1a139cdc16b4f6c4ab63f" warn_eol

@@ -4,4 +4,4 @@ binary linux-armv7l "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-armv7l.tar.g
 binary linux-x64 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-x64.tar.gz#edf44e185b49ed01b390097ff5104f0457b59a1a37b99d0983f73ca018c58e3a"
 binary linux-x86 "https://iojs.org/dist/v2.0.0/iojs-v2.0.0-linux-x86.tar.gz#a593b44ea4729e440e8dc63549b22a00a1bdc2c6c5a1208e7549f338713a13d5"
 
-install_package "iojs-v2.0.0" "https://iojs.org/dist/v2.0.0/iojs-v2.0.0.tar.gz#e4dd47b19fd41c9fa6f59c6d76f723ae79e76c3db5474e4d9dacc873dd47767a"
+install_package "iojs-v2.0.0" "https://iojs.org/dist/v2.0.0/iojs-v2.0.0.tar.gz#e4dd47b19fd41c9fa6f59c6d76f723ae79e76c3db5474e4d9dacc873dd47767a" warn_eol
