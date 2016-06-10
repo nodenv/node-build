@@ -2,6 +2,7 @@
 
 load test_helper
 export NODE_BUILD_CACHE_PATH=
+export NODE_BUILD_ARIA2_OPTS=
 
 setup() {
   ensure_not_found_in_path aria2c
@@ -16,6 +17,20 @@ setup() {
   assert_failure
   assert_output_contains "> http://example.com/packages/package-1.0.0.tar.gz"
   assert_output_contains "error: failed to download package-1.0.0.tar.gz"
+}
+
+@test "using aria2c if available" {
+  stub aria2c "* -o * http://example.com/* : cp $FIXTURE_ROOT/\${4##*/} \$3"
+
+  install_fixture definitions/without-checksum
+  assert_success
+  assert_output <<OUT
+Downloading package-1.0.0.tar.gz...
+-> http://example.com/packages/package-1.0.0.tar.gz
+Installing package-1.0.0...
+Installed package-1.0.0 to ${BATS_TMPDIR}/install
+OUT
+  unstub aria2c
 }
 
 @test "fetching from git repository" {
