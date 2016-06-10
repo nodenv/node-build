@@ -4,6 +4,7 @@ load test_helper
 export NODE_BUILD_CACHE_PATH=
 
 setup() {
+  ensure_not_found_in_path aria2c
   export NODE_BUILD_BUILD_PATH="${BATS_TMPDIR}/source"
   mkdir -p "${NODE_BUILD_BUILD_PATH}"
 }

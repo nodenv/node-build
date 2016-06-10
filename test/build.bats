@@ -8,6 +8,7 @@ export CC=cc
 export -n NODE_CONFIGURE_OPTS
 
 setup() {
+  ensure_not_found_in_path aria2c
   mkdir -p "$INSTALL_ROOT"
   stub sha1 false
   stub aria2c false

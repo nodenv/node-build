@@ -5,6 +5,7 @@ export NODE_BUILD_CACHE_PATH="$BATS_TMPDIR/cache"
 export NODE_BUILD_ARIA2_OPTS=
 
 setup() {
+  ensure_not_found_in_path aria2c
   mkdir -p "$NODE_BUILD_CACHE_PATH"
 }
 

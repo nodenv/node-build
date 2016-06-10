@@ -3,6 +3,7 @@
 load test_helper
 
 setup() {
+  ensure_not_found_in_path aria2c
   export NODENV_ROOT="${BATS_TMPDIR}/nodenv"
   export HOOK_PATH="${BATS_TMPDIR}/i has hooks"
   mkdir -p "$HOOK_PATH"

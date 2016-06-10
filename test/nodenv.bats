@@ -4,6 +4,7 @@ load test_helper
 export NODENV_ROOT="${BATS_TMPDIR}/nodenv"
 
 setup() {
+  ensure_not_found_in_path aria2c
   stub nodenv-hooks 'install : true'
   stub nodenv-rehash 'true'
 }
