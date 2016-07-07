@@ -1,6 +1,0 @@
-after_install_package() {
-  fix_jxcore_directory_structure
-}
-
-install_git jxcore-dev "https://github.com/jxcore/jxcore.git" "master" warn_eol
-install_package npm "https://s3.amazonaws.com/nodejx/npmjx310.tar.gz#3c8e1b1fed9be44c4ec6fd09e6978a29c3e466f684e2812f6762c0a6d28fb85c" jxcore_npm warn_eol
