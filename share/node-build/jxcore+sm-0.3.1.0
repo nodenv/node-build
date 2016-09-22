@@ -16,4 +16,4 @@ binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0310/jx_ub32sm.zip#ac85fe3ac3
 binary ubuntu-x64 "https://jxcore.s3.amazonaws.com/0310/jx_ub64sm.zip#e299ee14fae34f19bb8f838b188aca36266a305950625e909e615923dd15c4be"
 
 install_package jxcore-0.3.1.0 "https://github.com/jxcore/jxcore/archive/v0.3.1.0.tar.gz#cae9dac0602667b5b5dedf2ac23445e2875c2bfb91cbdfd7b370790f8a0c96df" jxcore_spidermonkey standard warn_eol
-install_package npm "https://s3.amazonaws.com/nodejx/npmjx310.tar.gz#3c8e1b1fed9be44c4ec6fd09e6978a29c3e466f684e2812f6762c0a6d28fb85c" jxcore_npm warn_eol
+install_package npm "https://github.com/jxcore/jxcore/releases/download/v0.3.1.0/npmjx310.tar.gz#3c8e1b1fed9be44c4ec6fd09e6978a29c3e466f684e2812f6762c0a6d28fb85c" jxcore_npm warn_eol
