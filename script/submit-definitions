@@ -36,7 +36,7 @@ for node_def in $(git ls-files --others --exclude-standard -- share/node-build/)
 
   git checkout -q -B "$node_name" origin/master
   git add -- "$node_def"
-  git commit -m "$node_name" --only -- "$node_def"
+  git commit -m "$node_name\n\nCreated with \`npm run submit-definitions\`." --only -- "$node_def"
   git push -u "$remote" HEAD
   hub pull-request -m "$node_name"
   git checkout -q -
