@@ -1,1 +1,5 @@
-install_package "node-v0.1.31" "https://nodejs.org/dist/v0.1.31/node-v0.1.31.tar.gz#260972bedf789580b56433ca27a1e3717b131a531a4b3688980a16e65d79abbd" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.1.31" "https://nodejs.org/dist/v0.1.31/node-v0.1.31.tar.gz#260972bedf789580b56433ca27a1e3717b131a531a4b3688980a16e65d79abbd"

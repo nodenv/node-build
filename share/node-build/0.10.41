@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v0.10.41/node-v0.10.41-darwin-x64.tar.gz#f55050a8774828846670fea91695a8da754768021cf1121cf91f788bb3e89d20"
 binary darwin-x86 "https://nodejs.org/dist/v0.10.41/node-v0.10.41-darwin-x86.tar.gz#d0deae5ea05b8fae90ca98851e55dbd0fe8b88dab5ed658ebdb61d3e47bc0a5e"
 binary linux-x64 "https://nodejs.org/dist/v0.10.41/node-v0.10.41-linux-x64.tar.gz#ebda18d4c6545ac42b3404d629504feea0b2b9e7c7fa68de2a5bcc9059a6dc6c"
@@ -5,4 +9,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.10.41/node-v0.10.41-linux-x86.tar.g
 binary sunos-x64 "https://nodejs.org/dist/v0.10.41/node-v0.10.41-sunos-x64.tar.gz#9621df2ffed088f87632c5f4d176e5d49438fce5aeb7b4ce8d2eff0de153a5bf"
 binary sunos-x86 "https://nodejs.org/dist/v0.10.41/node-v0.10.41-sunos-x86.tar.gz#a5f5ed4d8200e231323db083f3f2735cec13ac6584523b94ac953ad0e4874b66"
 
-install_package "node-v0.10.41" "https://nodejs.org/dist/v0.10.41/node-v0.10.41.tar.gz#79f694e2a5c42543b75d0c69f6860499d7593136d0f6b59e7163b9e66fb2c995" warn_unsupported
+install_package "node-v0.10.41" "https://nodejs.org/dist/v0.10.41/node-v0.10.41.tar.gz#79f694e2a5c42543b75d0c69f6860499d7593136d0f6b59e7163b9e66fb2c995"

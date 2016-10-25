@@ -1,1 +1,5 @@
-install_package "node-v0.6.17" "https://nodejs.org/dist/v0.6.17/node-v0.6.17.tar.gz#8dfe5948de27e37a14af184f06e7bd89a23c3b248af44c8ef5cffcd0e4c65778" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.6.17" "https://nodejs.org/dist/v0.6.17/node-v0.6.17.tar.gz#8dfe5948de27e37a14af184f06e7bd89a23c3b248af44c8ef5cffcd0e4c65778"

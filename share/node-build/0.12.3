@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v0.12.3/node-v0.12.3-darwin-x64.tar.gz#74ddd964bcc7d73bb7cf893174710bf6d0b9d8950e30cccb9a50827df04f1c59"
 binary darwin-x86 "https://nodejs.org/dist/v0.12.3/node-v0.12.3-darwin-x86.tar.gz#8bfe24802ae4f56c9275a96da49101b37779fd2f92ed6a9acfb6318ebe80ffa0"
 binary linux-x64 "https://nodejs.org/dist/v0.12.3/node-v0.12.3-linux-x64.tar.gz#22478ba86906666a95010e4eb73763535211719a53da9139b95daeb5b6c170b8"
@@ -5,4 +9,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.12.3/node-v0.12.3-linux-x86.tar.gz#
 binary sunos-x64 "https://nodejs.org/dist/v0.12.3/node-v0.12.3-sunos-x64.tar.gz#376318f3e3c14543f4419d0e8c190cebbcb6052882980beeb9203d13548f6cc1"
 binary sunos-x86 "https://nodejs.org/dist/v0.12.3/node-v0.12.3-sunos-x86.tar.gz#8d6e3400fdfa9fe0df7f441c5f51d25fb2a8975b9ae6c43560c3bf3a71d1497d"
 
-install_package "node-v0.12.3" "https://nodejs.org/dist/v0.12.3/node-v0.12.3.tar.gz#e65d83c6f2c874e28f65c5e192ac0acd2bbb52bfcf9d77e33442d6765a3eb9da" warn_unsupported
+install_package "node-v0.12.3" "https://nodejs.org/dist/v0.12.3/node-v0.12.3.tar.gz#e65d83c6f2c874e28f65c5e192ac0acd2bbb52bfcf9d77e33442d6765a3eb9da"

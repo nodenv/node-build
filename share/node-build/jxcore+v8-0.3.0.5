@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 after_install_package() {
   fix_jxcore_directory_structure
 }
@@ -15,5 +19,5 @@ binary suse-x64 "https://jxcore.s3.amazonaws.com/0305/jx_suse64v8.zip#4afad1d2c1
 binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0305/jx_ub32v8.zip#fc893263bf8252bef52e8ba4ebab1c195fb18437db941c20168755e5e3a02685"
 binary ubuntu-x64 "https://jxcore.s3.amazonaws.com/0305/jx_ub64v8.zip#44ffa659f01c3ea4d886a4a4bab17afaff87c5f6f447fe1ebedaa63ec4fd4990"
 
-install_package jxcore-0.3.0.5 "https://github.com/jxcore/jxcore/archive/v0.3.0.5.tar.gz#a7c7759f66609f32bc2aed5f3674e251d66710bb742417faf5c0059319cc00b5" warn_eol
-install_package npm "https://github.com/jxcore/jxcore/releases/download/v0.3.0.5/npmjx305.tar.gz#fdefdb122e6ca0ea23a11730c7e032742a86b2c7e9e46421304bc6b7ce99a7fa" jxcore_npm warn_eol
+install_package jxcore-0.3.0.5 "https://github.com/jxcore/jxcore/archive/v0.3.0.5.tar.gz#a7c7759f66609f32bc2aed5f3674e251d66710bb742417faf5c0059319cc00b5"
+install_package npm "https://github.com/jxcore/jxcore/releases/download/v0.3.0.5/npmjx305.tar.gz#fdefdb122e6ca0ea23a11730c7e032742a86b2c7e9e46421304bc6b7ce99a7fa" jxcore_npm

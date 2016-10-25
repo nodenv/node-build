@@ -1,1 +1,5 @@
-install_package "node-v0.1.23" "https://nodejs.org/dist/v0.1.23/node-v0.1.23.tar.gz#69b416d60f288389d25d04797a030b4db6a1ca0cafbd545ca2b8824afaba3035" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.1.23" "https://nodejs.org/dist/v0.1.23/node-v0.1.23.tar.gz#69b416d60f288389d25d04797a030b4db6a1ca0cafbd545ca2b8824afaba3035"

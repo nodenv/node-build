@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v0.11.12/node-v0.11.12-darwin-x64.tar.gz#2265e5a755e442fbd923119df673816bdf4f2a2931f93821e6c1075fdc678451"
 binary darwin-x86 "https://nodejs.org/dist/v0.11.12/node-v0.11.12-darwin-x86.tar.gz#4f17a0c42957ba70700e2e5f9c87454a68a99f8a9ea5d94cbf87752cfa17e4c2"
 binary linux-x64 "https://nodejs.org/dist/v0.11.12/node-v0.11.12-linux-x64.tar.gz#d5369c5608482bcbfcb7a8cd18a43b493a878020c6e5dc241cf55473dafa374a"
@@ -5,4 +9,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.11.12/node-v0.11.12-linux-x86.tar.g
 binary sunos-x64 "https://nodejs.org/dist/v0.11.12/node-v0.11.12-sunos-x64.tar.gz#7cc56ba26dd0429deb2e72632629b051162d355cfae0bf6732c620595f684ac8"
 binary sunos-x86 "https://nodejs.org/dist/v0.11.12/node-v0.11.12-sunos-x86.tar.gz#58cbe6416d4dba4c76d68d088d1741133242fb9825e5d3d7ba39e20d334312ed"
 
-install_package "node-v0.11.12" "https://nodejs.org/dist/v0.11.12/node-v0.11.12.tar.gz#c40968981d9f5f6fbc4abb836557acda74ecb8f8a1e9a30e84ebd2529a8c1b6a" warn_eol
+install_package "node-v0.11.12" "https://nodejs.org/dist/v0.11.12/node-v0.11.12.tar.gz#c40968981d9f5f6fbc4abb836557acda74ecb8f8a1e9a30e84ebd2529a8c1b6a"

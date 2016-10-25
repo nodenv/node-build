@@ -1,1 +1,5 @@
-install_git "0.12-dev" "https://github.com/nodejs/node.git" "v0.12-staging" standard warn_unsupported
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+install_git "0.12-dev" "https://github.com/nodejs/node.git" "v0.12-staging" standard

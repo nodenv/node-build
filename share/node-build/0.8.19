@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v0.8.19/node-v0.8.19-darwin-x64.tar.gz#39387dfb03c7c5421bdd117963d520ac1db1b26a74e0931125aa636d182e8aa2"
 binary darwin-x86 "https://nodejs.org/dist/v0.8.19/node-v0.8.19-darwin-x86.tar.gz#e2272cd0985c29d100a4f4114a1d5957c076ab076705b04855ceb68ebc816dd5"
 binary linux-arm-pi "https://nodejs.org/dist/v0.8.19/node-v0.8.19-linux-arm-pi.tar.gz#35a921869eb6957a612f4437db9cc93bbc989d5db2fcea3626f4757d0ce10d2c"
@@ -6,4 +10,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.8.19/node-v0.8.19-linux-x86.tar.gz#
 binary sunos-x64 "https://nodejs.org/dist/v0.8.19/node-v0.8.19-sunos-x64.tar.gz#fb32343c8bafbd7698db5db2f2b103769e2ef2eccc20586000d8c3ccb8a9fdbc"
 binary sunos-x86 "https://nodejs.org/dist/v0.8.19/node-v0.8.19-sunos-x86.tar.gz#d296d478ad60114d6f26848c63881d98e24a5c499695805d17e70368d8678f6e"
 
-install_package "node-v0.8.19" "https://nodejs.org/dist/v0.8.19/node-v0.8.19.tar.gz#703207d7b394bd3d4035dc3c94b417ee441fd3ea66aa90cd3d7c9bb28e5f9df4" warn_eol
+install_package "node-v0.8.19" "https://nodejs.org/dist/v0.8.19/node-v0.8.19.tar.gz#703207d7b394bd3d4035dc3c94b417ee441fd3ea66aa90cd3d7c9bb28e5f9df4"

@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 after_install_package() {
   fix_jxcore_directory_structure
 }
@@ -15,5 +19,5 @@ binary suse-x64 "https://jxcore.s3.amazonaws.com/0304/jx_suse64v8.zip#0f368cb1ee
 binary ubuntu-x86 "https://jxcore.s3.amazonaws.com/0304/jx_ub32v8.zip#d8f33ca1544ff89213d65d733511cec6a41e9f384352a4b5310babd0b22baac4"
 binary ubuntu-x64 "https://jxcore.s3.amazonaws.com/0304/jx_ub64v8.zip#8a268aa4a6128d214abdfec88c5a636c8ccdffa90f42a038dfb75f87493bb81e"
 
-install_package jxcore-0.3.0.4 "https://github.com/jxcore/jxcore/archive/v0.3.0.4.tar.gz#84e67ee008abb6794940806ab2992536144d9e831643181ea0230f4e8f1aade7" warn_eol
-install_package npm "https://github.com/jxcore/jxcore/releases/download/v0.3.0.4/npmjx304.tar.gz#e12617fe36c58c59ee5d06e99f421f21b8a3215d5d780597e5218e2c6b63f17a" jxcore_npm warn_eol
+install_package jxcore-0.3.0.4 "https://github.com/jxcore/jxcore/archive/v0.3.0.4.tar.gz#84e67ee008abb6794940806ab2992536144d9e831643181ea0230f4e8f1aade7"
+install_package npm "https://github.com/jxcore/jxcore/releases/download/v0.3.0.4/npmjx304.tar.gz#e12617fe36c58c59ee5d06e99f421f21b8a3215d5d780597e5218e2c6b63f17a" jxcore_npm

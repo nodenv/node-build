@@ -1,1 +1,5 @@
-install_package "node-v0.8.4" "https://nodejs.org/dist/v0.8.4/node-v0.8.4.tar.gz#d0a3b0d2028ddd6bbaab5d3fe38dd6f80d7e810fe9e55efab3230a7c90d31174" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.8.4" "https://nodejs.org/dist/v0.8.4/node-v0.8.4.tar.gz#d0a3b0d2028ddd6bbaab5d3fe38dd6f80d7e810fe9e55efab3230a7c90d31174"

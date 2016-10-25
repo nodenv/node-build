@@ -1,1 +1,5 @@
-install_package "node-v0.3.8" "https://nodejs.org/dist/v0.3.8/node-v0.3.8.tar.gz#fc71861d339ec9ced9c85cb714f14e3e6e51651833ef0fec2abf41ad113172f1" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.3.8" "https://nodejs.org/dist/v0.3.8/node-v0.3.8.tar.gz#fc71861d339ec9ced9c85cb714f14e3e6e51651833ef0fec2abf41ad113172f1"

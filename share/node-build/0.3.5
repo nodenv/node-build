@@ -1,1 +1,5 @@
-install_package "node-v0.3.5" "https://nodejs.org/dist/v0.3.5/node-v0.3.5.tar.gz#affdf4cbe8aaab74f99ea0a534d913a6203de353652c2fe01e1ce75707d730c7" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.3.5" "https://nodejs.org/dist/v0.3.5/node-v0.3.5.tar.gz#affdf4cbe8aaab74f99ea0a534d913a6203de353652c2fe01e1ce75707d730c7"

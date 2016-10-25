@@ -1,1 +1,5 @@
-install_package "node-v0.7.10" "https://nodejs.org/dist/v0.7.10/node-v0.7.10.tar.gz#9094dcd47dba984b6c2ca89a5361bd6664d1990edf41419f9a8a6d26ae774c6e" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.7.10" "https://nodejs.org/dist/v0.7.10/node-v0.7.10.tar.gz#9094dcd47dba984b6c2ca89a5361bd6664d1990edf41419f9a8a6d26ae774c6e"
