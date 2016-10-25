@@ -1,1 +1,5 @@
-install_package "node-v0.1.100" "https://nodejs.org/dist/v0.1.100/node-v0.1.100.tar.gz#623d9157017ca3805cbbca653724f8e25a52be689f821d0c608f94717342e1e2" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.1.100" "https://nodejs.org/dist/v0.1.100/node-v0.1.100.tar.gz#623d9157017ca3805cbbca653724f8e25a52be689f821d0c608f94717342e1e2"

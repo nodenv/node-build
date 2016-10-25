@@ -1,1 +1,5 @@
-install_package "node-v0.4.9" "https://nodejs.org/dist/v0.4.9/node-v0.4.9.tar.gz#f231ea6d19ea9ea4c7f8e7ff5061e7d301f1635bec7ed0ff1eef2512576ea442" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.4.9" "https://nodejs.org/dist/v0.4.9/node-v0.4.9.tar.gz#f231ea6d19ea9ea4c7f8e7ff5061e7d301f1635bec7ed0ff1eef2512576ea442"

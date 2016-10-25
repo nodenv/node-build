@@ -1,1 +1,5 @@
-install_package "node-v0.1.14" "https://nodejs.org/dist/v0.1.14/node-v0.1.14.tar.gz#ff74848a9d444923e378e45ec46d6d0867889e78a045c43fa33080fe47c85004" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.1.14" "https://nodejs.org/dist/v0.1.14/node-v0.1.14.tar.gz#ff74848a9d444923e378e45ec46d6d0867889e78a045c43fa33080fe47c85004"

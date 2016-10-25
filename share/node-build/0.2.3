@@ -1,1 +1,5 @@
-install_package "node-v0.2.3" "https://nodejs.org/dist/v0.2.3/node-v0.2.3.tar.gz#7358f8969b7bf6da7b066185bfa72d3bbc92e80b174ff5ea0e2b536fd357c8cf" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.2.3" "https://nodejs.org/dist/v0.2.3/node-v0.2.3.tar.gz#7358f8969b7bf6da7b066185bfa72d3bbc92e80b174ff5ea0e2b536fd357c8cf"

@@ -1,1 +1,5 @@
-install_package "node-v0.1.27" "https://nodejs.org/dist/v0.1.27/node-v0.1.27.tar.gz#1f83401b9ede7558350e183fc4386234a803d1253e7fe99bce0aba7138270806" warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_package "node-v0.1.27" "https://nodejs.org/dist/v0.1.27/node-v0.1.27.tar.gz#1f83401b9ede7558350e183fc4386234a803d1253e7fe99bce0aba7138270806"

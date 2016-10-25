@@ -1,1 +1,5 @@
-install_git "iojs-0.12.0-dev" "https://github.com/iojs/io.js.git" "v0.12" standard warn_eol
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_git "iojs-0.12.0-dev" "https://github.com/iojs/io.js.git" "v0.12" standard

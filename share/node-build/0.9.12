@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v0.9.12/node-v0.9.12-darwin-x64.tar.gz#3e9db5d098688b4caa80c3de29f6623ff7c8420e43cb10d3a2b25d50dcf0e1db"
 binary darwin-x86 "https://nodejs.org/dist/v0.9.12/node-v0.9.12-darwin-x86.tar.gz#688c75eae59835335f537c4effa96a2ea51b0df2a630ef5f410f5796f71e8acd"
 binary linux-arm-pi "https://nodejs.org/dist/v0.9.12/node-v0.9.12-linux-arm-pi.tar.gz#8b44c62a58e8a8b39328a536759b663e8e0710db32b0b48cc0f6217096af0b50"
@@ -6,4 +10,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.9.12/node-v0.9.12-linux-x86.tar.gz#
 binary sunos-x64 "https://nodejs.org/dist/v0.9.12/node-v0.9.12-sunos-x64.tar.gz#b2dcc56ca896e9f0297ea3e41bb521e81cdea801dd6cb3ea1a4fe6b82be358f4"
 binary sunos-x86 "https://nodejs.org/dist/v0.9.12/node-v0.9.12-sunos-x86.tar.gz#cf3f8db68ae33e1b07a7a0e8eb84cec116765347814188c04528903803a97bdc"
 
-install_package "node-v0.9.12" "https://nodejs.org/dist/v0.9.12/node-v0.9.12.tar.gz#d1dbf425eb72b7c6d931f5fabf79b1e67ce1b2808c19c4b06a9aafe313ac2474" warn_eol
+install_package "node-v0.9.12" "https://nodejs.org/dist/v0.9.12/node-v0.9.12.tar.gz#d1dbf425eb72b7c6d931f5fabf79b1e67ce1b2808c19c4b06a9aafe313ac2474"
