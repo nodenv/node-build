@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_unsupported "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v0.12.10/node-v0.12.10-darwin-x64.tar.gz#c95df35ca1ed7b4b0ded815c1d49f36defcb1fdb882f6a8ef6106a07e3f2ffef"
 binary darwin-x86 "https://nodejs.org/dist/v0.12.10/node-v0.12.10-darwin-x86.tar.gz#d4abd2b778c9d803676ad6121e6fdbc625b9ea73e845b0ecd761c162e86150ca"
 binary linux-x64 "https://nodejs.org/dist/v0.12.10/node-v0.12.10-linux-x64.tar.gz#8fb4d6ed8934f0b0c92c26878511e1d340b068ee966c131ba0fccc1199f4349d"
@@ -5,4 +9,4 @@ binary linux-x86 "https://nodejs.org/dist/v0.12.10/node-v0.12.10-linux-x86.tar.g
 binary sunos-x64 "https://nodejs.org/dist/v0.12.10/node-v0.12.10-sunos-x64.tar.gz#d67f17540c711eb150b8a389af1b4e6ecdcab66a1648b7ce925af98ab52b2698"
 binary sunos-x86 "https://nodejs.org/dist/v0.12.10/node-v0.12.10-sunos-x86.tar.gz#beca24cc3615c5b1858817d121bd91eecdc3af5b98ed0c4c171e1ef60afac049"
 
-install_package "node-v0.12.10" "https://nodejs.org/dist/v0.12.10/node-v0.12.10.tar.gz#edbd3710512ec7518a3de4cabf9bfee6d12f278eef2e4b53422c7b063f6b976d" warn_unsupported
+install_package "node-v0.12.10" "https://nodejs.org/dist/v0.12.10/node-v0.12.10.tar.gz#edbd3710512ec7518a3de4cabf9bfee6d12f278eef2e4b53422c7b063f6b976d"
