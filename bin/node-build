@@ -610,7 +610,7 @@ build_package_warn_eol() {
   } >&3
 }
 
-build_package_warn_unsupported() {
+build_package_warn_lts_maintenance() {
   local package_name="$1"
 
   { echo

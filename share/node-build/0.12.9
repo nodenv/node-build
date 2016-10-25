@@ -1,5 +1,5 @@
 before_install_package() {
-  build_package_warn_unsupported "$1"
+  build_package_warn_lts_maintenance "$1"
 }
 
 binary darwin-x64 "https://nodejs.org/dist/v0.12.9/node-v0.12.9-darwin-x64.tar.gz#8a40582c8f346f4acb08ab29bdc171db5fea55603999e02be1ebfcdd2ed3ca83"
