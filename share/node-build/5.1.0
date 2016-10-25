@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v5.1.0/node-v5.1.0-darwin-x64.tar.gz#4752961731e579a26dd45d765f76e67f70683b0026c0035fc4c30d70c7baf4f0"
 binary linux-arm64 "https://nodejs.org/dist/v5.1.0/node-v5.1.0-linux-arm64.tar.gz#8e6eb18b4499c4c509b4132d3393121a7d344d4053400798614c843977696ff3"
 binary linux-armv6l "https://nodejs.org/dist/v5.1.0/node-v5.1.0-linux-armv6l.tar.gz#a6a64bf9d2e6b792505841b187eeb1c3ac971551840dab2a9a4a4719d1e7d150"
