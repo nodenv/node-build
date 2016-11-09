@@ -1,0 +1,13 @@
+binary aix-ppc64 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-aix-ppc64.tar.gz#5ef780ab1d04674c7ec528eeb112d37a42a58f00c9f15954655929c5adaf1bbe"
+binary darwin-x64 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-darwin-x64.tar.gz#b4615c79eac53f1a660b94e047d1dc64d797bf365f305ac9e0c2ac7304340171"
+binary linux-arm64 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-arm64.tar.gz#fcaa2281b2ea4e0a6b598fae4fbee3708aded5b1b0b2397f8fab18c13e3ea3be"
+binary linux-armv6l "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-armv6l.tar.gz#2e87c4249ebd29e6022aa289ec8c7632e92ba7a5c61a5e035c0acefa8a143772"
+binary linux-armv7l "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-armv7l.tar.gz#8899d4340c23282ec4dc28b6a04bb20279da46bf92db58abce50a616877cd811"
+binary linux-ppc64le "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-ppc64le.tar.gz#6cc4ccb25c21bd2331b30aa4193c21c4d3ac2d9d1fd7300157285383c288ec29"
+binary linux-ppc64 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-ppc64.tar.gz#662e3806f9ce46d0f92a347db55b50c3161406439317976c5fdb51e1dd189861"
+binary linux-s390x "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-s390x.tar.gz#c642a97c368644e8808cb006c2ad5822c917fa36bce3e8f41a01a4a2bb84740c"
+binary linux-x64 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-x64.tar.gz#0d2f13477ba991950bd9938e38c8d943b9bf2e899adcd4a28e98532f029e9910"
+binary linux-x86 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-linux-x86.tar.gz#f6bcb57e7e693b25ad448faf18300bb9f823bc114aa0b050b7953978511e9a1d"
+binary sunos-x86 "https://nodejs.org/dist/v7.1.0/node-v7.1.0-sunos-x86.tar.gz#3dff7316291080f351349977d431f4ee0581c6d8961ec8b4ea747c8a79edd4ab"
+
+install_package "node-v7.1.0" "https://nodejs.org/dist/v7.1.0/node-v7.1.0.tar.gz#595e7e2a37d1e0573044a90077bb12c0f750e5d8851899ffa74038238da9a983"
