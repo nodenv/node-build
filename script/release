@@ -16,7 +16,7 @@
 
 set -e
 
-git fetch -q --tags origin master
+git fetch --quiet --tags origin master
 
 existing="$(git tag --points-at HEAD)"
 if [ -n "$existing" ]; then
