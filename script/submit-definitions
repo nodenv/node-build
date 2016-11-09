@@ -34,7 +34,7 @@ npm run-script scrape-definitions
 for node_def in $(git ls-files --others --exclude-standard -- share/node-build/); do
   node_name="$(basename "$node_def")"
 
-  git checkout --quiet -B "$node_name" origin/master
+  git checkout --quiet -B "node/$node_name" origin/master
   git add -- "$node_def"
   git commit --message "$node_name" --message "Created with \`npm run submit-definitions\`." --only -- "$node_def"
   git push --set-upstream "$remote" HEAD
