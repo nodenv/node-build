@@ -1,6 +1,7 @@
 #!/usr/bin/env bats
 
 load test_helper
+export NODE_BUILD_SKIP_MIRROR=1
 export NODE_BUILD_CACHE_PATH=
 export NODE_BUILD_ARIA2_OPTS=
 
