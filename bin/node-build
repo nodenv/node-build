@@ -16,6 +16,10 @@
 
 NODE_BUILD_VERSION=2.4.0
 
+if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
+  NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
+fi
+
 OLDIFS="$IFS"
 
 set -E
@@ -441,6 +445,10 @@ fetch_tarball() {
   if [ "$package_url" != "${package_url/\#}" ]; then
     checksum="${package_url#*#}"
     package_url="${package_url%%#*}"
+  fi
+
+  if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
+    package_url="${package_url/https:\/\/nodejs.org\/dist\//$NODE_BUILD_MIRROR_URL/}"
   fi
 
   local tar="tar"
