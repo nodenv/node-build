@@ -92,21 +92,3 @@ setup() {
   unstub curl
   unstub shasum
 }
-
-
-@test "default mirror URL" {
-  export NODE_BUILD_MIRROR_URL=
-  local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
-
-  stub shasum true "echo $checksum"
-  stub curl "-*I* : true" \
-    "-q -o * -*S* https://?*/$checksum : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
-
-  install_fixture definitions/with-checksum
-
-  assert_success
-  assert [ -x "${INSTALL_ROOT}/bin/package" ]
-
-  unstub curl
-  unstub shasum
-}

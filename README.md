@@ -132,8 +132,8 @@ You can set certain environment variables to control the build process.
   built. By default, this is a subdirectory of `TMPDIR`.
 * `NODE_BUILD_CACHE_PATH`, if set, specifies a directory to use for caching
   downloaded package files.
-* `NODE_BUILD_MIRROR_URL` overrides the default mirror URL root to one of your
-  choosing.
+* `NODE_BUILD_MIRROR_URL` select a mirror from which to download packages
+  instead of their original source URLs.
 * `NODE_BUILD_SKIP_MIRROR`, if set, forces node-build to download packages from
   their original source URLs instead of using a mirror.
 * `NODE_BUILD_ROOT` overrides the default location from where build definitions
