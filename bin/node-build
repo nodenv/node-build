@@ -903,6 +903,10 @@ ARIA2_OPTS="${NODE_BUILD_ARIA2_OPTS} ${IPV4+--disable-ipv6=true} ${IPV6+--disabl
 CURL_OPTS="${NODE_BUILD_CURL_OPTS} ${IPV4+--ipv4} ${IPV6+--ipv6}"
 WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
 
+if ! has_checksum_support compute_sha2; then
+  NODE_BUILD_SKIP_MIRROR=true
+fi
+
 if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
   NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
 else
