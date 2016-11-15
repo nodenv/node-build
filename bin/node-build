@@ -444,7 +444,7 @@ fetch_tarball() {
     package_url="${package_url%%#*}"
 
     if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
-      mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
+      mirror_url="${package_url/https:\/\/nodejs.org\/dist/$NODE_BUILD_MIRROR_URL}"
     fi
   fi
 
