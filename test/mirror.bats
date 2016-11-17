@@ -4,6 +4,7 @@ load test_helper
 export NODE_BUILD_SKIP_MIRROR=
 export NODE_BUILD_CACHE_PATH=
 export NODE_BUILD_MIRROR_URL=http://mirror.example.com
+export NODE_BUILD_MIRROR_CMD=mirror_stub
 export NODE_BUILD_CURL_OPTS=
 
 setup() {
@@ -15,7 +16,6 @@ setup() {
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/without-checksum
-  echo "$output" >&2
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
@@ -43,14 +43,15 @@ setup() {
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
   stub shasum true "echo $checksum"
-  stub curl "-*I* $mirror_url : true" \
-    "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
+  stub curl "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
+  stub mirror_stub ": echo $mirror_url"
 
   install_fixture definitions/with-checksum
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
+  unstub mirror_stub
   unstub curl
   unstub shasum
 }
@@ -61,14 +62,16 @@ setup() {
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
   stub shasum true "echo $checksum"
-  stub curl "-*I* $mirror_url : false" \
-    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
+  stub curl "-q -o * -*S* $mirror_url : false"\
+            "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
+  stub mirror_stub ": echo $mirror_url"
 
   install_fixture definitions/with-checksum
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
+  unstub mirror_stub
   unstub curl
   unstub shasum
 }
@@ -79,16 +82,16 @@ setup() {
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
   stub shasum true "echo invalid" "echo $checksum"
-  stub curl "-*I* $mirror_url : true" \
-    "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
+  stub curl "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
     "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
+  stub mirror_stub ": echo $mirror_url"
 
   install_fixture definitions/with-checksum
-  echo "$output" >&2
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
+  unstub mirror_stub
   unstub curl
   unstub shasum
 }

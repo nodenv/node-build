@@ -202,6 +202,13 @@ matches_platform() {
   [ "${platform[2]}-${platform[0]}" = "$match" ]
 }
 
+mirror() {
+  local package_url="$1"
+  local checksum="$2"
+
+  echo "${package_url/https:\/\/nodejs.org\/dist/$NODE_BUILD_MIRROR_URL}"
+}
+
 try_binary(){
   [ -n "$BINARY_URL" ] && [ -z "$SKIP_BINARY" ] && [ -z "$BINARY_ATTEMPT" ]
 }
@@ -443,8 +450,8 @@ fetch_tarball() {
     checksum="${package_url#*#}"
     package_url="${package_url%%#*}"
 
-    if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
-      mirror_url="${package_url/https:\/\/nodejs.org\/dist/$NODE_BUILD_MIRROR_URL}"
+    if [ -z "$NODE_BUILD_SKIP_MIRROR" ]; then
+      mirror_url="$("${NODE_BUILD_MIRROR_CMD:=mirror}" $package_url $checksum 2>&4)" || unset mirror_url
     fi
   fi
 
@@ -466,9 +473,7 @@ fetch_tarball() {
   fi
 
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
-    local tarball_filename=$(basename $package_url)
-    echo "Downloading ${tarball_filename}..." >&2
-    http head "$mirror_url" &&
+    echo "Downloading $(basename $package_url)..." >&2
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
@@ -905,12 +910,9 @@ WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
 
 NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
 
-if ! has_checksum_support compute_sha2; then
+if ! has_checksum_support compute_sha2 ||
+  { [ -z "$NODE_BUILD_MIRROR_URL" ] && [ -z "$NODE_BUILD_MIRROR_CMD" ]; } then
   NODE_BUILD_SKIP_MIRROR=true
-fi
-
-if [ -n "$NODE_BUILD_SKIP_MIRROR" ] || [ -z "$NODE_BUILD_MIRROR_URL" ]; then
-  unset NODE_BUILD_MIRROR_URL
 fi
 
 SEED="$(date "+%Y%m%d%H%M%S").$$"
