@@ -69,7 +69,7 @@ if [ -z "$FORCE" ]; then
     exit 1
   fi
 
-  read -p "nodenv: remove $PREFIX? "
+  read -p "nodenv: remove $PREFIX? [yN] "
   case "$REPLY" in
   y* | Y* ) ;;
   * ) exit 1 ;;
