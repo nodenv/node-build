@@ -132,6 +132,12 @@ You can set certain environment variables to control the build process.
   built. By default, this is a subdirectory of `TMPDIR`.
 * `NODE_BUILD_CACHE_PATH`, if set, specifies a directory to use for caching
   downloaded package files.
+* `NODE_BUILD_MIRROR_CMD` provide a command to construct the package mirror
+  URL.
+* `NODE_BUILD_MIRROR_URL` select a mirror from which to download packages
+  instead of their original source URLs.
+* `NODE_BUILD_SKIP_MIRROR`, if set, forces node-build to download packages from
+  their original source URLs instead of using a mirror.
 * `NODE_BUILD_ROOT` overrides the default location from where build definitions
   in `share/node-build/` are looked up.
 * `NODE_BUILD_DEFINITIONS` can be a list of colon-separated paths that get
@@ -173,6 +179,20 @@ installing it.
 
 Checksums are optional and specified as anchors on the package URL in each
 definition. (All bundled definitions include checksums.)
+
+### Package download mirrors
+
+You can point node-build to another mirror by specifying the
+`NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to run your
+own local mirror, for example. Package mirror URLs are constructed by invoking
+`NODE_BUILD_MIRROR_CMD` with two arguments: `package_url` and `checksum`. The
+provided command should print the desired mirror's package URL. If
+`NODE_BUILD_MIRROR_CMD` is unset, package mirror URL construction defaults to
+simply replacing `https://nodejs.org/dist` with `NODE_BUILD_MIRROR_URL`.
+
+If you don't have an SHA2 program installed, node-build will skip the download
+mirror and use official URLs instead. You can force node-build to bypass the
+mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
 
 ### Package download caching
 

@@ -202,6 +202,13 @@ matches_platform() {
   [ "${platform[2]}-${platform[0]}" = "$match" ]
 }
 
+mirror() {
+  local package_url="$1"
+  local checksum="$2"
+
+  echo "${package_url/https:\/\/nodejs.org\/dist/$NODE_BUILD_MIRROR_URL}"
+}
+
 try_binary(){
   [ -n "$BINARY_URL" ] && [ -z "$SKIP_BINARY" ] && [ -z "$BINARY_ATTEMPT" ]
 }
@@ -436,11 +443,16 @@ http_get_wget() {
 fetch_tarball() {
   local package_name="$1"
   local package_url="$2"
+  local mirror_url
   local checksum
 
   if [ "$package_url" != "${package_url/\#}" ]; then
     checksum="${package_url#*#}"
     package_url="${package_url%%#*}"
+
+    if [ -z "$NODE_BUILD_SKIP_MIRROR" ]; then
+      mirror_url="$("${NODE_BUILD_MIRROR_CMD:=mirror}" $package_url $checksum 2>&4)" || unset mirror_url
+    fi
   fi
 
   local tar="tar"
@@ -461,8 +473,8 @@ fetch_tarball() {
   fi
 
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
-    local tarball_filename=$(basename $package_url)
-    echo "Downloading ${tarball_filename}..." >&2
+    echo "Downloading $(basename $package_url)..." >&2
+    download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
@@ -895,6 +907,13 @@ fi
 ARIA2_OPTS="${NODE_BUILD_ARIA2_OPTS} ${IPV4+--disable-ipv6=true} ${IPV6+--disable-ipv6=false}"
 CURL_OPTS="${NODE_BUILD_CURL_OPTS} ${IPV4+--ipv4} ${IPV6+--ipv6}"
 WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
+
+NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
+
+if ! has_checksum_support compute_sha2 ||
+  { [ -z "$NODE_BUILD_MIRROR_URL" ] && [ -z "$NODE_BUILD_MIRROR_CMD" ]; } then
+  NODE_BUILD_SKIP_MIRROR=true
+fi
 
 SEED="$(date "+%Y%m%d%H%M%S").$$"
 LOG_PATH="${TMP}/node-build.${SEED}.log"
