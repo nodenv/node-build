@@ -62,9 +62,9 @@ Or, if you would like to install the latest development release:
 
     brew install --HEAD node-build
 
-Note, that if you chose to install the HEAD package, you need to reinstall it for every update:
+To upgrade the HEAD package use `--fetch-HEAD` option:
 
-    brew reinstall --HEAD node-build
+    brew upgrade --fetch-HEAD node-build
 
 ## Usage
 
