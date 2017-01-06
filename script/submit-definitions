@@ -38,7 +38,7 @@ for node_def in $(git ls-files --others --exclude-standard -- share/node-build/)
   git add -- "$node_def"
   git commit --message "$node_name" --message "Created with \`npm run submit-definitions\`." --only -- "$node_def"
   git push --set-upstream "$remote" HEAD
-  hub pull-request --message="$node_name"
+  hub pull-request --message="$(git log -1 --format='%B')"
   git checkout --quiet -
 done
 
