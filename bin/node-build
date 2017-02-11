@@ -612,6 +612,10 @@ package_option() {
   eval "$variable=( \"\${value[@]}\" )"
 }
 
+build_package_without_intl() {
+  package_option chakracore configure --without-intl
+}
+
 build_package_warn_eol() {
   local package_name="$1"
 
@@ -728,6 +732,21 @@ fix_jxcore_directory_structure() {
 
 fix_directory_permissions() {
   find "$PREFIX_PATH" -type d \( -perm -020 -o -perm -002 \) -exec chmod go-w {} \;
+}
+
+needs_icu() {
+  [[ "$NODE_CONFIGURE_OPTS" != *--with-icu-path=* ]] &&
+  ! use_homebrew_icu
+}
+
+use_homebrew_yaml() {
+  local libdir="$(brew --prefix icu4c 2>/dev/null || true)"
+  if [ -d "$libdir" ]; then
+    echo "node-build: use icu4c from homebrew"
+    package_option chakracore configure --with-icu-path="$libdir"
+  else
+    return 1
+  fi
 }
 
 # Ensure that directories listed in LDFLAGS exist
