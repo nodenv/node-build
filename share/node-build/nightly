@@ -1,9 +1,3 @@
-after_install_package() {
-  local v="$("${PREFIX_PATH}/bin/node" -v)"
-  local prefix="$(dirname "$PREFIX_PATH")"
-  mv "$PREFIX_PATH" "${prefix}/${v#v}"
-}
-
 nightlies="https://nodejs.org/download/nightly"
 
 read -ra manifest < <(http get "${nightlies}/index.tab" | grep src | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
