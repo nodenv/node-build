@@ -61,6 +61,7 @@ assert_build_log() {
 @test "apply node patch before building" {
   cached_tarball "node-v4.0.0"
 
+  stub uname '-s : echo Linux'
   stub brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
@@ -68,6 +69,7 @@ assert_build_log() {
   TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<<""
   assert_success
 
+  unstub uname
   unstub make
   unstub patch
 
@@ -82,6 +84,7 @@ OUT
 @test "apply node patch from git diff before building" {
   cached_tarball "node-v4.0.0"
 
+  stub uname '-s : echo Linux'
   stub brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
@@ -89,6 +92,7 @@ OUT
   TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<<"diff --git a/script.rb"
   assert_success
 
+  unstub uname
   unstub make
   unstub patch
 
@@ -174,6 +178,7 @@ OUT
 @test "setting NODE_MAKE_INSTALL_OPTS to a multi-word string" {
   cached_tarball "node-v4.0.0"
 
+  stub uname '-s : echo Linux'
   stub_make_install
 
   export NODE_MAKE_INSTALL_OPTS="DOGE=\"such wow\""
@@ -182,6 +187,7 @@ install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
   assert_success
 
+  unstub uname
   unstub make
 
   assert_build_log <<OUT
@@ -194,6 +200,7 @@ OUT
 @test "setting MAKE_INSTALL_OPTS to a multi-word string" {
   cached_tarball "node-v4.0.0"
 
+  stub uname '-s : echo Linux'
   stub_make_install
 
   export MAKE_INSTALL_OPTS="DOGE=\"such wow\""
@@ -202,6 +209,7 @@ install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
   assert_success
 
+  unstub uname
   unstub make
 
   assert_build_log <<OUT
@@ -254,6 +262,7 @@ apply -p1 -i /my/patch.diff
 exec ./configure "\$@"
 CONF
 
+  stub uname '-s : echo Linux'
   stub apply 'echo apply "$@" >> build.log'
   stub_make_install
 
@@ -263,6 +272,7 @@ install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
   assert_success
 
+  unstub uname
   unstub make
   unstub apply
 
