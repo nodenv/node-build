@@ -39,5 +39,5 @@ fi
 { echo "node-build ${npm_package_version:?}"
   echo
   git log --no-merges --format='%w(0,0,2)* %B' --reverse "${previous_tag}..HEAD" -- bin share
-} | hub release create --draft --file=- "v${npm_package_version}" || true
+} | hub release create --file=- "v${npm_package_version}" || true
 hub browse -- "releases/v${npm_package_version}"
