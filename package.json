@@ -1,6 +1,6 @@
 {
   "name": "node-build",
-  "version": "2.5.9",
+  "version": "2.5.10",
   "private": true,
   "description": "Install NodeJS versions",
   "homepage": "https://github.com/nodenv/node-build#readme",
