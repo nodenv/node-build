@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# Usage: script/fetch-definitions [-v [<version>]] [-a]
+#
+# fetch new node definitions
+
+set -e
+
+add=false
+
+while getopts "av:" opt; do
+  case $opt in
+    a)
+      add=true
+      ;;
+    v)
+      version="${OPTARG}"
+      ;;
+    :)
+      echo "$0: Option -$OPTARG requires an argument."
+      exit 1;;
+    \?)
+      echo "$0: Invalid option: -$OPTARG"
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$version" ]; then
+  echo "$0: Version (-v <version>) required."
+  exit 1
+fi
+
+root="https://nodejs.org/dist/v${version}"
+url="${root}/SHASUMS256.txt"
+code=$(curl -LI $url -o /dev/null -w '%{http_code}' -s)
+
+if [ $code != 200 ]; then
+  echo "$0: definition not found: ${version} ($url)"
+  exit 1
+fi
+
+function fetch() {
+  curl $url -s | grep -e 'tar.gz$' | while read line
+  do
+    shasum=$(echo $line | cut -d' ' -f1)
+    filename=$(echo $line | cut -d' ' -f2)
+    archname=$(echo ${filename#node-v${version}-} | sed 's/\.tar\.gz//g')
+    if [ $archname == 'headers' ]; then
+      continue
+    elif [ -z $(echo $archname | grep "node-v${version}") ]; then
+      echo "binary ${archname} \"${root}/${filename}#${shasum}\""
+    else
+      echo ""
+      echo "install_package \"node-v${version}\" \"${root}/${filename}#${shasum}\""
+    fi
+  done
+}
+
+fetched=$(fetch)
+echo "$fetched"
+
+if [ $add ]; then
+  current=$(cd $(dirname $0); pwd)
+  echo "$fetched" > "$current/../share/node-build/${version}"
+fi
