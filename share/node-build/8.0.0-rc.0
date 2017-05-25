@@ -1,6 +1,5 @@
 binary aix-ppc64 "https://nodejs.org/download/rc/v8.0.0-rc.0/node-v8.0.0-rc.0-aix-ppc64.tar.gz#7ff59b8b1a269008b49e7521e71789dc039e81bc585920ef2e3599c6ce649894"
 binary darwin-x64 "https://nodejs.org/download/rc/v8.0.0-rc.0/node-v8.0.0-rc.0-darwin-x64.tar.gz#462817c19854af394557917668768f0ba4c30c4f9b006ec61d446b584273587f"
-binary rc.0-headers "https://nodejs.org/download/rc/v8.0.0/node-v8.0.0-rc.0-headers.tar.gz#48081dd287c3f34eeb69fe5319bb361f2b94bdadfeb13c92af2620d78ad424f3"
 binary linux-arm64 "https://nodejs.org/download/rc/v8.0.0-rc.0/node-v8.0.0-rc.0-linux-arm64.tar.gz#1fd62159b6c326695afaf450c5492059f6c5efc1d49203a954dd5335a315b0b7"
 binary linux-armv6l "https://nodejs.org/download/rc/v8.0.0-rc.0/node-v8.0.0-rc.0-linux-armv6l.tar.gz#fe10b737395ba9a61b7dabb1d3fb6afc5b84604fa9ac331c21e19d88f594c493"
 binary linux-armv7l "https://nodejs.org/download/rc/v8.0.0-rc.0/node-v8.0.0-rc.0-linux-armv7l.tar.gz#c08c4f02787b5a4c0ce1cfc03fab9c6035148018a0c888480ef726a04ee63d5b"
