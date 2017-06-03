@@ -713,6 +713,17 @@ after_install_package() {
   local stub=1
 }
 
+rename_node() {
+  local name=${1:-$(./bin/node --version)}
+  local prefix=$(dirname "$PREFIX_PATH")
+  local new_path=${prefix:?not set}/${name#v}
+
+  #TODO check for preexisting
+  mv -f "$PREFIX_PATH" "$new_path"
+  ln -s "$(basename $new_path)" "$PREFIX_PATH"
+  PREFIX_PATH=$new_path
+}
+
 fix_jxcore_directory_structure() {
   {
     mkdir -p "$PREFIX_PATH/bin"

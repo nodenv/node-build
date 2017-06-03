@@ -1,3 +1,7 @@
+after_install_package() {
+  rename_node
+}
+
 downloads="https://nodejs.org/download/nightly"
 
 read -ra manifest < <(http get "${downloads}/index.tab" | grep src | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
