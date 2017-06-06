@@ -245,6 +245,18 @@ OUT
   unstub uname
 }
 
+@test "make on FreeBSD 11" {
+  cached_tarball "node-v4.0.0"
+
+  stub uname "-s : echo FreeBSD" "-r : echo 11.0-RELEASE"
+  stub_make_install
+
+  MAKE= install_fixture definitions/vanilla-node
+  assert_success
+
+  unstub uname
+}
+
 @test "can use NODE_CONFIGURE to apply a patch" {
   cached_tarball "node-v4.0.0"
 
