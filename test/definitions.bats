@@ -71,11 +71,13 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
   expected="0.8.9
 0.10.40
 4.0.0
+4.2.3
+4.11.1
 iojs-0.12.0-dev
 iojs-1.0.0
 iojs-1.x-dev
 iojs-3.3.1"
-  for ver in "$expected"; do
+  for ver in $expected; do
     touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
   done
   run node-build --definitions
