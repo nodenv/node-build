@@ -1,0 +1,30 @@
+downloads="https://nodejs.org/download/rc"
+
+read -ra manifest < <(http get "${downloads}/index.tab" | grep src | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
+
+version="${manifest[0]}"
+date="${manifest[1]}"
+
+# warn message if more than one release for recent date
+
+latest="$(http get "${downloads}/index.tab" | grep "$date")"
+if [ $(wc -l <<<"$latest") -gt 1 ]; then
+  {
+    echo "More than one v8-canary release; installing first of:"
+    echo "$latest"
+  } >&2
+fi
+
+# do platform matching of binaries
+
+IFS=',' read -ra files <<< "${manifest[2]}"
+for file in "${files[@]}"; do
+  case "$file" in
+    headers | src | osx-*-pkg | win-* ) continue;;
+    osx-x64-tar ) file="darwin-x64";;
+  esac
+
+  binary "$file" "${downloads}/${version}/node-${version}-${file}.tar.gz"
+done
+
+install_package "$version" "${downloads}/${version}/node-${version}.tar.gz"
