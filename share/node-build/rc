@@ -1,12 +1,6 @@
-# after_install_package() {
-#   local v="$("${PREFIX_PATH}/bin/node" -v)"
-#   local prefix="$(dirname "$PREFIX_PATH")"
-#   mv "$PREFIX_PATH" "${prefix}/${v#v}"
-# }
+downloads="https://nodejs.org/download/rc"
 
-downloads="https://nodejs.org/download/chakracore-nightly"
-
-read -ra manifest < <(http get "${downloads}/index.tab" | grep linux-x64,osx-x64-tar | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
+read -ra manifest < <(http get "${downloads}/index.tab" | grep src | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
 
 version="${manifest[0]}"
 date="${manifest[1]}"
@@ -16,7 +10,7 @@ date="${manifest[1]}"
 latest="$(http get "${downloads}/index.tab" | grep "$date")"
 if [ $(wc -l <<<"$latest") -gt 1 ]; then
   {
-    echo "More than one nightly release; installing first of:"
+    echo "More than one v8-canary release; installing first of:"
     echo "$latest"
   } >&2
 fi
