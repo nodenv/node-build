@@ -4,16 +4,16 @@
 #   mv "$PREFIX_PATH" "${prefix}/${v#v}"
 # }
 
-nightlies="https://nodejs.org/download/chakracore-nightly"
+downloads="https://nodejs.org/download/chakracore-nightly"
 
-read -ra manifest < <(http get "${nightlies}/index.tab" | grep linux-x64,osx-x64-tar | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
+read -ra manifest < <(http get "${downloads}/index.tab" | grep linux-x64,osx-x64-tar | sort -rn -t $'\t' -k2,2 -k1,1 | head -1)
 
 version="${manifest[0]}"
 date="${manifest[1]}"
 
 # warn message if more than one release for recent date
 
-latest="$(http get "${nightlies}/index.tab" | grep "$date")"
+latest="$(http get "${downloads}/index.tab" | grep "$date")"
 if [ $(wc -l <<<"$latest") -gt 1 ]; then
   {
     echo "More than one nightly release; installing first of:"
@@ -30,7 +30,7 @@ for file in "${files[@]}"; do
     osx-x64-tar ) file="darwin-x64";;
   esac
 
-  binary "$file" "${nightlies}/${version}/node-${version}-${file}.tar.gz"
+  binary "$file" "${downloads}/${version}/node-${version}-${file}.tar.gz"
 done
 
-install_package "$version" "${nightlies}/${version}/node-${version}.tar.gz"
+install_package "$version" "${downloads}/${version}/node-${version}.tar.gz"
