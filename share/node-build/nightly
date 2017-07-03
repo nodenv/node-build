@@ -1,5 +1,5 @@
 after_install_package() {
-  rename_node
+  alias_version_name
 }
 
 downloads="https://nodejs.org/download/nightly"

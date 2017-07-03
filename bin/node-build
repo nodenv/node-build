@@ -713,7 +713,7 @@ after_install_package() {
   local stub=1
 }
 
-rename_node() {
+alias_version_name() {
   local name=${1:-$(./bin/node --version)}
   local prefix=$(dirname "$PREFIX_PATH")
   local new_path=${prefix:?not set}/${name#v}
