@@ -718,8 +718,12 @@ alias_version_name() {
   local prefix=$(dirname "$PREFIX_PATH")
   local new_path=${prefix:?not set}/${name#v}
 
-  #TODO check for preexisting
-  mv -f "$PREFIX_PATH" "$new_path"
+  if [ -d "$new_path" ]; then
+    echo "node-build: $new_path already exists" >&2
+    return 1
+  fi
+
+  mv "$PREFIX_PATH" "$new_path"
   ln -s "$(basename $new_path)" "$PREFIX_PATH"
   PREFIX_PATH=$new_path
 }
