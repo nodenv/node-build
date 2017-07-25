@@ -21,9 +21,6 @@
     "bin": "bin",
     "test": "test"
   },
-  "config": {
-    "publish": true
-  },
   "scripts": {
     "test": "bats ${CI:+--tap} test",
     "verify-definitions": "script/verify-definitions",
@@ -33,7 +30,7 @@
     "sync-version": "perl -pi -e \"s/^(NODE_BUILD_VERSION=).*$/\\${1}${npm_package_version}/\" -- bin/node-build && git add -- bin/node-build",
     "preversion": "script/release",
     "version": "npm run sync-version",
-    "postversion": "git push --follow-tags && [ \"$npm_package_config_publish\" != true ] || npm run publish:brew"
+    "postversion": "git push --follow-tags && npm run publish:brew"
   },
   "devDependencies": {
     "bats": "^0.4.2",
