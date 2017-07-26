@@ -1,43 +1,22 @@
 #!/usr/bin/env bash
 # Usage: script/release
 #
-# preversion
-# - fetchs from origin
-# - ensures it isn't already tagged
-# - ensures currently on master branch
-# - ensures there are bin or definition changes to release
-# version (handled by npm and script/update-version)
-# - bumps version in package.json
-# - bumps NODE_BUILD_VERSION in bin/node-build
-# - commits and tags
-# postversion (handled by npm-script)
-# - pushes master + tag to GitHub
-# - opens pull request to update the Homebrew formula
+# - creates a Release on github
 
 set -e
 
-git fetch --quiet --tags origin master
+new_version=${1:-$npm_package_version}
 
-existing="$(git tag --points-at HEAD)"
-if [ -n "$existing" ]; then
-  echo "Aborting: HEAD is already tagged as '${existing}'" >&2
-  exit 1
-fi
+previous_tag() {
+ git describe --tags --abbrev=0
+}
 
-current_branch="$(git symbolic-ref --short HEAD)"
-if [ "$current_branch" != master ]; then
-  echo "Aborting: Not currently on master branch" >&2
-  exit 1
-fi
-
-previous_tag="$(git describe --tags --abbrev=0)"
-if git diff --quiet "${previous_tag}..HEAD" -- bin share; then
-  echo "Aborting: No features to release since '${previous_tag}'" >&2
-  exit 1
-fi
-
-{ echo "node-build ${npm_package_version:?}"
+release_message() {
+  echo "node-build $new_version"
   echo
-  git log --no-merges --format='%w(0,0,2)* %B' --reverse "${previous_tag}..HEAD" -- bin share
-} | hub release create --file=- "v${npm_package_version}" || true
-hub browse -- "releases/v${npm_package_version}"
+  git log --no-merges --format='%w(0,0,2)* %B' --reverse "$(previous_tag)..HEAD" -- bin share
+}
+
+release_message | hub release create --file=- "v$new_version" || true
+
+hub browse -- "releases/v$new_version"
