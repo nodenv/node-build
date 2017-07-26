@@ -28,9 +28,9 @@
     "submit-definitions": "script/submit-definitions -r",
     "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
     "publish:github": "git push --follow-tags && script/github_release",
-    "sync-version": "perl -pi -e \"s/^(NODE_BUILD_VERSION=).*$/\\${1}${npm_package_version}/\" -- bin/node-build && git add -- bin/node-build",
+    "stamp-version": "perl -pi -e \"s/^(NODE_BUILD_VERSION=).*$/\\${1}${npm_package_version}/\" -- bin/node-build && git add -- bin/node-build",
     "preversion": "script/preversion",
-    "version": "npm run sync-version",
+    "version": "npm run stamp-version",
     "postversion": "npm run publish:github && npm run publish:brew"
   },
   "devDependencies": {
