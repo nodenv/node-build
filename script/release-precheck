@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Usage: script/preversion
+# Usage: script/release-precheck
 #
 # - fetch from origin
 # - ensure it isn't already tagged
