@@ -21,19 +21,17 @@
     "bin": "bin",
     "test": "test"
   },
-  "config": {
-    "publish": true
-  },
   "scripts": {
     "test": "bats ${CI:+--tap} test",
     "verify-definitions": "script/verify-definitions",
     "scrape-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
     "submit-definitions": "script/submit-definitions -r",
     "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
-    "sync-version": "perl -pi -e \"s/^(NODE_BUILD_VERSION=).*$/\\${1}${npm_package_version}/\" -- bin/node-build && git add -- bin/node-build",
-    "preversion": "script/release",
-    "version": "npm run sync-version",
-    "postversion": "git push --follow-tags && [ \"$npm_package_config_publish\" != true ] || npm run publish:brew"
+    "publish:github": "git push --follow-tags && script/github_release",
+    "stamp-version": "perl -pi -e \"s/^(NODE_BUILD_VERSION=).*$/\\${1}${npm_package_version}/\" -- bin/node-build && git add -- bin/node-build",
+    "preversion": "script/preversion",
+    "version": "npm run stamp-version",
+    "postversion": "npm run publish:github && npm run publish:brew"
   },
   "devDependencies": {
     "bats": "^0.4.2",
