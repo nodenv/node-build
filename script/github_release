@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-# Usage: script/release
+#!/usr/bin/env sh
+# Usage: script/github_release <version>
 #
 # - creates a Release on github
 
