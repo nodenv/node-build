@@ -1,0 +1,13 @@
+binary aix-ppc64 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-aix-ppc64.tar.gz#942d9c0e90d7763a75a714e8b3c5e1f196708053b8ea4ff3251c2025dd03b81f"
+binary darwin-x64 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-darwin-x64.tar.gz#8804e900b6f826e5a393da7a5aca6b69afe18a913c01c882bf9ccadd11c08ebb"
+binary linux-arm64 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-arm64.tar.gz#cd81674957c2842d61f641f4dc2ab5e3e7e3b270535cd311e9854b754307ca3a"
+binary linux-armv7l "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-armv7l.tar.gz#948f73e67d1811ce2ca29e2d673ce7dba86c54b9ad8b6dfbd208f95e9b335f04"
+binary linux-ppc64le "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-ppc64le.tar.gz#a79bc4519c50115e8bc3fba21b21ea37d6513cfc6fe447e8931563e4514c3bf4"
+binary linux-ppc64 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-ppc64.tar.gz#15f2a09cb3df62758635cff472e91bbe7309224c809c355efdea7fa00d9cfce7"
+binary linux-s390x "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-s390x.tar.gz#f2b44c321b88c25104c954868ec5a9bf3288a3906657915aa45fd0060639d4d3"
+binary linux-x64 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-x64.tar.gz#44057859b31a3e900a28dbb2696e4d6b829025c6085f55cceddf489e22443493"
+binary linux-x86 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-linux-x86.tar.gz#c183eaacbdae1719418e1a46e6e9421d97027fef943c03b512bc581b080631ce"
+binary sunos-x64 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-sunos-x64.tar.gz#fd472aa0bfd762a721244c64a02253e0f07ea80f14b0c1b9f355c4d7461807e1"
+binary sunos-x86 "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0-sunos-x86.tar.gz#a030605effd6e2303790d381f96c1c89e3dce08173a414fa521e48f4b1bf8c2d"
+
+install_package "node-v8.3.0-rc.0" "https://nodejs.org/download/rc/v8.3.0-rc.0/node-v8.3.0-rc.0.tar.gz#86682fcd068b58ab3a36d183ac54228735a5ebc3caa3353a81a5bd824b9cd967"
