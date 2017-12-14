@@ -1,0 +1,13 @@
+binary aix-ppc64 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-aix-ppc64.tar.gz#d0bfbd7697c1249b536586cfdc257828f2f56f30945fd120d735f646f297828c"
+binary darwin-x64 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-darwin-x64.tar.gz#0539601e67e9be6995d4ba4abe565a748e25699060631369f59166d5de43d21a"
+binary linux-arm64 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-arm64.tar.gz#7b11f47f695d3be97b5b69c6546b7af005f9b66f093bda497310546e2dd5605c"
+binary linux-armv6l "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-armv6l.tar.gz#bdb46d3fc1baf19f9562143a94bcf6a285041327a8032352e85ba8b438b7909b"
+binary linux-armv7l "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-armv7l.tar.gz#1fd03343082842caeac1bc810fb4292ef46724f1387274b32e4282f0b2b57498"
+binary linux-ppc64le "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-ppc64le.tar.gz#7ec7f7321b223f3f0461b3d8b93762a043eb1dbe9bd7d784472db12fbd4c5699"
+binary linux-s390x "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-s390x.tar.gz#1d2964a0f0897ae44797b2255ea30c525a938dc2c49f07488219611ed8300c5d"
+binary linux-x64 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-x64.tar.gz#c7e86cc0e01102ce3eaff0e8e9d8ed8d046aa5bae2464bd80efb233c8720322a"
+binary linux-x86 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-linux-x86.tar.gz#5a01619bb5c086d9a0a7e060801e1d03f44552a15d0c23144257ba1e233f5fb0"
+binary sunos-x64 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-sunos-x64.tar.gz#dfdeb0ec128b19cc03db7a69832f4a4d0edc070d60df824fc7a66db3f4f90bf1"
+binary sunos-x86 "https://nodejs.org/dist/v9.3.0/node-v9.3.0-sunos-x86.tar.gz#2059733ce7741a7600e49cf6f2f3f551ffc9966d9ec0706f8b73e024296533b8"
+
+install_package "node-v9.3.0" "https://nodejs.org/dist/v9.3.0/node-v9.3.0.tar.gz#b7338f2b1588264c9591fef08246d72ceed664eb18f2556692b4679302bbe2a5"
