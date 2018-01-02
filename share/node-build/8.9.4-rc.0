@@ -1,0 +1,13 @@
+binary aix-ppc64 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-aix-ppc64.tar.gz#2385f7373ccd5d8c3ea08e89f6fb32667f1a063b321b9b56ed3909d315c47f1a"
+binary darwin-x64 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-darwin-x64.tar.gz#0cab2f9e603ec9c672a89e81e60e19973e6620b858d7e38dbea878e87a6fd553"
+binary linux-arm64 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-arm64.tar.gz#112f79a583fb68f27d194a540cf2cffbc66f13d48e259d205548fb7e3ea453d4"
+binary linux-armv6l "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-armv6l.tar.gz#e433ef24f72e3dba051fa1b05169daa5c2d708879101e978f8d9d2854235ca67"
+binary linux-armv7l "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-armv7l.tar.gz#ccc3642c8fd08d28a987a48c4b56aa0081ab7f8505c28de5d26cd46b38d5a46c"
+binary linux-ppc64le "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-ppc64le.tar.gz#ae3cd842f81c496f88490c1f608c3a5471d039d1812f89edb2fe2204b912c812"
+binary linux-s390x "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-s390x.tar.gz#180a19125ddfb1f5b3b772590ee071808999afab9f57a328cb9e7781470d47e5"
+binary linux-x64 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-x64.tar.gz#3d1be2cd7fe92cca65a01041bd79be9bcbf26795b973b6392ee3cbfd39fb5570"
+binary linux-x86 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-linux-x86.tar.gz#ce957bd73e2087022f96a03a8f3fbddb75a1c2ff28965286f36d69996732715a"
+binary sunos-x64 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-sunos-x64.tar.gz#6a2ba600f32942e8c12752d5ea992c33a75dd9263585ee67471a8b9ea3f4ba34"
+binary sunos-x86 "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0-sunos-x86.tar.gz#e56a0107c4103aace3e662bc3628f0f7ac5b35af66ffdc44366be4c0d51599bf"
+
+install_package "node-v8.9.4-rc.0" "https://nodejs.org/download/rc/v8.9.4-rc.0/node-v8.9.4-rc.0.tar.gz#b772ba2eaa16a6fcf9bb2d32b7958b2ca871ef2cbb9cd928df92bbe6db32387c"
