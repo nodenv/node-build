@@ -1,0 +1,13 @@
+binary aix-ppc64 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-aix-ppc64.tar.gz#d7ccf35ba1f9f571f6101b02060630eec65731661710342ea34f1fc1ef295ee0"
+binary darwin-x64 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-darwin-x64.tar.gz#acc9962c0aa6d1d2298b566fda7dda33d433652062fccfbd8cb45dccdbb53520"
+binary linux-arm64 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-arm64.tar.gz#96c052da70c3164b0993367467c29ee052cd00cc62b1a465a35145df24727628"
+binary linux-armv7l "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-armv7l.tar.gz#05a381ff78fcd8e4e0a897ad2d70253bd58cd5fa2ae35e7d3298b2d05e855d62"
+binary linux-ppc64le "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-ppc64le.tar.gz#f3152087fcf854d05b482bb45660ab34f8485a565cf2f0b0e9f76bae9b72fb99"
+binary linux-ppc64 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-ppc64.tar.gz#7cec65d8c7dff8c9f971df2c15a3eb5cae5568039996af9b365a171240fc6e20"
+binary linux-s390x "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-s390x.tar.gz#5f63b33584f4839d7c72c75a369710f4254de070c9a669aa4d081aec33fa9d60"
+binary linux-x64 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-x64.tar.gz#4fc8f1acaeaef52abc0a45223a12ed180f366ba7e66dbd08f9d4572fa406eb59"
+binary linux-x86 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-linux-x86.tar.gz#82d960bd32316c16af4b466768a620856985d2be12264bc3b011872c007993d2"
+binary sunos-x64 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-sunos-x64.tar.gz#3e6201d7375485d25a96ae84e614b5b0813702ffd1b418f5dca38af77f5c625d"
+binary sunos-x86 "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0-sunos-x86.tar.gz#b2f82d296e011e42ad1bd1e2ffb50346dfe0b5c87b41219a509a2cd6a969342b"
+
+install_package "node-v6.12.3-rc.0" "https://nodejs.org/download/rc/v6.12.3-rc.0/node-v6.12.3-rc.0.tar.gz#159aa79ab525b607a55ebabfc2a3494e470cce0fd1354b0be973af2f356b4a50"
