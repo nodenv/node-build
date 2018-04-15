@@ -245,15 +245,16 @@ OUT
   unstub uname
 }
 
-@test "make on FreeBSD 11" {
+@test "make on FreeBSD 11 defaults to gmake" {
   cached_tarball "node-v4.0.0"
 
   stub uname "-s : echo FreeBSD" "-r : echo 11.0-RELEASE"
-  stub_make_install
+  MAKE=gmake stub_make_install
 
   MAKE= install_fixture definitions/vanilla-node
   assert_success
 
+  unstub gmake
   unstub uname
 }
 

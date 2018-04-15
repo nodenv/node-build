@@ -895,7 +895,7 @@ if [ -n "$noexec" ]; then
 fi
 
 if [ -z "$MAKE" ]; then
-  if [ "FreeBSD" = "$(uname -s)" ] && [ "$(uname -r | sed 's/[^[:digit:]].*//')" -lt 10 ]; then
+  if [ "FreeBSD" = "$(uname -s)" ] && [ "$(uname -r | sed 's/[^[:digit:]].*//')" -ne 10 ]; then
     export MAKE="gmake"
   else
     export MAKE="make"
