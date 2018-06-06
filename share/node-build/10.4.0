@@ -1,0 +1,11 @@
+binary aix-ppc64 "https://nodejs.org/dist/v10.4.0/node-v10.4.0-aix-ppc64.tar.gz#cc90b3662a6e479b42f71091fe8ffd155d520cf81c96b3012d9126568e7fc03b"
+binary darwin-x64 "https://nodejs.org/dist/v10.4.0/node-v10.4.0-darwin-x64.tar.gz#82b27983c990a6860e8d729e0b15acf9643ffca0eff282a926268849dfd2c3d2"
+binary linux-arm64 "https://nodejs.org/dist/v10.4.0/node-v10.4.0-linux-arm64.tar.gz#e54af0d3046c45fa45ce3f207a8f652969489c17b8328110e626aab19d8ab430"
+binary linux-armv6l "https://nodejs.org/dist/v10.4.0/node-v10.4.0-linux-armv6l.tar.gz#8741405d66293173d151a1e2dedd14a2d1b9b6e475e5e5892c3758f3eece085c"
+binary linux-armv7l "https://nodejs.org/dist/v10.4.0/node-v10.4.0-linux-armv7l.tar.gz#3f8d77e7e860a20814b9d0152a009ccf042e38958c1bcbb4cdeff25573cfb522"
+binary linux-ppc64le "https://nodejs.org/dist/v10.4.0/node-v10.4.0-linux-ppc64le.tar.gz#0ef455d03eabcd7e1ff6c38a66c803f5bcdc4d4442f3c6c1923fc49036c633db"
+binary linux-s390x "https://nodejs.org/dist/v10.4.0/node-v10.4.0-linux-s390x.tar.gz#4fa87ede40b362f388fc3d38a0bbb86f9f32630c52f4c8e25e8c4207e893328c"
+binary linux-x64 "https://nodejs.org/dist/v10.4.0/node-v10.4.0-linux-x64.tar.gz#cc237ba4bf23dc351d22972983d934a5775a6380792db000045fcd834de32ac9"
+binary sunos-x64 "https://nodejs.org/dist/v10.4.0/node-v10.4.0-sunos-x64.tar.gz#9a3868fce46e79a64f55447397d330963386d5ddf693b2ba55fb2cb290fbf161"
+
+install_package "node-v10.4.0" "https://nodejs.org/dist/v10.4.0/node-v10.4.0.tar.gz#88d9c8179bde19e057cd1d8b835b50726e4c94f8418c91472001e212da96d290"
