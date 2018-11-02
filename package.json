@@ -34,7 +34,7 @@
     "postversion": "npm run publish:github && npm run publish:brew"
   },
   "devDependencies": {
-    "bats": "^0.4.2",
+    "bats": "^1.1.0",
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
     "brew-publish": "^2.0.0"
