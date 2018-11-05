@@ -4,9 +4,6 @@ cache: npm
 os:
   - linux
   - osx
-branches:
-  only:
-    - master
 script:
   - npm test
   - '[ "$TRAVIS_OS_NAME" != linux ] || npm run --silent verify-definitions -- $TRAVIS_COMMIT_RANGE'
