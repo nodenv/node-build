@@ -1,15 +1,13 @@
-sudo: false
 language: node_js
 node_js: node
+cache: npm
 os:
   - linux
   - osx
-branches:
-  only:
-    - master
-script:
-  - npm test
-  - '[ "$TRAVIS_OS_NAME" != linux ] || npm run --silent verify-definitions -- $TRAVIS_COMMIT_RANGE'
+jobs:
+  include:
+    - stage: verify definitions
+      script: npm run --silent verify-definitions -- $TRAVIS_COMMIT_RANGE
 notifications:
   email:
     on_success: never
