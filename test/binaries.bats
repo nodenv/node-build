@@ -2,10 +2,8 @@
 
 load test_helper
 export NODE_BUILD_CACHE_PATH=
-export NODE_BUILD_CURL_OPTS=
 
 setup() {
-  ensure_not_found_in_path aria2c
   stub uname '-s : echo Darwin' '-m : echo x86_64' '-s : echo Darwin'
   stub curl \
     "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"\

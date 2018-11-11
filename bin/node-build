@@ -157,8 +157,12 @@ num_cpu_cores() {
   Darwin | *BSD )
     num="$(sysctl -n hw.ncpu 2>/dev/null || true)"
     ;;
+  SunOS )
+    num="$(getconf NPROCESSORS_ONLN 2>/dev/null || true)"
+    ;;
   * )
-    num="$(grep ^processor /proc/cpuinfo 2>/dev/null | wc -l | xargs)"
+    num="$({ getconf _NPROCESSORS_ONLN ||
+             grep -c ^processor /proc/cpuinfo; } 2>/dev/null)"
     num="${num#0}"
     ;;
   esac
@@ -307,8 +311,8 @@ compute_sha2() {
     output="$("$openssl" dgst -sha256 2>/dev/null)" || return 1
     echo "${output##* }"
   elif type sha256sum &>/dev/null; then
-    output="$(sha256sum --quiet)" || return 1
-    echo "${output% *}"
+    output="$(sha256sum -b)" || return 1
+    echo "${output%% *}"
   else
     return 1
   fi
@@ -323,7 +327,7 @@ compute_sha1() {
     echo "${output##* }"
   elif type sha1sum &>/dev/null; then
     output="$(sha1sum -b)" || return 1
-    echo "${output% *}"
+    echo "${output%% *}"
   else
     return 1
   fi
@@ -338,7 +342,7 @@ compute_md5() {
     echo "${output##* }"
   elif type md5sum &>/dev/null; then
     output="$(md5sum -b)" || return 1
-    echo "${output% *}"
+    echo "${output%% *}"
   else
     return 1
   fi
@@ -395,20 +399,25 @@ verify_checksum() {
 
 http() {
   local method="$1"
-  local url="$2"
-  local file="$3"
-  [ -n "$url" ] || return 1
+  [ -n "$2" ] || return 1
+  shift 1
 
-  if type aria2c &>/dev/null; then
-    "http_${method}_aria2c" "$url" "$file"
-  elif type curl &>/dev/null; then
-    "http_${method}_curl" "$url" "$file"
-  elif type wget &>/dev/null; then
-    "http_${method}_wget" "$url" "$file"
-  else
-    echo "error: please install \`aria2c\`, \`curl\` or \`wget\` and try again" >&2
-    exit 1
-  fi
+  NODE_BUILD_HTTP_CLIENT="${NODE_BUILD_HTTP_CLIENT:-$(detect_http_client)}"
+  [ -n "$NODE_BUILD_HTTP_CLIENT" ] || return 1
+
+  "http_${method}_${NODE_BUILD_HTTP_CLIENT}" "$@"
+}
+
+detect_http_client() {
+  local client
+  for client in aria2c curl wget; do
+    if type "$client" &>/dev/null; then
+      echo "$client"
+      return
+    fi
+  done
+  echo "error: please install \`aria2c\`, \`curl\`, or \`wget\` and try again" >&2
+  return 1
 }
 
 http_head_aria2c() {
@@ -445,6 +454,7 @@ fetch_tarball() {
   local package_url="$2"
   local mirror_url
   local checksum
+  local extracted_dir
 
   if [ "$package_url" != "${package_url/\#}" ]; then
     checksum="${package_url#*#}"
@@ -469,16 +479,22 @@ fetch_tarball() {
 
   if [ "$package_url" != "${package_url%zip}" ]; then
     tar="unzip"
-    tar_args="oq"
+    tar_args="-oq"
   fi
 
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
-    echo "Downloading $(basename $package_url)..." >&2
+    local tarball_filename="$(basename "$package_url")"
+    echo "Downloading ${tarball_filename}..." >&2
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
-  { if $tar -$tar_args "$package_filename"; then
+  { if $tar $tar_args "$package_filename"; then
+      if [ ! -d "$package_name" ]; then
+        extracted_dir="$(find_extracted_directory)"
+        mv "$extracted_dir" "$package_name"
+      fi
+
       if [ -z "$KEEP_BUILD_PATH" ]; then
         rm -f "$package_filename"
       else
@@ -486,6 +502,17 @@ fetch_tarball() {
       fi
     fi
   } >&4 2>&1
+}
+
+find_extracted_directory() {
+  for f in *; do
+    if [ -d "$f" ]; then
+      echo "$f"
+      return
+    fi
+  done
+  echo "Extracted directory not found" >&2
+  return 1
 }
 
 reuse_existing_tarball() {
@@ -632,7 +659,7 @@ build_package_warn_lts_maintenance() {
   } >&3
 }
 
-build_package_standard() {
+build_package_standard_build() {
   local package_name="$1"
 
   if [ "${MAKEOPTS+defined}" ]; then
@@ -649,8 +676,6 @@ build_package_standard() {
   local PACKAGE_CONFIGURE_OPTS_ARRAY="${package_var_name}_CONFIGURE_OPTS_ARRAY[@]"
   local PACKAGE_MAKE_OPTS="${package_var_name}_MAKE_OPTS"
   local PACKAGE_MAKE_OPTS_ARRAY="${package_var_name}_MAKE_OPTS_ARRAY[@]"
-  local PACKAGE_MAKE_INSTALL_OPTS="${package_var_name}_MAKE_INSTALL_OPTS"
-  local PACKAGE_MAKE_INSTALL_OPTS_ARRAY="${package_var_name}_MAKE_INSTALL_OPTS_ARRAY[@]"
   local PACKAGE_CFLAGS="${package_var_name}_CFLAGS"
 
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
@@ -663,9 +688,22 @@ build_package_standard() {
       $CONFIGURE_OPTS ${!PACKAGE_CONFIGURE_OPTS} "${!PACKAGE_CONFIGURE_OPTS_ARRAY}" || return 1
   ) >&4 2>&1
 
-  { "$MAKE" $MAKE_OPTS ${!PACKAGE_MAKE_OPTS} "${!PACKAGE_MAKE_OPTS_ARRAY}"
-    "$MAKE" install $MAKE_INSTALL_OPTS ${!PACKAGE_MAKE_INSTALL_OPTS} "${!PACKAGE_MAKE_INSTALL_OPTS_ARRAY}"
-  } >&4 2>&1
+  "$MAKE" $MAKE_OPTS ${!PACKAGE_MAKE_OPTS} "${!PACKAGE_MAKE_OPTS_ARRAY}" >&4 2>&1
+}
+
+build_package_standard_install() {
+  local package_name="$1"
+  local package_var_name="$(capitalize "${package_name%%-*}")"
+
+  local PACKAGE_MAKE_INSTALL_OPTS="${package_var_name}_MAKE_INSTALL_OPTS"
+  local PACKAGE_MAKE_INSTALL_OPTS_ARRAY="${package_var_name}_MAKE_INSTALL_OPTS_ARRAY[@]"
+
+  "$MAKE" install $MAKE_INSTALL_OPTS ${!PACKAGE_MAKE_INSTALL_OPTS} "${!PACKAGE_MAKE_INSTALL_OPTS_ARRAY}" >&4 2>&1
+}
+
+build_package_standard() {
+  build_package_standard_build "$@"
+  build_package_standard_install "$@"
 }
 
 build_package_autoconf() {
