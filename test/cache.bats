@@ -3,10 +3,8 @@
 load test_helper
 export NODE_BUILD_SKIP_MIRROR=1
 export NODE_BUILD_CACHE_PATH="$BATS_TMPDIR/cache"
-export NODE_BUILD_CURL_OPTS=
 
 setup() {
-  ensure_not_found_in_path aria2c
   mkdir -p "$NODE_BUILD_CACHE_PATH"
 }
 

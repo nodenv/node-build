@@ -3,10 +3,8 @@
 load test_helper
 export NODE_BUILD_SKIP_MIRROR=1
 export NODE_BUILD_CACHE_PATH=
-export NODE_BUILD_ARIA2_OPTS=
 
 setup() {
-  ensure_not_found_in_path aria2c
   export NODE_BUILD_BUILD_PATH="${BATS_TMPDIR}/source"
   mkdir -p "${NODE_BUILD_BUILD_PATH}"
 }
@@ -21,6 +19,8 @@ setup() {
 }
 
 @test "using aria2c if available" {
+  export NODE_BUILD_ARIA2_OPTS=
+  export -n NODE_BUILD_HTTP_CLIENT
   stub aria2c "--allow-overwrite=true --no-conf=true -o * http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$4"
 
   install_fixture definitions/without-checksum

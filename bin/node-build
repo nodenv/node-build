@@ -399,20 +399,25 @@ verify_checksum() {
 
 http() {
   local method="$1"
-  local url="$2"
-  local file="$3"
-  [ -n "$url" ] || return 1
+  [ -n "$2" ] || return 1
+  shift 1
 
-  if type aria2c &>/dev/null; then
-    "http_${method}_aria2c" "$url" "$file"
-  elif type curl &>/dev/null; then
-    "http_${method}_curl" "$url" "$file"
-  elif type wget &>/dev/null; then
-    "http_${method}_wget" "$url" "$file"
-  else
-    echo "error: please install \`aria2c\`, \`curl\` or \`wget\` and try again" >&2
-    exit 1
-  fi
+  NODE_BUILD_HTTP_CLIENT="${NODE_BUILD_HTTP_CLIENT:-$(detect_http_client)}"
+  [ -n "$NODE_BUILD_HTTP_CLIENT" ] || return 1
+
+  "http_${method}_${NODE_BUILD_HTTP_CLIENT}" "$@"
+}
+
+detect_http_client() {
+  local client
+  for client in aria2c curl wget; do
+    if type "$client" &>/dev/null; then
+      echo "$client"
+      return
+    fi
+  done
+  echo "error: please install \`aria2c\`, \`curl\`, or \`wget\` and try again" >&2
+  return 1
 }
 
 http_head_aria2c() {
@@ -449,6 +454,7 @@ fetch_tarball() {
   local package_url="$2"
   local mirror_url
   local checksum
+  local extracted_dir
 
   if [ "$package_url" != "${package_url/\#}" ]; then
     checksum="${package_url#*#}"
@@ -473,19 +479,22 @@ fetch_tarball() {
 
   if [ "$package_url" != "${package_url%zip}" ]; then
     tar="unzip"
-    tar_args="oq"
+    tar_args="-oq"
   fi
 
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
-    echo "Downloading $(basename $package_url)..." >&2
+    local tarball_filename="$(basename "$package_url")"
+    echo "Downloading ${tarball_filename}..." >&2
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
-  mkdir "$package_name"
+  { if $tar $tar_args "$package_filename"; then
+      if [ ! -d "$package_name" ]; then
+        extracted_dir="$(find_extracted_directory)"
+        mv "$extracted_dir" "$package_name"
+      fi
 
-  { if tar $tar_args "$package_filename" -C "$package_name" --strip-components=1; then
-  ls >&2
       if [ -z "$KEEP_BUILD_PATH" ]; then
         rm -f "$package_filename"
       else
@@ -493,6 +502,17 @@ fetch_tarball() {
       fi
     fi
   } >&4 2>&1
+}
+
+find_extracted_directory() {
+  for f in *; do
+    if [ -d "$f" ]; then
+      echo "$f"
+      return
+    fi
+  done
+  echo "Extracted directory not found" >&2
+  return 1
 }
 
 reuse_existing_tarball() {

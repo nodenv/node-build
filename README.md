@@ -90,6 +90,10 @@ The build process may be configured through the following environment variables:
 | `TMPDIR`                 | Where temporary files are stored.                                                                  |
 | `NODE_BUILD_BUILD_PATH`  | Where sources are downloaded and built. (Default: a timestamped subdirectory of `TMPDIR`)          |
 | `NODE_BUILD_CACHE_PATH`  | Where to cache downloaded package files. (Default: `~/.nodenv/cache` if invoked as nodenv plugin)  |
+| `NODE_BUILD_HTTP_CLIENT` | One of `aria2c`, `curl`, or `wget` to use for downloading. (Default: first one found in PATH)      |
+| `NODE_BUILD_ARIA2_OPTS`  | Additional options to pass to `aria2c` for downloading.                                            |
+| `NODE_BUILD_CURL_OPTS`   | Additional options to pass to `curl` for downloading.                                              |
+| `NODE_BUILD_WGET_OPTS`   | Additional options to pass to `wget` for downloading.                                              |
 | `NODE_BUILD_MIRROR_CMD`  | A command to construct the package mirror URL.                                                     |
 | `NODE_BUILD_MIRROR_URL`  | Custom mirror URL root.                                                                            |
 | `NODE_BUILD_SKIP_MIRROR` | Always download from official sources, not mirrors. (Default: unset)                               |
