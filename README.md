@@ -1,177 +1,128 @@
 # node-build
 
-[![Build Status](https://travis-ci.org/nodenv/node-build.svg?branch=master)](https://travis-ci.org/nodenv/node-build)
+[![Build Status][build-status-img]][build-status]
 
-node-build is an [nodenv](https://github.com/nodenv/nodenv) plugin that
-provides a `nodenv install` command to compile and install different versions
-of Node on UNIX-like systems.
+node-build is a command-line utility that makes it easy to install virtually any
+version of Node, from source or precompiled binary.
 
-You can also use node-build without nodenv in environments where you need
-precise control over Node version installation.
-
-See the [list of releases](https://github.com/nodenv/node-build/releases)
-for changes in each version.
-
+It is available as a plugin for [nodenv][] that
+provides the `nodenv install` command, or as a standalone program.
 
 ## Installation
 
-### Installing as an nodenv plugin (recommended)
+```sh
+# Using Homebrew on macOS
+$ brew install node-build
 
-Installing node-build as a nodenv plugin will give you access to the `nodenv
-install` command.
+# As a nodenv plugin
+$ mkdir -p "$(nodenv root)"/plugins
+$ git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
 
-    git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-build
+# As a standalone program
+$ git clone https://github.com/nodenv/node-build.git
+$ PREFIX=/usr/local ./node-build/install.sh
+```
 
-This will install the latest development version of node-build into the
-`$(nodenv root)/plugins/node-build` directory. From that directory, you can
-check out a specific release tag. To update node-build, run `git
-pull` to download the latest changes.
+### Upgrading
 
-### Installing as a standalone program (advanced)
+```sh
+# Via Homebrew
+$ brew update && brew upgrade node-build
 
-Installing node-build as a standalone program will give you access to the
-`node-build` command for precise control over Node version installation. If you
-have nodenv installed, you will also be able to use the `nodenv install`
-command.
+# As a nodenv plugin
+$ cd "$(nodenv root)"/plugins/node-build && git pull
+```
 
-    git clone https://github.com/nodenv/node-build.git
-    cd node-build
-    ./install.sh
+#### Updating available build versions
 
-This will install node-build into `/usr/local`. If you do not have write
-permission to `/usr/local`, you will need to run `sudo ./install.sh` instead.
-You can install to a different prefix by setting the `PREFIX` environment
-variable.
+To grab the latest versions from nodejs.org and generate definition files for
+node-build to use, check out the [node-build-update-defs][] plugin.
+Once installed:
 
-To update node-build after it has been installed, run `git pull` in your cloned
-copy of the repository, then re-run the install script.
+``` shell
+nodenv update-version-defs
+```
 
-### Installing with Homebrew (for OS X users)
-
-Mac OS X users can install node-build with the [Homebrew](http://brew.sh)
-package manager. This will give you access to the `node-build` command. If you
-have nodenv installed, you will also be able to use the `nodenv install`
-command.
-
-*This is the recommended method of installation if you installed nodenv with
-Homebrew.*
-
-    brew install node-build
-
-Or, if you would like to install the latest development release:
-
-    brew install --HEAD node-build
-
-To upgrade the HEAD package use `--fetch-HEAD` option:
-
-    brew upgrade --fetch-HEAD node-build
+No need to wait for node-build to provide the latest definitions!
 
 ## Usage
 
-Before you begin, you should ensure that your build environment has the proper
-system dependencies for compiling the wanted Node version (see Node's
-[prerequisites][]). (This is unnecessary if you only intend to install
-official binaries.)
+### Basic Usage
 
-[prerequisites]: https://github.com/nodejs/node#unix--macintosh
+```sh
+# As a nodenv plugin
+$ nodenv install --list                    # lists all available versions of Node
+$ nodenv install 10.13.0                   # installs Node 10.13.0 to ~/.nodenv/versions
 
-### Using `nodenv install` with nodenv
+# As a standalone program
+$ node-build --definitions                 # lists all available versions of Node
+$ node-build 10.13.0 ~/local/node-10.13.0  # installs Node 10.13.0 to ~/local/node-10.13.0
+```
 
-To install a Node version for use with nodenv, run `nodenv install` with the
-exact name of the version you want to install. For example,
+node-build does not check for system dependencies before downloading and
+attempting to compile the Node source. Please ensure that [all requisite
+libraries][build-env] are available on your system.
 
-    nodenv install 4.2.1
+### Advanced Usage
 
-Node versions will be installed into a directory of the same name under
-`$(nodenv root)/versions`.
-
-To see a list of all available Node versions, run `nodenv install --list`.  You
-may also tab-complete available Node versions if your nodenv installation is
-properly configured.
-
-### Using `node-build` standalone
-
-If you have installed node-build as a standalone program, you can use the
-`node-build` command to compile and install Node versions into specific
-locations.
-
-Run the `node-build` command with the exact name of the version you want to
-install and the full path where you want to install it. For example,
-
-    node-build 4.2.1 ~/local/node-4.2.1
-
-To see a list of all available Node versions, run `node-build --definitions`.
-
-Pass the `-v` or `--verbose` flag to `node-build` as the first argument to see
-what's happening under the hood.
-
-### Custom definitions
-
-Both `nodenv install` and `node-build` accept a path to a custom definition
-file in place of a version name. Custom definitions let you develop and install
-versions of Node that are not yet supported by node-build.
-
-See the [node-build built-in definitions][definitions] as a starting point for
-custom definition files.
-
-[definitions]: https://github.com/nodenv/node-build/tree/master/share/node-build
-
-### Binaries
+#### Binaries
 
 By default, node-build will attempt to match one of the precompiled binaries
 to your platform. If there is a binary for your platform, it will install it
 instead of compiling from source. To force compilation, pass the `-c` or
 `--compile` flag.
 
-### Special environment variables
+#### Custom Build Definitions
 
-You can set certain environment variables to control the build process.
+If you wish to develop and install a version of Node that is not yet supported
+by node-build, you may specify the path to a custom “build definition file” in
+place of a Node version number.
 
-* `TMPDIR` sets the location where node-build stores temporary files.
-* `NODE_BUILD_BUILD_PATH` sets the location in which sources are downloaded and
-  built. By default, this is a subdirectory of `TMPDIR`.
-* `NODE_BUILD_CACHE_PATH`, if set, specifies a directory to use for caching
-  downloaded package files.
-* `NODE_BUILD_MIRROR_CMD` provide a command to construct the package mirror
-  URL.
-* `NODE_BUILD_MIRROR_URL` select a mirror from which to download packages
-  instead of their original source URLs.
-* `NODE_BUILD_SKIP_MIRROR`, if set, forces node-build to download packages from
-  their original source URLs instead of using a mirror.
-* `NODE_BUILD_ROOT` overrides the default location from where build definitions
-  in `share/node-build/` are looked up.
-* `NODE_BUILD_DEFINITIONS` can be a list of colon-separated paths that get
-  additionally searched when looking up build definitions.
-* `CC` sets the path to the C compiler.
-* `CONFIGURE_OPTS` lets you pass additional options to `./configure`.
-* `MAKE` lets you override the command to use for `make`. Useful for specifying
-  GNU make (`gmake`) on some systems.
-* `MAKE_OPTS` (or `MAKEOPTS`) lets you pass additional options to `make`.
-* `MAKE_INSTALL_OPTS` lets you pass additional options to `make install`.
-* `NODE_CONFIGURE_OPTS`, `NODE_MAKE_OPTS` and `NODE_MAKE_INSTALL_OPTS` allow
-  you to specify configure and make options for buildling Node. These variables
-  will be passed to Node only, not any dependent packages (e.g. v8).
+Use the [default build definitions][definitions] as a template for your custom
+definitions.
 
-### Applying patches to Node before compiling
+#### Custom Build Configuration
 
-Both `nodenv install` and `node-build` support the `--patch` (`-p`) flag that
-signals that a patch from stdin should be applied to Node or iojs
-source code before the `./configure` and compilation steps.
+The build process may be configured through the following environment variables:
 
-Example usage:
+| Variable                 | Function                                                                                           |
+| ------------------------ | -------------------------------------------------------------------------------------------------- |
+| `TMPDIR`                 | Where temporary files are stored.                                                                  |
+| `NODE_BUILD_BUILD_PATH`  | Where sources are downloaded and built. (Default: a timestamped subdirectory of `TMPDIR`)          |
+| `NODE_BUILD_CACHE_PATH`  | Where to cache downloaded package files. (Default: `~/.nodenv/cache` if invoked as nodenv plugin)  |
+| `NODE_BUILD_MIRROR_CMD`  | A command to construct the package mirror URL.                                                     |
+| `NODE_BUILD_MIRROR_URL`  | Custom mirror URL root.                                                                            |
+| `NODE_BUILD_SKIP_MIRROR` | Always download from official sources, not mirrors. (Default: unset)                               |
+| `NODE_BUILD_ROOT`        | Custom build definition directory. (Default: `share/node-build`)                                   |
+| `NODE_BUILD_DEFINITIONS` | Additional paths to search for build definitions. (Colon-separated list)                           |
+| `CC`                     | Path to the C compiler.                                                                            |
+| `NODE_CFLAGS`            | Additional `CFLAGS` options (_e.g.,_ to override `-O3`).                                           |
+| `CONFIGURE_OPTS`         | Additional `./configure` options.                                                                  |
+| `MAKE`                   | Custom `make` command (_e.g.,_ `gmake`).                                                           |
+| `MAKE_OPTS` / `MAKEOPTS` | Additional `make` options.                                                                         |
+| `MAKE_INSTALL_OPTS`      | Additional `make install` options.                                                                 |
+| `NODE_CONFIGURE_OPTS`    | Additional `./configure` options (applies only to Node source).                                    |
+| `NODE_MAKE_OPTS`         | Additional `make` options (applies only to Node source).                                           |
+| `NODE_MAKE_INSTALL_OPTS` | Additional `make install` options (applies only to Node source).                                   |
+
+#### Applying Patches
+
+Both `nodenv install` and `node-build` support the `--patch` (`-p`) flag to apply
+a patch to the Node (/iojs/chakracore) source code before building. Patches are
+read from `STDIN`:
 
 ```sh
 # applying a single patch
-$ nodenv install --patch 0.10.36 < /path/to/node.patch
+$ nodenv install --patch 11.1.0 < /path/to/node.patch
 
 # applying a patch from HTTP
-$ nodenv install --patch 0.10.36 < <(curl -sSL http://git.io/node.patch)
+$ nodenv install --patch 11.1.0 < <(curl -sSL http://git.io/node.patch)
 
 # applying multiple patches
-$ cat fix1.patch fix2.patch | nodenv install --patch 0.10.36
+$ cat fix1.patch fix2.patch | nodenv install --patch 11.1.0
 ```
 
-### Checksum verification
+#### Checksum Verification
 
 If you have the `shasum`, `openssl`, or `sha256sum` tool installed, node-build will
 automatically verify the SHA2 checksum of each downloaded package before
@@ -180,9 +131,12 @@ installing it.
 Checksums are optional and specified as anchors on the package URL in each
 definition. (All bundled definitions include checksums.)
 
-### Package download mirrors
+#### Package Mirrors
 
-You can point node-build to another mirror by specifying the
+By default, node-build downloads package files from the official
+URL specified in the definition file.
+
+You can point node-build to a mirror by specifying the
 `NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to run your
 own local mirror, for example. Package mirror URLs are constructed by invoking
 `NODE_BUILD_MIRROR_CMD` with two arguments: `package_url` and `checksum`. The
@@ -193,19 +147,10 @@ simply replacing `https://nodejs.org/dist` with `NODE_BUILD_MIRROR_URL`.
 If you don't have an SHA2 program installed, node-build will skip the download
 mirror and use official URLs instead. You can force node-build to bypass the
 mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
+mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
 
-### Package download caching
 
-You can instruct node-build to keep a local cache of downloaded package files
-by setting the `NODE_BUILD_CACHE_PATH` environment variable. When set, package
-files will be kept in this directory after the first successful download and
-reused by subsequent invocations of `node-build` and `nodenv install`.
-
-The `nodenv install` command defaults this path to `$(nodenv root)/cache`, so
-in most cases you can enable download caching simply by creating that
-directory.
-
-### Keeping the build directory after installation
+#### Keeping the build directory after installation
 
 Both `node-build` and `nodenv install` accept the `-k` or `--keep` flag, which
 tells node-build to keep the downloaded source after installation. This can be
@@ -216,31 +161,28 @@ when using `--keep` with the `nodenv install` command. You should specify the
 location of the source code with the `NODE_BUILD_BUILD_PATH` environment
 variable when using `--keep` with `node-build`.
 
-## Update available build versions
-
-To grab the latest versions from nodejs.org and generate definition files for
-node-build to use, check out the
-[node-build-update-defs](https://github.com/nodenv/node-build-update-defs)
-plugin. Once installed:
-
-``` shell
-nodenv update-version-defs
-```
-
-No need to wait for node-build to provide the latest definitions!
-
 ## Getting Help
 
 Please see the [node-build wiki][wiki] for solutions to common problems.
+Also, check out the [ruby-build wiki][].
 
-[wiki]: https://github.com/nodenv/node-build/wiki
-
-If you can't find an answer on the wiki, open an issue on the [issue
-tracker](https://github.com/nodenv/node-build/issues). Be sure to include the
-full build log for build failures.
+If you can't find an answer on the wiki, open an issue on the [issue tracker][].
+Be sure to include the full build log for build failures.
 
 ## Credits
 
-Forked from [Sam Stephenson](https://github.com/sstephenson)'s
-[ruby-build](https://github.com/rbenv/ruby-build) by [Will
-McKenzie](https://github.com/oinutter) and modified for node.
+Forked from [Sam Stephenson][]'s [ruby-build][] by [Will McKenzie][]
+and modified for node.
+
+[nodenv]: https://github.com/nodenv/nodenv
+[ruby-build]: https://github.com/rbenv/ruby-build
+[definitions]: https://github.com/nodenv/node-build/tree/master/share/node-build
+[wiki]: https://github.com/nodenv/node-build/wiki
+[ruby-build wiki]: https://github.com/rbenv/ruby-build/wiki
+[build-env]: https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
+[issue tracker]: https://github.com/nodenv/node-build/issues
+[node-build-update-defs]: https://github.com/nodenv/node-build-update-defs
+[build-status]: https://travis-ci.org/nodenv/node-build
+[build-status-img]: https://travis-ci.org/nodenv/node-build.svg?branch=master
+[Sam Stephenson]: https://github.com/sstephenson
+[Will McKenzie]: https://github.com/oinutter
