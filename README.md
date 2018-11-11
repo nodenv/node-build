@@ -108,8 +108,8 @@ The build process may be configured through the following environment variables:
 #### Applying Patches
 
 Both `nodenv install` and `node-build` support the `--patch` (`-p`) flag to apply
-a patch to the Node (/iojs/chakracore) source code before building. Patches are
-read from `STDIN`:
+a patch to the Node (/iojs/chakracore) source code before building.
+Patches are read from `STDIN`:
 
 ```sh
 # applying a single patch
