@@ -8,7 +8,10 @@ load ../node_modules/bats-mock/stub
 if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
   export FIXTURE_ROOT="$BATS_TEST_DIRNAME/fixtures"
   export INSTALL_ROOT="$BATS_TMPDIR/install"
-  PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+  PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+  if [ "FreeBSD" = "$(uname -s)" ]; then
+    PATH="/usr/local/bin:$PATH"
+  fi
   PATH="$BATS_TEST_DIRNAME/../bin:$PATH"
   PATH="$BATS_MOCK_BINDIR:$PATH"
   export PATH
