@@ -220,35 +220,10 @@ OUT
   assert [ -x ./here/bin/package ]
 }
 
-@test "make on FreeBSD 9 defaults to gmake" {
+@test "make on FreeBSD defaults to gmake" {
   cached_tarball "node-v4.0.0"
 
-  stub uname "-s : echo FreeBSD" "-r : echo 9.1"
-  MAKE=gmake stub_make_install
-
-  MAKE= install_fixture definitions/vanilla-node
-  assert_success
-
-  unstub gmake
-  unstub uname
-}
-
-@test "make on FreeBSD 10" {
-  cached_tarball "node-v4.0.0"
-
-  stub uname "-s : echo FreeBSD" "-r : echo 10.0-RELEASE"
-  stub_make_install
-
-  MAKE= install_fixture definitions/vanilla-node
-  assert_success
-
-  unstub uname
-}
-
-@test "make on FreeBSD 11 defaults to gmake" {
-  cached_tarball "node-v4.0.0"
-
-  stub uname "-s : echo FreeBSD" "-r : echo 11.0-RELEASE"
+  stub uname "-s : echo FreeBSD"
   MAKE=gmake stub_make_install
 
   MAKE= install_fixture definitions/vanilla-node
