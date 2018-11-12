@@ -933,7 +933,8 @@ if [ -n "$noexec" ]; then
 fi
 
 if [ -z "$MAKE" ]; then
-  if [ "FreeBSD" = "$(uname -s)" ] && [ "$(uname -r | sed 's/[^[:digit:]].*//')" -lt 10 ]; then
+  if [ "FreeBSD" = "$(uname -s)" ]; then
+    # node needs gmake on FreeBSD : https://github.com/nodejs/node/blob/0229e378e80948428cf7baa7b176939e879497cc/BSDmakefile#L7
     export MAKE="gmake"
   else
     export MAKE="make"
