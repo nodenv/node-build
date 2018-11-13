@@ -49,7 +49,7 @@ extract_urls() {
 }
 
 verify() {
-  local url checksum file
+  local url checksum file status=0
   local commit_range="$1"
   echo "Verifying changes from $commit_range"
   changed_files "$commit_range"
@@ -58,8 +58,9 @@ verify() {
     url="${url%#*}"
     echo "Verifying checksum for $url"
     file="${TMPDIR:-/tmp}/$checksum"
-    download_and_verify "$url" "$file" "$checksum"
+    download_and_verify "$url" "$file" "$checksum" || status=$?
   done
+  return $status
 }
 
 case "$1" in
