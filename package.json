@@ -23,9 +23,9 @@
   },
   "scripts": {
     "test": "bats ${CI:+--tap} test",
-    "verify-definitions": "script/verify-definitions",
+    "verify-definitions": "scripty",
     "scrape-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
-    "submit-definitions": "script/submit-definitions -r",
+    "submit-definitions": "scripty -r",
     "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
     "publish:github": "git push --follow-tags && script/release-github",
     "publish:version": "perl -pi -e 's/^(NODE_BUILD_VERSION=).*$/$1$ENV{npm_package_version}/' -- bin/node-build && git add -- bin/node-build",
@@ -39,5 +39,9 @@
     "bats-mock": "^1.0.1",
     "brew-publish": "^2.0.0",
     "scripty": "^1.8.0"
+  },
+  "scripty": {
+    "path": "./script",
+    "silent": true
   }
 }
