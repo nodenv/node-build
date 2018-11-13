@@ -18,8 +18,8 @@
     "url": "https://github.com/nodenv/node-build/issues"
   },
   "directories": {
-    "bin": "./bin",
-    "test": "./test"
+    "bin": "bin",
+    "test": "test"
   },
   "scripts": {
     "test": "bats ${CI:+--tap} test",
