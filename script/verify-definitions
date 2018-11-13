@@ -24,7 +24,11 @@ download_and_verify() {
   download_package "$url" "$file"
   checksum="$(compute_sha2 < "$file")"
   if [ "$checksum" != "$expected" ]; then
-    echo "Error: $url doesn't match its checksum $expected" >&2
+    {
+      echo "Error: $url doesn't match its checksum:"
+      echo "  expected: $expected"
+      echo "    actual: $checksum"
+    } >&2
     return 1
   fi
 }
