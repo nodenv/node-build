@@ -39,9 +39,8 @@ changed_files() {
 }
 
 potentially_new_packages() {
-  local commit_range="$1"
-  local files
-  files=($(changed_files "$commit_range"))
+  local files commit_range="$1"
+  while IFS=$'\n' read -r file; do files+=("$file"); done < <(changed_files "$commit_range")
   [ ${#files[@]} -ne 0 ] && extract_urls "${files[@]}"
 }
 
