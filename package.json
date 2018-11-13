@@ -34,6 +34,7 @@
     "postversion": "npm run publish:github && npm run publish:brew"
   },
   "devDependencies": {
+    "@nodenv/node-build-update-defs": "^2.2.1",
     "bats": "^1.1.0",
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
