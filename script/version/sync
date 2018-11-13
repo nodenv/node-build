@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+#TODO make this script safe to run outside of npm context
+# ie, without npm_package_version
+
+file=bin/node-build
+
+perl -pi -e 's/^(NODE_BUILD_VERSION=).*$/$1$ENV{npm_package_version}/' -- "$file"
+git add -- "$file"

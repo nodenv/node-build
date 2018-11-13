@@ -28,9 +28,9 @@
     "submit-definitions": "scripty -r",
     "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
     "publish:github": "git push --follow-tags && script/release-github",
-    "publish:version": "perl -pi -e 's/^(NODE_BUILD_VERSION=).*$/$1$ENV{npm_package_version}/' -- bin/node-build && git add -- bin/node-build",
     "preversion": "scripty",
-    "version": "npm run publish:version",
+    "version": "scripty",
+    "version:sync": "scripty",
     "postversion": "npm run publish:github && npm run publish:brew"
   },
   "devDependencies": {
