@@ -1,7 +1,11 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
 binary aix-ppc64 "https://nodejs.org/dist/v6.9.1/node-v6.9.1-aix-ppc64.tar.gz#77c14510c4b09188450f8c10b8c163ef4b4f616c8b7f455d538f07a810bc98bf"
 binary darwin-x64 "https://nodejs.org/dist/v6.9.1/node-v6.9.1-darwin-x64.tar.gz#392e511ca0d6203c80700ed753187535e04069d0df0074cbfd1e4f1bd571d4c5"
 binary linux-arm64 "https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-arm64.tar.gz#8a8da2c3aad9da2d80035eeba0b9aae41230bec394729224fafcfae152fa5f66"
-binary linux-armv6l "https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-armv6l.tar.gz#49a896d0a73bc9934eb62af7f3d0f5a75f286b3dfd08a310bfbfe8daa0545fe2"
+binary linux-armv6l "https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-armv6l.tar.gz#0b30184fe98bd22b859db7f4cbaa56ecc04f7f526313c8da42315d89fabe23b2"
 binary linux-armv7l "https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-armv7l.tar.gz#c4651804af2422b10cf49e1eeab96feb2664eaeb6c6ae3913933a946134e3375"
 binary linux-ppc64le "https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-ppc64le.tar.gz#5714678db7e6ff93ae96417c0b210a1f084ee7a0aabf0f2d33307a1f1d0445ce"
 binary linux-ppc64 "https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-ppc64.tar.gz#2accb9e0f8082ea29f224cf4046d4ce318bb68b6cc41415e1291b58929de49a7"

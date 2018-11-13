@@ -24,7 +24,11 @@ download_and_verify() {
   download_package "$url" "$file"
   checksum="$(compute_sha2 < "$file")"
   if [ "$checksum" != "$expected" ]; then
-    echo "Error: $url doesn't match its checksum $expected" >&2
+    {
+      echo "Error: $url doesn't match its checksum:"
+      echo "  expected: $expected"
+      echo "    actual: $checksum"
+    } >&2
     return 1
   fi
 }
@@ -35,9 +39,8 @@ changed_files() {
 }
 
 potentially_new_packages() {
-  local commit_range="$1"
-  local files
-  files=($(changed_files "$commit_range"))
+  local files commit_range="$1"
+  while IFS=$'\n' read -r file; do files+=("$file"); done < <(changed_files "$commit_range")
   [ ${#files[@]} -ne 0 ] && extract_urls "${files[@]}"
 }
 
@@ -46,7 +49,7 @@ extract_urls() {
 }
 
 verify() {
-  local url checksum file
+  local url checksum file status=0
   local commit_range="$1"
   echo "Verifying changes from $commit_range"
   changed_files "$commit_range"
@@ -55,8 +58,9 @@ verify() {
     url="${url%#*}"
     echo "Verifying checksum for $url"
     file="${TMPDIR:-/tmp}/$checksum"
-    download_and_verify "$url" "$file" "$checksum"
+    download_and_verify "$url" "$file" "$checksum" || status=$?
   done
+  return $status
 }
 
 case "$1" in
