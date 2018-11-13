@@ -1,14 +1,13 @@
 {
-  "name": "node-build",
+  "name": "@nodenv/node-build",
   "version": "3.1.0",
-  "private": true,
   "description": "Install NodeJS versions",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
-  "author": "Sam Stephenson <sstephenson@gmail.com> (http://sstephenson.us)",
   "contributors": [
-    "Will McKenzie <willmckenzie@oinutter.co.uk> (http://www.oinutter.co.uk)",
-    "Jason Karns <jason@karns.name> (http://jason.karns.name)"
+    "Jason Karns <jason@karns.name> (http://jason.karns.name)",
+    "Sam Stephenson <sstephenson@gmail.com> (http://sstephenson.us)",
+    "Will McKenzie <willmckenzie@oinutter.co.uk> (http://www.oinutter.co.uk)"
   ],
   "repository": {
     "type": "git",
@@ -18,25 +17,35 @@
     "url": "https://github.com/nodenv/node-build/issues"
   },
   "directories": {
-    "bin": "./bin",
-    "test": "./test"
+    "bin": "bin",
+    "test": "test"
   },
+  "files": [
+    "bin",
+    "share"
+  ],
   "scripts": {
     "test": "bats ${CI:+--tap} test",
-    "verify-definitions": "script/verify-definitions",
-    "scrape-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
-    "submit-definitions": "script/submit-definitions -r",
-    "publish:brew": "brew-publish $npm_package_name v$npm_package_version",
-    "publish:github": "git push --follow-tags && script/release-github",
-    "publish:version": "perl -pi -e 's/^(NODE_BUILD_VERSION=).*$/$1$ENV{npm_package_version}/' -- bin/node-build && git add -- bin/node-build",
-    "preversion": "script/release-precheck",
-    "version": "npm run publish:version",
-    "postversion": "npm run publish:github && npm run publish:brew"
+    "verify-definitions": "scripty",
+    "scrape-definitions": "nodenv-update-version-defs -d share/node-build/",
+    "submit-definitions": "scripty -r",
+    "publish:brew": "brew-publish",
+    "publish:github": "scripty",
+    "preversion": "scripty",
+    "version": "scripty",
+    "version:sync": "scripty",
+    "postversion": "npm run publish:github && npm run publish:brew && npm publish"
   },
   "devDependencies": {
+    "@nodenv/node-build-update-defs": "^2.2.1",
     "bats": "^1.1.0",
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
-    "brew-publish": "^2.0.0"
+    "brew-publish": "^2.3.1",
+    "scripty": "^1.8.0"
+  },
+  "scripty": {
+    "path": "./script",
+    "silent": true
   }
 }
