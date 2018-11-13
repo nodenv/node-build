@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 BATS_TMPDIR="$BATS_TEST_DIRNAME/tmp"
 export NODE_BUILD_CURL_OPTS=
 export NODE_BUILD_HTTP_CLIENT="curl"
@@ -28,10 +30,10 @@ run_inline_definition() {
 }
 
 install_fixture() {
-  local args
+  local args=()
 
   while [ "${1#-}" != "$1" ]; do
-    args="$args $1"
+    args+=("$1")
     shift 1
   done
 
@@ -39,5 +41,5 @@ install_fixture() {
   local destination="$2"
   [ -n "$destination" ] || destination="$INSTALL_ROOT"
 
-  run node-build $args "$FIXTURE_ROOT/$name" "$destination"
+  run node-build "${args[@]}" "$FIXTURE_ROOT/$name" "$destination"
 }
