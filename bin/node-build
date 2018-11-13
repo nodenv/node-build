@@ -36,7 +36,7 @@ lib() {
           while option="${arg:$index:1}"; do
             [ -n "$option" ] || break
             OPTIONS[${#OPTIONS[*]}]="$option"
-            index=$(($index+1))
+            index=$((index+1))
           done
         fi
       else
@@ -59,8 +59,9 @@ resolve_link() {
 }
 
 abs_dirname() {
-  local cwd="$(pwd)"
   local path="$1"
+  local cwd
+  cwd="$(pwd)"
 
   while [ -n "$path" ]; do
     cd "${path%/*}"
@@ -73,7 +74,7 @@ abs_dirname() {
 }
 
 capitalize() {
-  printf "%s" "$1" | tr a-z A-Z
+  printf "%s" "$1" | tr '[:lower:]' '[:upper:]'
 }
 
 sanitize() {
@@ -81,7 +82,7 @@ sanitize() {
 }
 
 colorize() {
-  if [ -t 1 ]; then printf "\e[%sm%s\e[m" "$1" "$2"
+  if [ -t 1 ]; then printf "\\e[%sm%s\\e[m" "$1" "$2"
   else echo -n "$2"
   fi
 }
@@ -93,16 +94,17 @@ os_information() {
     echo "OS X $(sw_vers -productVersion)"
   elif [ -r /etc/os-release ]; then
     source /etc/os-release
-    echo "$NAME" $VERSION_ID
+    echo "$NAME $VERSION_ID"
   else
-    local os="$(cat /etc/{centos,redhat,fedora,system}-release /etc/debian_version 2>/dev/null | head -1)"
+    local os
+    os="$(cat /etc/{centos,redhat,fedora,system}-release /etc/debian_version 2>/dev/null | head -1)"
     echo "${os:-$(uname -sr)}"
   fi
 }
 
 is_mac() {
   [ "$(uname -s)" = "Darwin" ] || return 1
-  [ $# -eq 0 ] || [ "$(osx_version)" "$@" ]
+  [ $# -eq 0 ] || test "$(osx_version)" "$@"
 }
 
 #  9.1  -> 901
@@ -110,7 +112,7 @@ is_mac() {
 # 10.10 -> 1010
 osx_version() {
   local -a ver
-  IFS=. ver=( `sw_vers -productVersion` )
+  IFS=. ver=( $(sw_vers -productVersion) )
   IFS="$OLDIFS"
   echo $(( ${ver[0]}*100 + ${ver[1]} ))
 }
@@ -122,7 +124,7 @@ build_failed() {
     echo
 
     if [ -n "$BINARY_ATTEMPT" ]; then
-      printf "Binary installation failed; try compiling from source with \`--compile\` flag\n\n"
+      printf "Binary installation failed; try compiling from source with \`--compile\` flag\\n\\n"
     fi
 
     if ! rmdir "${BUILD_PATH}" 2>/dev/null; then
@@ -130,7 +132,7 @@ build_failed() {
 
       if file_is_not_empty "$LOG_PATH"; then
         colorize 33 "Results logged to ${LOG_PATH}"
-        printf "\n\n"
+        printf "\\n\\n"
         echo "Last 10 log lines:"
         tail -n 10 "$LOG_PATH"
       fi
@@ -295,7 +297,7 @@ make_package() {
 
   pushd "$package_name" >&4
   before_install_package "$package_name"
-  build_package "$package_name" $*
+  build_package "$package_name" "$@"
   after_install_package "$package_name"
   fix_directory_permissions
   popd >&4
@@ -307,7 +309,8 @@ compute_sha2() {
     output="$(shasum -a 256 -b)" || return 1
     echo "${output% *}"
   elif type openssl &>/dev/null; then
-    local openssl="$(command -v "$(brew --prefix openssl 2>/dev/null || true)"/bin/openssl openssl | head -1)"
+    local openssl
+    openssl="$(command -v "$(brew --prefix openssl 2>/dev/null || true)"/bin/openssl openssl | head -1)"
     output="$("$openssl" dgst -sha256 2>/dev/null)" || return 1
     echo "${output##* }"
   elif type sha256sum &>/dev/null; then
@@ -361,7 +364,8 @@ has_checksum_support() {
 verify_checksum() {
   local checksum_command
   local filename="$1"
-  local expected_checksum="$(echo "$2" | tr [A-Z] [a-z])"
+  local expected_checksum
+  expected_checksum="$(echo "$2" | tr '[:upper:]' '[:lower:]')"
 
   # If the specified filename doesn't exist, return success
   [ -e "$filename" ] || return 0
@@ -384,7 +388,8 @@ verify_checksum() {
   has_checksum_support "$checksum_command" || return 0
 
   # If the computed checksum is empty, return failure
-  local computed_checksum=`echo "$($checksum_command < "$filename")" | tr [A-Z] [a-z]`
+  local computed_checksum
+  computed_checksum=$($checksum_command < "$filename" | tr '[:upper:]' '[:lower:]')
   [ -n "$computed_checksum" ] || return 1
 
   if [ "$expected_checksum" != "$computed_checksum" ]; then
@@ -483,7 +488,8 @@ fetch_tarball() {
   fi
 
   if ! reuse_existing_tarball "$package_filename" "$checksum"; then
-    local tarball_filename="$(basename "$package_url")"
+    local tarball_filename
+    tarball_filename="$(basename "$package_url")"
     echo "Downloading ${tarball_filename}..." >&2
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
@@ -567,7 +573,8 @@ fetch_git() {
   if type git &>/dev/null; then
     if [ -n "$NODE_BUILD_CACHE_PATH" ]; then
       pushd "$NODE_BUILD_CACHE_PATH" >&4
-      local clone_name="$(sanitize "$git_url")"
+      local clone_name
+      clone_name="$(sanitize "$git_url")"
       if [ -e "${clone_name}" ]; then
         { cd "${clone_name}"
           git fetch --force "$git_url" "+${git_ref}:${git_ref}"
@@ -633,7 +640,7 @@ package_option() {
   local package_name="$1"
   local command_name="$2"
   local variable="$(capitalize "${package_name}_${command_name}")_OPTS_ARRAY"
-  local array="$variable[@]"
+  local array="${variable[@]}"
   shift 2
   local value=( "${!array}" "$@" )
   eval "$variable=( \"\${value[@]}\" )"
@@ -669,7 +676,8 @@ build_package_standard_build() {
   fi
 
   # Support YAML_CONFIGURE_OPTS, NODE_CONFIGURE_OPTS, etc.
-  local package_var_name="$(capitalize "${package_name%%-*}")"
+  local package_var_name
+  package_var_name="$(capitalize "${package_name%%-*}")"
   local PACKAGE_CONFIGURE="${package_var_name}_CONFIGURE"
   local PACKAGE_PREFIX_PATH="${package_var_name}_PREFIX_PATH"
   local PACKAGE_CONFIGURE_OPTS="${package_var_name}_CONFIGURE_OPTS"
@@ -693,7 +701,8 @@ build_package_standard_build() {
 
 build_package_standard_install() {
   local package_name="$1"
-  local package_var_name="$(capitalize "${package_name%%-*}")"
+  local package_var_name
+  package_var_name="$(capitalize "${package_name%%-*}")"
 
   local PACKAGE_MAKE_INSTALL_OPTS="${package_var_name}_MAKE_INSTALL_OPTS"
   local PACKAGE_MAKE_INSTALL_OPTS_ARRAY="${package_var_name}_MAKE_INSTALL_OPTS_ARRAY[@]"
@@ -733,7 +742,7 @@ build_package_jxcore_npm() {
   PREFIX_PATH="$oldprefix"
 
   # jx needs this version lock file of sorts
-  echo 1 > "$npmjxpath/.jx/$($PREFIX_PATH/bin/jx -jxv)"
+  echo 1 > "$npmjxpath/.jx/$("$PREFIX_PATH/bin/jx" -jxv)"
 
   # configure jx to use this local npm and not install to ~/.jx
   cat > "$PREFIX_PATH/bin/jx.config" <<JX
@@ -744,11 +753,11 @@ JX
 }
 
 before_install_package() {
-  local stub=1
+  :
 }
 
 after_install_package() {
-  local stub=1
+  :
 }
 
 fix_jxcore_directory_structure() {

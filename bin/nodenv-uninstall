@@ -54,9 +54,10 @@ after_uninstall() {
   after_hooks["${#after_hooks[@]}"]="$hook"
 }
 
-OLDIFS="$IFS"
-IFS=$'\n' scripts=(`nodenv-hooks uninstall`)
-IFS="$OLDIFS"
+while IFS=$'\n' read -r script; do
+  scripts+=("$script")
+done < <(nodenv-hooks uninstall)
+# shellcheck disable=SC1090
 for script in "${scripts[@]}"; do source "$script"; done
 
 
@@ -69,7 +70,7 @@ if [ -z "$FORCE" ]; then
     exit 1
   fi
 
-  read -p "nodenv: remove $PREFIX? [yN] "
+  read -rp "nodenv: remove $PREFIX? [yN] "
   case "$REPLY" in
   y* | Y* ) ;;
   * ) exit 1 ;;
