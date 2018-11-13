@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v6.7.0/node-v6.7.0-darwin-x64.tar.gz#69fab7a1ebeee54d5e3160eb9366e88a61500731fad86dee98c79c4a14b56bc6"
 binary linux-arm64 "https://nodejs.org/dist/v6.7.0/node-v6.7.0-linux-arm64.tar.gz#45ffd727bcab41a544ad7862fe985f6beac4fcd96c63e116ca467d1147ba6454"
 binary linux-armv6l "https://nodejs.org/dist/v6.7.0/node-v6.7.0-linux-armv6l.tar.gz#0f8e0dbaa6bcccd22db75077fed1afb28c2b225b6cdc185913178ae395a68ef9"
