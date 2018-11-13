@@ -32,7 +32,6 @@ assert_warning() {
   assert_eol 7.*
   assert_eol 9.*
   assert_eol iojs-*
-  assert_eol jxcore+*
 }
 
 @test "Node 6 is in LTS Maintenace April 2018 - April 2019" {
