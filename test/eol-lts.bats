@@ -2,6 +2,10 @@
 
 load test_helper
 
+setup() {
+  cd "$BATS_TEST_DIRNAME/../share/node-build"
+}
+
 assert_eol() {
   run grep -e "warn_eol" --files-without-match "$@"
   assert_output ""
