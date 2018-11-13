@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
 binary darwin-x64 "https://nodejs.org/dist/v4.8.6/node-v4.8.6-darwin-x64.tar.gz#ee7ce30a1b7069efea27bbef1829a3a665ae6650cc4a79eb556707c6779ba540"
 binary linux-arm64 "https://nodejs.org/dist/v4.8.6/node-v4.8.6-linux-arm64.tar.gz#b132ab051b1a48db3e9385b086c77fc4438f888a236b7e9cbe998171196592cb"
 binary linux-armv6l "https://nodejs.org/dist/v4.8.6/node-v4.8.6-linux-armv6l.tar.gz#68f599d287f11ca528acc3f1371305301ba34b8fbd915e65fd71a5144b169c87"
