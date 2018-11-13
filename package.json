@@ -27,7 +27,7 @@
     "scrape-definitions": "nodenv update-version-defs --destination $PWD/share/node-build/",
     "submit-definitions": "scripty -r",
     "publish:brew": "brew-publish",
-    "publish:github": "git push --follow-tags && script/release-github",
+    "publish:github": "scripty",
     "preversion": "scripty",
     "version": "scripty",
     "version:sync": "scripty",
