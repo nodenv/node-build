@@ -25,18 +25,19 @@
     "share"
   ],
   "scripts": {
-    "start": "$npm_package_bin_node_build",
+    "start": "bin/node-build",
     "test": "bats ${CI:+--tap} test",
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
     "verify-definitions": "scripty",
     "scrape-definitions": "nodenv-update-version-defs -d share/node-build/",
     "submit-definitions": "scripty -r",
-    "publish:brew": "brew-publish",
-    "publish:github": "scripty",
     "preversion": "scripty",
     "version": "scripty",
     "version:sync": "scripty",
-    "postversion": "npm run publish:github && npm run publish:brew && npm publish"
+    "postversion": "npm publish",
+    "prepublishOnly": "npm run publish:github && npm run publish:brew",
+    "publish:brew": "brew-publish",
+    "publish:github": "scripty"
   },
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.2.1",
@@ -47,7 +48,7 @@
     "scripty": "^1.8.0"
   },
   "scripty": {
-    "path": "./script",
+    "path": "script",
     "silent": true
   }
 }
