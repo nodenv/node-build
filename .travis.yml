@@ -7,5 +7,4 @@ os:
 jobs:
   include:
     - stage: verify definitions
-      if: env(TRAVIS_COMMIT_RANGE) is present
       script: npm run verify-definitions -- $TRAVIS_COMMIT_RANGE
