@@ -1,0 +1,4 @@
+binary darwin-x64 "https://nodejs.org/download/chakracore-release/v10.13.0/node-v10.13.0-darwin-x64.tar.gz#6bdd21c9600242556e6f61fe7713c8310c723561496668f58de802d4f8a9b3e7"
+binary linux-x64 "https://nodejs.org/download/chakracore-release/v10.13.0/node-v10.13.0-linux-x64.tar.gz#15eec5a8ecc8f7bcdf81dcacd0a690eec1b8a094b2b8e94d4b58bfad5e07ea56"
+
+install_package "node-v10.13.0" "https://nodejs.org/download/chakracore-release/v10.13.0/node-v10.13.0.tar.gz#e4b0235f8b275153126b2c334dd318039162d4361a401c950f0d6cbe9da8c714"
