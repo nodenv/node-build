@@ -1,0 +1,1 @@
+install_git "8.x-next" "https://github.com/nodejs/node.git" "v8.x" standard

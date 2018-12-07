@@ -1,0 +1,1 @@
+install_git "10.x-dev" "https://github.com/nodejs/node.git" "v10.x-staging" standard
