@@ -40,7 +40,7 @@
     "publish:github": "scripty"
   },
   "devDependencies": {
-    "@nodenv/node-build-update-defs": "^2.2.1",
+    "@nodenv/node-build-update-defs": "^2.3.2",
     "bats": "^1.1.0",
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
