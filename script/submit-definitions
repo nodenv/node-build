@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-# Usage: script/update-nodes [-r [<remote>]]
-#
 # scrapes, commits, pushes, and pull-requests new node definitions
+#
+# Usage: script/update-nodes [-r REMOTE]
+#
+# Options:
+#   -r REMOTE    The remote to which scraped definitions will be pushed.
+#                [default: origin]
+#
 #
 # * inspired by: https://github.com/jasonkarns/brew-publish *
 
