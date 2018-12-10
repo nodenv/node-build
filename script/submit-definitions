@@ -13,7 +13,8 @@
 #
 # * inspired by: https://github.com/jasonkarns/brew-publish *
 
-set -e
+set -eufo pipefail
+IFS=$'\n\t'
 
 abort() {
   echo "$1" >&2
