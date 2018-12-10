@@ -11,7 +11,7 @@
 #                [default: derived from hub-fork]
 #                (Empty-string is a shortcut for 'origin': `-r ''`.)
 #
-# * inspired by: https://github.com/jasonkarns/brew-publish *
+# Notes: inspired by https://github.com/jasonkarns/brew-publish
 
 set -eufo pipefail
 IFS=$'\n\t'
@@ -27,7 +27,7 @@ fi
 
 while getopts ":o:r:" opt; do
   case $opt in
-  o) origin="${OPTARG:-origin}" ;;
+  o) origin="${OPTARG}" ;;
   r) fork="${OPTARG:-origin}" ;;
   :) abort "Option -$OPTARG requires an argument." ;;
   \?) abort "Invalid option: -$OPTARG" ;;
