@@ -13,6 +13,11 @@
 
 set -e
 
+abort() {
+  echo "$1" >&2
+  exit 1
+}
+
 while getopts ":r:" opt; do
   case $opt in
   r) remote="${OPTARG:-origin}" ;;
