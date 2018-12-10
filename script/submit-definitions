@@ -18,6 +18,10 @@ abort() {
   exit 1
 }
 
+if ! type -p hub >/dev/null; then
+  abort "ERROR: You have to install hub to proceed."
+fi
+
 while getopts ":r:" opt; do
   case $opt in
   r) remote="${OPTARG:-origin}" ;;
@@ -25,10 +29,6 @@ while getopts ":r:" opt; do
   \?) abort "Invalid option: -$OPTARG" ;;
   esac
 done
-
-if ! type -p hub >/dev/null; then
-  abort "ERROR: You have to install hub to proceed."
-fi
 
 if [ -z "$remote" ]; then
   # hackish way of getting the git remote name for user's fork
