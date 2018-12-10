@@ -38,6 +38,9 @@ done
 # hackish way of getting the git remote name for user's fork
 : "${fork:=$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')}"
 
+# This returns 'HEAD' if in detached HEAD state. Useless in that case.
+orig_branch=$(git rev-parse --abbrev-ref HEAD)
+
 git fetch --quiet --unshallow "$origin" master 2>/dev/null || git fetch --quiet "$origin" master
 
 git checkout --quiet "$origin"/master
@@ -55,4 +58,4 @@ for node_def in $(git ls-files --others --exclude-standard -- share/node-build/)
   git checkout --quiet -
 done
 
-git checkout --quiet master
+git checkout --quiet "$orig_branch"
