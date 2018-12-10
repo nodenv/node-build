@@ -2,12 +2,12 @@
 
 # scrapes, commits, pushes, and pull-requests new node definitions
 #
-# Usage: script/update-nodes [-o ORIGIN] [-r REMOTE]
+# Usage: script/update-nodes [-o ORIGIN] [-r FORK]
 #
 # Options:
 #   -o ORIGIN    The remote to which the pull-request will be opened.
 #                [default: origin]
-#   -r REMOTE    The remote to which scraped definitions will be pushed.
+#   -r FORK      The remote to which scraped definitions will be pushed.
 #                [default: origin]
 #
 #
@@ -28,7 +28,7 @@ fi
 while getopts ":o:r:" opt; do
   case $opt in
   o) origin="${OPTARG:-origin}" ;;
-  r) remote="${OPTARG:-origin}" ;;
+  r) fork="${OPTARG:-origin}" ;;
   :) abort "Option -$OPTARG requires an argument." ;;
   \?) abort "Invalid option: -$OPTARG" ;;
   esac
@@ -36,7 +36,7 @@ done
 
 : "${origin:=origin}"
 # hackish way of getting the git remote name for user's fork
-: "${remote:=$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')}"
+: "${fork:=$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')}"
 
 git fetch --quiet --unshallow "$origin" master 2>/dev/null || git fetch --quiet "$origin" master
 
@@ -50,7 +50,7 @@ for node_def in $(git ls-files --others --exclude-standard -- share/node-build/)
   git checkout --quiet -B "node/$node_name" "$origin"/master
   git add -- "$node_def"
   git commit --message "$node_name" --message "Created with \`npm run submit-definitions\`." --only -- "$node_def"
-  git push --set-upstream "$remote" HEAD
+  git push --set-upstream "$fork" HEAD
   hub pull-request --message="$(git log -1 --format='%B')"
   git checkout --quiet -
 done
