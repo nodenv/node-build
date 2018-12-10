@@ -34,11 +34,8 @@ while getopts ":o:r:" opt; do
 done
 
 : "${origin:=origin}"
-
-if [ -z "$remote" ]; then
-  # hackish way of getting the git remote name for user's fork
-  remote="$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')"
-fi
+# hackish way of getting the git remote name for user's fork
+: "${remote:=$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')}"
 
 git fetch --quiet --unshallow "$origin" master 2>/dev/null || git fetch --quiet "$origin" master
 
