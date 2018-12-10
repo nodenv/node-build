@@ -13,7 +13,7 @@
 
 set -e
 
-while getopts ":r" opt; do
+while getopts ":r:" opt; do
   case $opt in
   r) remote="${OPTARG:-origin}" ;;
   :) abort "Option -$OPTARG requires an argument." ;;
