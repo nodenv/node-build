@@ -8,8 +8,8 @@
 #   -o ORIGIN    The remote to which the pull-request will be opened.
 #                [default: origin]
 #   -r FORK      The remote to which scraped definitions will be pushed.
-#                [default: origin]
-#
+#                [default: derived from hub-fork]
+#                (Empty-string is a shortcut for 'origin': `-r ''`.)
 #
 # * inspired by: https://github.com/jasonkarns/brew-publish *
 
