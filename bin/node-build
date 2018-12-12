@@ -461,6 +461,11 @@ fetch_tarball() {
   local checksum
   local extracted_dir
 
+  if [ -z "$package_url" ]; then
+    echo "error: failed to download $package_name (missing package url)" >&2
+    return 1
+  fi
+
   if [ "$package_url" != "${package_url/\#}" ]; then
     checksum="${package_url#*#}"
     package_url="${package_url%%#*}"
