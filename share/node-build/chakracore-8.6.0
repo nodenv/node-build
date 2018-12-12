@@ -1,0 +1,4 @@
+binary darwin-x64 "https://nodejs.org/download/chakracore-release/v8.6.0/node-v8.6.0-darwin-x64.tar.gz#76d565a85d0a5078a16585011a3ad37dd119ca772ef1a07e16063274f88dfc63"
+binary linux-x64 "https://nodejs.org/download/chakracore-release/v8.6.0/node-v8.6.0-linux-x64.tar.gz#baa00c6267ee2d9363d333d956a4870500ac78ed9ef3ca10da4836e012aecee1"
+
+install_package "node-v8.6.0" "https://nodejs.org/download/chakracore-release/v8.6.0/node-v8.6.0.tar.gz#84e76d937ee964f3305f37af41a31eeddc6954a7d5fda14e0df4ca96a09b1f60"
