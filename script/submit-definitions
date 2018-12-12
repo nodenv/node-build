@@ -1,45 +1,61 @@
 #!/usr/bin/env bash
 
-# Usage: script/update-nodes [-r [<remote>]]
-#
 # scrapes, commits, pushes, and pull-requests new node definitions
 #
-# * inspired by: https://github.com/jasonkarns/brew-publish *
+# Usage: script/update-nodes [-o ORIGIN] [-r FORK]
+#
+# Options:
+#   -o ORIGIN    The remote to which the pull-request will be opened.
+#                [default: origin]
+#   -r FORK      The remote to which scraped definitions will be pushed.
+#                [default: derived from hub-fork]
+#                (Empty-string is a shortcut for 'origin': `-r ''`.)
+#
+# Notes: inspired by https://github.com/jasonkarns/brew-publish
 
-set -e
+set -eufo pipefail
+IFS=$'\n\t'
 
-while getopts ":r" opt; do
-  case $opt in
-  r) remote="${OPTARG:-origin}" ;;
-  :) abort "Option -$OPTARG requires an argument." ;;
-  \?) abort "Invalid option: -$OPTARG" ;;
-  esac
-done
+abort() {
+  echo "$1" >&2
+  exit 1
+}
 
 if ! type -p hub >/dev/null; then
   abort "ERROR: You have to install hub to proceed."
 fi
 
-if [ -z "$remote" ]; then
-  # hackish way of getting the git remote name for user's fork
-  remote="$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')"
-fi
+while getopts ":o:r:" opt; do
+  case $opt in
+  o) origin="${OPTARG}" ;;
+  r) fork="${OPTARG:-origin}" ;;
+  :) abort "Option -$OPTARG requires an argument." ;;
+  \?) abort "Invalid option: -$OPTARG" ;;
+  esac
+done
 
-git fetch --quiet --unshallow origin master 2>/dev/null || git fetch --quiet origin master
+: "${origin:=origin}"
+# hackish way of getting the git remote name for user's fork
+: "${fork:=$(hub fork 2>&1 | grep -oE 'remote:? \S+' | tail -1 | awk '{print $2}')}"
 
-git checkout --quiet origin/master
+# This returns 'HEAD' if in detached HEAD state. Useless in that case.
+orig_branch=$(git rev-parse --abbrev-ref HEAD)
+
+git fetch --quiet --unshallow "$origin" master 2>/dev/null || git fetch --quiet "$origin" master
+
+git checkout --quiet "$origin"/master
 
 npm run-script scrape-definitions
 
 for node_def in $(git ls-files --others --exclude-standard -- share/node-build/); do
   node_name="$(basename "$node_def")"
 
-  git checkout --quiet -B "node/$node_name" origin/master
+  git checkout --quiet -B "node/$node_name" "$origin"/master
   git add -- "$node_def"
   git commit --message "$node_name" --message "Created with \`npm run submit-definitions\`." --only -- "$node_def"
-  git push --set-upstream "$remote" HEAD
+  git push --set-upstream "$fork" HEAD
   hub pull-request --message="$(git log -1 --format='%B')"
   git checkout --quiet -
 done
 
-git checkout --quiet master
+git checkout --quiet "$orig_branch"

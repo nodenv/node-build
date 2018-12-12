@@ -30,7 +30,7 @@
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
     "verify-definitions": "scripty",
     "scrape-definitions": "nodenv-update-version-defs -d share/node-build/",
-    "submit-definitions": "scripty -r",
+    "submit-definitions": "scripty",
     "preversion": "scripty",
     "version": "scripty",
     "version:sync": "scripty",
