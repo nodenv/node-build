@@ -29,7 +29,7 @@
     "test": "bats ${CI:+--tap} test",
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
     "verify-definitions": "scripty",
-    "scrape-definitions": "nodenv-update-version-defs -d share/node-build/",
+    "scrape-definitions": "nodenv-update-version-defs --nodejs --chakracore -d share/node-build/",
     "submit-definitions": "scripty",
     "clean": "git clean -f -- share",
     "preversion": "scripty",
