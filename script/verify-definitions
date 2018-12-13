@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-# Usage: script/verify-definitions <COMMIT-RANGE>
-set -e
+# Usage: script/verify-definitions (- | -- FILES... | COMMIT_RANGE)
+#   script/verify-definitions -             # verify definition files listed on STDIN
+#   script/verify-definitions -- foo        # verify specific files by name
+#   script/verify-definitions COMMIT_RANGE  # verify definitions modified in COMMIT_RANGE
+
+set -eufo pipefail
+IFS=$'\n\t'
 
 help_text() {
   sed -ne '/^#/!q;s/.\{1,2\}//;1d;p' < "$0"
@@ -21,7 +26,7 @@ download_and_verify() {
   local url="$1"
   local file="$2"
   local expected="$3"
-  download_package "$url" "$file"
+  download_package "$url" "$file" || return $?
   checksum="$(compute_sha2 < "$file")"
   if [ "$checksum" != "$expected" ]; then
     {
@@ -38,42 +43,54 @@ changed_files() {
   git diff --name-only --diff-filter=ACMR "$commit_range" -- ./share/node-build
 }
 
-potentially_new_packages() {
-  local files commit_range="$1"
-  while IFS=$'\n' read -r file; do files+=("$file"); done < <(changed_files "$commit_range")
-  [ ${#files[@]} -ne 0 ] && extract_urls "${files[@]}"
+extract_urls() {
+  $(type -p ggrep grep | head -1) -hoEe 'http[^"]+#[^"]*' | sort | uniq
 }
 
-extract_urls() {
-  $(type -p ggrep grep | head -1) -hoe 'http[^"]\+#[^"]\+' "$@" | sort | uniq
+verify_files() {
+  xargs cat | extract_urls
+}
+
+potentially_new_packages() {
+  local commit_range="$1"
+
+  changed_files "$commit_range"
 }
 
 verify() {
   local url checksum file status=0
-  local commit_range="$1"
-  echo "Verifying changes from $commit_range"
-  changed_files "$commit_range"
-  for url in $(potentially_new_packages "$commit_range"); do
+  while read -r url; do
     checksum="${url#*#}"
     url="${url%#*}"
     echo "Verifying checksum for $url"
     file="${TMPDIR:-/tmp}/$checksum"
-    download_and_verify "$url" "$file" "$checksum" || status=$?
-  done
-  return $status
+    download_and_verify "$url" "$file" "$checksum" || (( status += 1))
+  done < <(xargs cat | extract_urls)
+
+  if [ "$status" != 0 ]; then
+    echo "failures: $status"
+    return 1
+  fi
 }
 
-case "$1" in
+case "${1-}" in
   '' )
-    echo "COMMIT-RANGE required" >&2
-    help_text >&2
-    exit 1
-    ;;
+    { echo "COMMIT_RANGE or FILES required"
+      help_text
+    } >&2
+    exit 1;;
   -h | --help )
     help_text
-    exit 0
+    ;;
+  - )
+    verify
+    ;;
+  -- )
+    echo "$@" | verify
     ;;
   * )
-    verify "$@"
+    echo "Verifying changes from $1"
+    changed_files "$1"
+    potentially_new_packages "$1" | verify
     ;;
 esac
