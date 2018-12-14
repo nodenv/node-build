@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+# Scrapes LTS/EOL schedule from https://github.com/nodejs/Release/blob/master/schedule.json
+# Asserts that all definitions for a given version include the EOL or LTS Maintenance warning message,
+# as appropriate.
+# Prints status messages to STDERR
+# Prints failing definition filenames to STDOUT
+
+set -euo pipefail
+IFS=$'\n\t'
+
+schedule_json() {
+  curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
+}
+
+parse_json() {
+  awk '
+  /"v[[:digit:]]+":/ {
+    gsub(/[^[:digit:].]/, "")
+    version = $0
+    print "versions+=(" version ")"
+    next
+  }
+
+  /".*":/ && version {
+    gsub(/[ "]/, "")
+    gsub(/,$/, "")
+    split($0, v, /:/)
+
+    print "v" version "_" v[1] "=\"" v[2] "\""
+    next
+  }
+
+  /}/ {
+    version = 0
+    next
+  }
+'
+}
+
+past() {
+ test "$(date -j +'%s')" -gt "$(date -j -f "%F" "$1" "+%s")"
+}
+
+assert_message() {
+  local msg=$1
+  local v=$2
+  local files_missing_messages
+
+  echo "asserting $msg message for v$v" >&2
+
+  files_missing_messages="$(grep -e "warn_$msg" --files-without-match "$v".*)"
+
+  test -z "$files_missing_messages" || ( echo "$files_missing_messages" && return 1 )
+}
+
+assert_warnings() {
+  local v=$1
+  local maint=$2
+  local eol=$3
+
+  if past "$eol"; then assert_message eol "$v"
+  elif past "$maint"; then assert_message lts "$v"
+  fi
+}
+
+declare -a versions
+
+
+eval "$(schedule_json | parse_json)"
+
+status=0
+
+for v in "${versions[@]}"; do
+  maint="v${v}_maintenance"
+  eol="v${v}_end"
+
+  echo "v$v maint: ${!maint} eol: ${!eol}" >&2
+  assert_warnings "$v" "${!maint}" "${!eol}" || status=$?
+done
+
+exit $status
