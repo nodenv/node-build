@@ -46,10 +46,9 @@
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
     "brew-publish": "^2.3.1",
-    "scripty": "^1.8.0"
+    "scripty": "^1.9.0"
   },
   "scripty": {
-    "path": "script",
     "silent": true
   }
 }
