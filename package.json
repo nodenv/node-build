@@ -41,11 +41,16 @@
     "publish:github": "scripty"
   },
   "devDependencies": {
-    "@nodenv/node-build-update-defs": "^2.7.0",
+    "@nodenv/node-build-update-defs": "^2.8.0",
     "bats": "^1.1.0",
     "bats-assert": "^1.0.1",
     "bats-mock": "^1.0.1",
     "brew-publish": "^2.3.1",
     "scripty": "^2.0.0-0"
+  },
+  "scripty": {
+    "modules": [
+      "@nodenv/node-build-update-defs"
+    ]
   }
 }
