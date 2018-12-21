@@ -47,5 +47,10 @@
     "bats-mock": "^1.0.1",
     "brew-publish": "^2.3.1",
     "scripty": "^2.0.0-0"
+  },
+  "scripty": {
+    "modules": [
+      "@nodenv/node-build-update-defs"
+    ]
   }
 }
