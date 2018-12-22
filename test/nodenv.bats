@@ -16,7 +16,8 @@ stub_node_build() {
   stub_node_build 'echo node-build "$@"'
 
   run nodenv-install 4.1.2
-  assert_success "node-build 4.1.2 ${NODENV_ROOT}/versions/4.1.2"
+  assert_success
+  assert_output "node-build 4.1.2 ${NODENV_ROOT}/versions/4.1.2"
 
   unstub node-build
   unstub nodenv-hooks
@@ -28,7 +29,8 @@ stub_node_build() {
   stub nodenv-local 'echo 4.1.2'
 
   run nodenv-install
-  assert_success "node-build 4.1.2"
+  assert_success
+  assert_output "node-build 4.1.2"
 
   unstub node-build
   unstub nodenv-local
@@ -102,7 +104,8 @@ OUT
   stub_node_build 'echo $NODE_BUILD_DEFINITIONS'
 
   run nodenv-install 4.1.2
-  assert_success ""
+  assert_success
+  refute_output
 }
 
 @test "some build definitions from plugins" {
@@ -185,7 +188,7 @@ OUT
 
 @test "nodenv-install has usage help preface" {
   run head "$(which nodenv-install)"
-  assert_output_contains 'Usage: nodenv install'
+  assert_output --partial 'Usage: nodenv install'
 }
 
 @test "not enough arguments nodenv-uninstall" {
@@ -214,5 +217,5 @@ OUT
 
 @test "nodenv-uninstall has usage help preface" {
   run head "$(which nodenv-uninstall)"
-  assert_output_contains 'Usage: nodenv uninstall'
+  assert_output --partial 'Usage: nodenv uninstall'
 }

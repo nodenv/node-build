@@ -10,7 +10,7 @@ load test_helper
   run node-build "$definition"
 
   assert_failure
-  assert_output_contains 'Usage: node-build'
+  assert_output --partial 'Usage: node-build'
 }
 
 @test "extra arguments for node-build" {
@@ -21,5 +21,5 @@ load test_helper
   run node-build "$definition" "${BATS_TMPDIR}/install" ""
 
   assert_failure
-  assert_output_contains 'Usage: node-build'
+  assert_output --partial 'Usage: node-build'
 }

@@ -9,7 +9,8 @@ pkg_version=${BASH_REMATCH[1]}
 @test "node-build static version" {
   stub git 'echo "ASPLODE" >&2; exit 1'
   run node-build --version
-  assert_success "node-build ${pkg_version}"
+  assert_success
+  assert_output "node-build ${pkg_version}"
   unstub git
 }
 
@@ -18,7 +19,8 @@ pkg_version=${BASH_REMATCH[1]}
     'remote -v : echo origin https://github.com/nodenv/node-build.git' \
     "describe --tags HEAD : echo v1984-12-gSHA"
   run node-build --version
-  assert_success "node-build 1984-12-gSHA"
+  assert_success
+  assert_output "node-build 1984-12-gSHA"
   unstub git
 }
 
@@ -27,7 +29,8 @@ pkg_version=${BASH_REMATCH[1]}
     'remote -v : echo origin https://github.com/nodenv/node-build.git' \
     "describe --tags HEAD : echo ASPLODE >&2; exit 1"
   run node-build --version
-  assert_success "node-build ${pkg_version}"
+  assert_success
+  assert_output "node-build ${pkg_version}"
   unstub git
 }
 
@@ -36,5 +39,6 @@ pkg_version=${BASH_REMATCH[1]}
     'remote -v : echo origin https://github.com/Homebrew/homebrew.git' \
     "describe --tags HEAD : echo v1984-12-gSHA"
   run node-build --version
-  assert_success "node-build ${pkg_version}"
+  assert_success
+  assert_output "node-build ${pkg_version}"
 }

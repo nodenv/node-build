@@ -272,7 +272,8 @@ OUT
   assert_success
 
   run "$INSTALL_ROOT/bin/package" "world"
-  assert_success "hello world"
+  assert_success
+  assert_output "hello world"
 }
 
 @test "non-writable TMPDIR aborts build" {
@@ -282,7 +283,8 @@ OUT
 
   touch "${BATS_TMPDIR}/build-definition"
   run node-build "${BATS_TMPDIR}/build-definition" "$INSTALL_ROOT"
-  assert_failure "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
+  assert_failure
+  assert_output "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
 }
 
 @test "non-executable TMPDIR aborts build" {
@@ -292,7 +294,8 @@ OUT
 
   touch "${BATS_TMPDIR}/build-definition"
   run node-build "${BATS_TMPDIR}/build-definition" "$INSTALL_ROOT"
-  assert_failure "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
+  assert_failure
+  assert_output "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
 }
 
 @test "initializes LDFLAGS directories" {

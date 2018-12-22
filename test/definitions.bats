@@ -6,8 +6,8 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
 @test "list built-in definitions" {
   run node-build --definitions
   assert_success
-  assert_output_contains "0.10.40"
-  assert_output_contains "iojs-3.3.1"
+  assert_output --partial "0.10.40"
+  assert_output --partial "iojs-3.3.1"
   assert [ "${#lines[*]}" -eq "$NUM_DEFINITIONS" ]
 }
 
@@ -15,7 +15,8 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
   export NODE_BUILD_ROOT="$BATS_TMPDIR"
   refute [ -e "${NODE_BUILD_ROOT}/share/node-build" ]
   run node-build --definitions
-  assert_success ""
+  assert_success
+  refute_output
 }
 
 @test "custom NODE_BUILD_ROOT: single definition" {
@@ -23,7 +24,8 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
   mkdir -p "${NODE_BUILD_ROOT}/share/node-build"
   touch "${NODE_BUILD_ROOT}/share/node-build/4.2.1-test"
   run node-build --definitions
-  assert_success "4.2.1-test"
+  assert_success
+  assert_output "4.2.1-test"
 }
 
 @test "one path via NODE_BUILD_DEFINITIONS" {
@@ -32,7 +34,7 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
   touch "${NODE_BUILD_DEFINITIONS}/4.2.1-test"
   run node-build --definitions
   assert_success
-  assert_output_contains "4.2.1-test"
+  assert_output --partial "4.2.1-test"
   assert [ "${#lines[*]}" -eq "$((NUM_DEFINITIONS + 1))" ]
 }
 
@@ -44,8 +46,8 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
   touch "${BATS_TMPDIR}/other/4.0.0-test"
   run node-build --definitions
   assert_success
-  assert_output_contains "4.2.1-test"
-  assert_output_contains "4.0.0-test"
+  assert_output --partial "4.2.1-test"
+  assert_output --partial "4.0.0-test"
   assert [ "${#lines[*]}" -eq "$((NUM_DEFINITIONS + 2))" ]
 }
 
@@ -56,7 +58,8 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
   mkdir -p "${BATS_TMPDIR}/other"
   echo false > "${BATS_TMPDIR}/other/4.2.1-test"
   run bin/node-build "4.2.1-test" "${BATS_TMPDIR}/install"
-  assert_success ""
+  assert_success
+  refute_output
 }
 
 @test "installing nonexistent definition" {
@@ -81,7 +84,8 @@ iojs-3.3.1"
     touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
   done
   run node-build --definitions
-  assert_success "$expected"
+  assert_success
+  assert_output "$expected"
 }
 
 @test "removing duplicate Node versions" {
