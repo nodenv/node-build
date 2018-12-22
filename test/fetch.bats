@@ -14,8 +14,8 @@ setup() {
 
   install_fixture definitions/without-checksum
   assert_failure
-  assert_output_contains "> http://example.com/packages/package-1.0.0.tar.gz"
-  assert_output_contains "error: failed to download package-1.0.0.tar.gz"
+  assert_output --partial "> http://example.com/packages/package-1.0.0.tar.gz"
+  assert_output --partial "error: failed to download package-1.0.0.tar.gz"
 }
 
 @test "using aria2c if available" {

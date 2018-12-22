@@ -5,7 +5,8 @@ load test_helper
 @test "installs node-build into PREFIX" {
   cd "$BATS_TMPDIR"
   PREFIX="${PWD}/usr" run "${BATS_TEST_DIRNAME}/../install.sh"
-  assert_success ""
+  assert_success
+  refute_output
 
   cd usr
 
@@ -20,7 +21,8 @@ load test_helper
 @test "build definitions don't have the executable bit" {
   cd "$BATS_TMPDIR"
   PREFIX="${PWD}/usr" run "${BATS_TEST_DIRNAME}/../install.sh"
-  assert_success ""
+  assert_success
+  refute_output
 
   run $BASH -c 'ls -l usr/share/node-build | tail -2 | cut -c1-10'
   assert_output <<OUT
@@ -36,7 +38,8 @@ OUT
   touch share/node-build/0.10.36
 
   PREFIX="$PWD" run "${BATS_TEST_DIRNAME}/../install.sh"
-  assert_success ""
+  assert_success
+  refute_output
 
   assert [ -x bin/node-build ]
   run grep "install_package" share/node-build/0.10.36
@@ -51,7 +54,8 @@ OUT
   touch share/bananas/docs
 
   PREFIX="$PWD" run "${BATS_TEST_DIRNAME}/../install.sh"
-  assert_success ""
+  assert_success
+  refute_output
 
   assert [ -e bin/bananas ]
   assert [ -e share/bananas/docs ]
