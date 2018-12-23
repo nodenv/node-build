@@ -54,3 +54,34 @@ OUT
 
   refute [ -d "${NODENV_ROOT}/versions/4.0.0" ]
 }
+
+@test "nodenv-uninstall hooks are invoked for _each_ uninstalled node" {
+  cat > "${HOOK_PATH}/uninstall.bash" <<OUT
+before_uninstall 'echo before: \$PREFIX'
+after_uninstall 'echo after.'
+rm() {
+  echo "rm \$@"
+  command rm "\$@"
+}
+OUT
+  stub nodenv-hooks "uninstall : echo '$HOOK_PATH'/uninstall.bash"
+  stub nodenv-rehash "echo rehashed"
+  stub nodenv-rehash "echo rehashed"
+
+  mkdir -p "${NODENV_ROOT}/versions/4.1.1"
+  mkdir -p "${NODENV_ROOT}/versions/4.2.2"
+
+  run nodenv-uninstall -f 4.1.1 4.2.2
+
+  assert_success
+  assert_output - <<-OUT
+before: ${NODENV_ROOT}/versions/4.1.1
+rm -rf ${NODENV_ROOT}/versions/4.1.1
+rehashed
+after.
+before: ${NODENV_ROOT}/versions/4.2.2
+rm -rf ${NODENV_ROOT}/versions/4.2.2
+rehashed
+after.
+OUT
+}

@@ -199,12 +199,18 @@ OUT
   unstub nodenv-help
 }
 
-@test "too many arguments for nodenv-uninstall" {
-  stub nodenv-help 'uninstall : true'
+@test "nodenv-uninstall can uninstall multiple nodes at once" {
+  mkdir -p "${NODENV_ROOT}/versions/4.0.0"
+  mkdir -p "${NODENV_ROOT}/versions/4.1.1"
+  mkdir -p "${NODENV_ROOT}/versions/4.2.2"
 
-  run nodenv-uninstall 4.1.1 4.1.2
-  assert_failure
-  unstub nodenv-help
+  run nodenv-uninstall -f 4.1.1 4.2.2
+
+  assert_success
+  refute_output
+  assert [ -d "${NODENV_ROOT}/versions/4.0.0" ]
+  refute [ -d "${NODENV_ROOT}/versions/4.1.1" ]
+  refute [ -d "${NODENV_ROOT}/versions/4.2.2" ]
 }
 
 @test "show help for nodenv-uninstall" {
