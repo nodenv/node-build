@@ -97,7 +97,7 @@ iojs-3.3.1"
 
   run node-build --definitions
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 0.10.3
 4.2.0
 OUT

@@ -33,7 +33,7 @@ build_package_standard node
 DEF
 
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 ./configure --prefix=$INSTALL_ROOT
 CC=clang
 CFLAGS=no

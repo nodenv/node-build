@@ -42,7 +42,7 @@ stub_node_build() {
 
   run nodenv-install --list
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Available versions:
   0.8.7
   0.10.4
@@ -61,7 +61,7 @@ OUT
 
   run nodenv-install 0.10
   assert_failure
-  assert_output <<OUT
+  assert_output - <<OUT
 ERROR
 
 The following versions contain \`0.10' in the name:
@@ -85,7 +85,7 @@ OUT
 
   run nodenv-install 5.0.0
   assert_failure
-  assert_output <<OUT
+  assert_output - <<OUT
 ERROR
 
 See all available versions with \`nodenv install --list'.
@@ -115,7 +115,7 @@ OUT
 
   run nodenv-install 4.1.2
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 
 ${NODENV_ROOT}/plugins/bar/share/node-build
 ${NODENV_ROOT}/plugins/foo/share/node-build
@@ -129,7 +129,7 @@ OUT
 
   run nodenv-install --list
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Available versions:
   
   ${NODENV_ROOT}/plugins/bar/share/node-build
@@ -144,7 +144,7 @@ OUT
 
   run nodenv-install --complete
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 --list
 --force
 --skip-existing

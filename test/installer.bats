@@ -25,7 +25,7 @@ load test_helper
   refute_output
 
   run $BASH -c 'ls -l usr/share/node-build | tail -2 | cut -c1-10'
-  assert_output <<OUT
+  assert_output - <<OUT
 -rw-r--r--
 -rw-r--r--
 OUT

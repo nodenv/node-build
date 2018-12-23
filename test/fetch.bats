@@ -25,7 +25,7 @@ setup() {
 
   install_fixture definitions/without-checksum
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Downloading package-1.0.0.tar.gz...
 -> http://example.com/packages/package-1.0.0.tar.gz
 Installing package-1.0.0...
@@ -41,7 +41,7 @@ OUT
 install_git "package-dev" "http://example.com/packages/package.git" master copy
 DEF
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Cloning http://example.com/packages/package.git...
 Installing package-dev...
 Installed package-dev to ${BATS_TMPDIR}/install
@@ -59,7 +59,7 @@ OUT
 install_git "package-dev" "http://example.com/packages/package.git" master copy
 DEF
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Cloning http://example.com/packages/package.git...
 Installing package-dev...
 Installed package-dev to ${BATS_TMPDIR}/install

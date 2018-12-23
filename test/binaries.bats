@@ -17,7 +17,7 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Downloading binary-1.0.0.tar.gz...
 -> http://example.com/packages/binary-1.0.0.tar.gz
 Installing binary-1.0.0...
@@ -34,7 +34,7 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Downloading binary-1.0.0.tar.gz...
 -> http://example.com/packages/binary-1.0.0.tar.gz
 Installing binary-1.0.0...
@@ -51,7 +51,7 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Downloading binary-1.0.0.tar.gz...
 -> http://example.com/packages/binary-1.0.0.tar.gz
 Installing binary-1.0.0...
@@ -68,7 +68,7 @@ install_package "package-1.0.0" "http://example.com/packages/package-1.0.0.tar.g
 DEF
 
   assert_success
-  assert_output <<OUT
+  assert_output - <<OUT
 Downloading package-1.0.0.tar.gz...
 -> http://example.com/packages/package-1.0.0.tar.gz
 Installing package-1.0.0...

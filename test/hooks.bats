@@ -21,7 +21,7 @@ OUT
   run nodenv-install "$definition"
 
   assert_success
-  assert_output <<-OUT
+  assert_output - <<-OUT
 before: ${NODENV_ROOT}/versions/4.0.0
 node-build
 after: 0
@@ -45,7 +45,7 @@ OUT
   run nodenv-uninstall -f 4.0.0
 
   assert_success
-  assert_output <<-OUT
+  assert_output - <<-OUT
 before: ${NODENV_ROOT}/versions/4.0.0
 rm -rf ${NODENV_ROOT}/versions/4.0.0
 rehashed
