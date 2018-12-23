@@ -61,6 +61,8 @@ done < <(nodenv-hooks uninstall)
 # shellcheck disable=SC1090
 for script in "${scripts[@]}"; do source "$script"; done
 
+STATUS=0
+
 for DEFINITION in "${DEFINITIONS[@]}"; do
 
   VERSION_NAME="${DEFINITION##*/}"
@@ -69,13 +71,14 @@ for DEFINITION in "${DEFINITIONS[@]}"; do
   if [ -z "$FORCE" ]; then
     if [ ! -d "$PREFIX" ]; then
       echo "nodenv: version \`$VERSION_NAME' not installed" >&2
-      exit 1
+      STATUS=1
+      continue
     fi
 
     read -rp "nodenv: remove $PREFIX? [yN] "
     case "$REPLY" in
     y* | Y* ) ;;
-    * ) exit 1 ;;
+    * ) STATUS=1; continue ;;
     esac
   fi
 
@@ -89,3 +92,5 @@ for DEFINITION in "${DEFINITIONS[@]}"; do
   for hook in "${after_hooks[@]}"; do eval "$hook"; done
 
 done
+
+exit $STATUS
