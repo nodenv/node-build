@@ -2,7 +2,7 @@
 #
 # Summary: Uninstall a specific Node version
 #
-# Usage: nodenv uninstall [-f|--force] <version>
+# Usage: nodenv uninstall [-f|--force] <version>...
 #
 #    -f  Attempt to remove the specified version without prompting
 #        for confirmation. If the version does not exist, do not
@@ -33,14 +33,15 @@ if [ "$1" = "-f" ] || [ "$1" = "--force" ]; then
   shift
 fi
 
-[ "$#" -eq 1 ] || usage 1 >&2
+[ "$#" -gt 0 ] || usage 1 >&2
 
-DEFINITION="$1"
-case "$DEFINITION" in
-"" | -* )
-  usage 1 >&2
-  ;;
-esac
+DEFINITIONS=("$@")
+
+for DEFINITION in "${DEFINITIONS[@]}"; do
+  case "$DEFINITION" in
+  "" | -* ) usage 1 >&2 ;;
+  esac
+done
 
 declare -a before_hooks after_hooks
 
@@ -60,28 +61,31 @@ done < <(nodenv-hooks uninstall)
 # shellcheck disable=SC1090
 for script in "${scripts[@]}"; do source "$script"; done
 
+for DEFINITION in "${DEFINITIONS[@]}"; do
 
-VERSION_NAME="${DEFINITION##*/}"
-PREFIX="${NODENV_ROOT}/versions/${VERSION_NAME}"
+  VERSION_NAME="${DEFINITION##*/}"
+  PREFIX="${NODENV_ROOT}/versions/${VERSION_NAME}"
 
-if [ -z "$FORCE" ]; then
-  if [ ! -d "$PREFIX" ]; then
-    echo "nodenv: version \`$VERSION_NAME' not installed" >&2
-    exit 1
+  if [ -z "$FORCE" ]; then
+    if [ ! -d "$PREFIX" ]; then
+      echo "nodenv: version \`$VERSION_NAME' not installed" >&2
+      exit 1
+    fi
+
+    read -rp "nodenv: remove $PREFIX? [yN] "
+    case "$REPLY" in
+    y* | Y* ) ;;
+    * ) exit 1 ;;
+    esac
   fi
 
-  read -rp "nodenv: remove $PREFIX? [yN] "
-  case "$REPLY" in
-  y* | Y* ) ;;
-  * ) exit 1 ;;
-  esac
-fi
+  for hook in "${before_hooks[@]}"; do eval "$hook"; done
 
-for hook in "${before_hooks[@]}"; do eval "$hook"; done
+  if [ -d "$PREFIX" ]; then
+    rm -rf "$PREFIX"
+    nodenv-rehash
+  fi
 
-if [ -d "$PREFIX" ]; then
-  rm -rf "$PREFIX"
-  nodenv-rehash
-fi
+  for hook in "${after_hooks[@]}"; do eval "$hook"; done
 
-for hook in "${after_hooks[@]}"; do eval "$hook"; done
+done
