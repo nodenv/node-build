@@ -1,0 +1,11 @@
+binary aix-ppc64 "https://nodejs.org/dist/v10.15.0/node-v10.15.0-aix-ppc64.tar.gz#5a0eac2db2dc6114a9095190a0e9e835e210d5cdf5c0042607bb50331c32313f"
+binary darwin-x64 "https://nodejs.org/dist/v10.15.0/node-v10.15.0-darwin-x64.tar.gz#353402461c898c569658d0a963790476f4d9828cc6c9286d81617ee8afcba4e8"
+binary linux-arm64 "https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-arm64.tar.gz#69a86c71df32320dc8dfccd1aca124c73dc2b274c7ce50104dad733a06dc26f3"
+binary linux-armv6l "https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-armv6l.tar.gz#701ea80df70f86cb1980b1ccc8f38fe9d55e4155acc13a73717c9ea4aeed466c"
+binary linux-armv7l "https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-armv7l.tar.gz#81a248baa989667d14a0868adf87e5048a53518e9aed169131194e88b39c20aa"
+binary linux-ppc64le "https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-ppc64le.tar.gz#fc4ce0770bfabbe6be61b52bf6ed48c4ffd10f4fa8a698e4bf22594525a3116a"
+binary linux-s390x "https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-s390x.tar.gz#80ae06a0f2fc936d663043b5b709ec050016ab846aa29faf9718c6fe3f20cc14"
+binary linux-x64 "https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.gz#f0b4ff9a74cbc0106bbf3ee7715f970101ac5b1bbe814404d7a0673d1da9f674"
+binary sunos-x64 "https://nodejs.org/dist/v10.15.0/node-v10.15.0-sunos-x64.tar.gz#77254ecb8576cf54af53df72842cbdb756b2b34b23309194649be7891ff9bd1f"
+
+install_package "node-v10.15.0" "https://nodejs.org/dist/v10.15.0/node-v10.15.0.tar.gz#dbe467e3dabb6854fcb0cd96e04082268cb1e313ce97a4b7100b2ed152b0a0ab"
