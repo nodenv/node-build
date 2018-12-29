@@ -7,4 +7,5 @@ os:
 jobs:
   include:
     - stage: verify definitions
+      if: type = pull_request
       script: npm run verify-definitions -- $TRAVIS_COMMIT_RANGE
