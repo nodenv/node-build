@@ -76,6 +76,7 @@ NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
 4.0.0
 4.2.3
 4.11.1
+10.0.0
 iojs-0.12.0-dev
 iojs-1.0.0
 iojs-1.x-dev
