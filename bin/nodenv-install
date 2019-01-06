@@ -198,9 +198,19 @@ cleanup() {
 
 trap cleanup SIGINT
 
-# Invoke `node-build` and record the exit status in $STATUS.
-STATUS=0
-node-build $KEEP $VERBOSE $HAS_PATCH $SKIP_BINARY "$DEFINITION" "$PREFIX" || STATUS="$?"
+# Attempt node-build with definition as provided;
+# also try with common prefixes removed from the definition's name
+for def_prefix in "" v node- node-v; do
+  DEF_BASENAME=$(basename "$DEFINITION")
+  DEFINITION_ATTEMPT=${DEFINITION/%$DEF_BASENAME/${DEF_BASENAME/#$def_prefix}}
+
+  # Invoke `node-build` and record the exit status in $STATUS.
+  STATUS=0
+  node-build $KEEP $VERBOSE $HAS_PATCH $SKIP_BINARY "$DEFINITION_ATTEMPT" "$PREFIX" || STATUS="$?"
+
+  # Only attempt alternatives if it errored due to definition not found.
+  [ "$STATUS" == "2" ] || break
+done
 
 # Display a more helpful message if the definition wasn't found.
 if [ "$STATUS" == "2" ]; then
