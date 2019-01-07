@@ -1,3 +1,5 @@
+[ -n "$NODENV_PREFIX_RETRY" ] || return 0
+
 retry_without_prefix() {
   [ "$STATUS" = 2 ] || return 0
 
