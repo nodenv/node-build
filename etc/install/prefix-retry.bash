@@ -1,9 +1,10 @@
-[ -n "$NODENV_PREFIX_RETRY" ] || return 0
+[ -n "${NODENV_PREFIX_RETRY-}" ] || return 0
 
 retry_without_prefix() {
-  [ "$STATUS" = 2 ] || return 0
+  [ "${STATUS-}" = 2 ] || return 0
 
-  fallback_name=${VERSION_NAME#node-}
+  fallback_name=${VERSION_NAME-}
+  fallback_name=${fallback_name#node-}
   fallback_name=${fallback_name#v}
 
   [ "$fallback_name" != "$VERSION_NAME" ] || return 0
