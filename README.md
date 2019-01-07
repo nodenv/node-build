@@ -165,6 +165,16 @@ when using `--keep` with the `nodenv install` command. You should specify the
 location of the source code with the `NODE_BUILD_BUILD_PATH` environment
 variable when using `--keep` with `node-build`.
 
+#### Retry installation without v/node-/node-v prefix
+
+The nodenv-install plugin can attempt a retry if the installation failed due
+to a missing definition file. If the given node version name begins with
+'v', 'node', or 'node-v', the retry will drop the prefix and try again. For
+instance, if `nodenv install node-v11.0.0` fails because a definition file
+does not exist by the name "node-v11.0.0", it will retry as "11.0.0".
+For this retry to be attempted, the environment variable `NODENV_PREFIX_RETRY`
+must be non-empty.
+
 ## Getting Help
 
 Please see the [node-build wiki][wiki] for solutions to common problems.
