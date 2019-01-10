@@ -1,0 +1,4 @@
+binary darwin-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc8/graalvm-ce-1.0.0-rc8-macos-amd64.tar.gz#aa7880696ae11e264e91feac6901bef3611c590a68bc6b4a26abc18842f5d184"
+binary linux-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc8/graalvm-ce-1.0.0-rc8-linux-amd64.tar.gz#d4b71ff27e194aa35fe76d6135f87aed26f59a6934909978c3647ceb5a26045a"
+
+install_package "graal+ce-1.0.0-rc8" "" graal

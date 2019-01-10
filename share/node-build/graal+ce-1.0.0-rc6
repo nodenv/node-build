@@ -1,0 +1,4 @@
+binary darwin-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc6/graalvm-ce-1.0.0-rc6-macos-amd64.tar.gz#4d7a64916b4e07c65fd7ea473f7975a7607cdfd847c462e8d9a89e26932454f0"
+binary linux-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc6/graalvm-ce-1.0.0-rc6-linux-amd64.tar.gz#6606c95df7195f269a38980deb293ca5d93cdb6989addab991b8c975d5c51bac"
+
+install_package "graal+ce-1.0.0-rc6" "" graal
