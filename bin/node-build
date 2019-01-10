@@ -757,6 +757,12 @@ build_package_jxcore_npm() {
 JX
 }
 
+build_package_graal() {
+  cd "$PREFIX_PATH" || return 1
+  mv -f Contents/Home/* .
+  rm -rf Contents demo sample src
+}
+
 before_install_package() {
   :
 }
