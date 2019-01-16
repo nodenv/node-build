@@ -8,6 +8,8 @@ version of Node, from source or precompiled binary.
 It is available as a plugin for [nodenv][] that
 provides the `nodenv install` command, or as a standalone program.
 
+<!-- toc -->
+
 ## Installation
 
 ```sh
