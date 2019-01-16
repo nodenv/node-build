@@ -8,6 +8,27 @@ version of Node, from source or precompiled binary.
 It is available as a plugin for [nodenv][] that
 provides the `nodenv install` command, or as a standalone program.
 
+<!-- toc -->
+
+- [Installation](#installation)
+  * [Upgrading](#upgrading)
+    + [Updating available build versions](#updating-available-build-versions)
+- [Usage](#usage)
+  * [Basic Usage](#basic-usage)
+  * [Advanced Usage](#advanced-usage)
+    + [Binaries](#binaries)
+    + [Custom Build Definitions](#custom-build-definitions)
+    + [Custom Build Configuration](#custom-build-configuration)
+    + [Applying Patches](#applying-patches)
+    + [Checksum Verification](#checksum-verification)
+    + [Package Mirrors](#package-mirrors)
+    + [Keeping the build directory after installation](#keeping-the-build-directory-after-installation)
+    + [Retry installation without v/node-/node-v prefix](#retry-installation-without-vnode-node-v-prefix)
+- [Getting Help](#getting-help)
+- [Credits](#credits)
+
+<!-- tocstop -->
+
 ## Installation
 
 ```sh
