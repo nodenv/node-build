@@ -1,3 +1,3 @@
 binary linux-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc4/graalvm-ce-1.0.0-rc4-linux-amd64.tar.gz#ff6e152b7ec0f8db3d03990357fd14c5e022bb7d4f677ab31e169f242c4515a9"
 
-install_package "graal+ce-1.0.0-rc4" "" graal
+install_package "graal+ce-1.0.0-rc4" "https://api.github.com/repos/oracle/graal/tarball/vm-1.0.0-rc4#842c3764d3af0c28d19ea94535d40ef390c2c2c84155e2be205a9004558eb8c1" graal
