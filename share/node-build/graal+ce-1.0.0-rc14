@@ -1,0 +1,7 @@
+echo "This package only contains compiled binaries."
+echo "If no binary matches your platform, source compilation will not be attempted."
+
+binary linux-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc14/graalvm-ce-1.0.0-rc14-linux-amd64.tar.gz#a5bd59352f035ec80ecd4386e6f7bb5b2e75e59036bc703d4cfbc5a81226086b"
+binary darwin-x64 "https://github.com/oracle/graal/releases/download/vm-1.0.0-rc14/graalvm-ce-1.0.0-rc14-macos-amd64.tar.gz#e808adc49cba9e1f378d887c7723b1134e2c67520ae69ff6ffd9c261d536c036"
+
+install_package "graal+ce-1.0.0-rc14" "#" graal
