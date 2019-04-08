@@ -1,3 +1,7 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
 binary aix-ppc64 "https://nodejs.org/dist/v11.6.0/node-v11.6.0-aix-ppc64.tar.gz#b015a390703cf829c169016991c891c91807db50c76be8a73f39f1415efed462"
 binary darwin-x64 "https://nodejs.org/dist/v11.6.0/node-v11.6.0-darwin-x64.tar.gz#c880063b112c48130dba8f7b058de61959ae46fddcfa363715571b22c1cbeb26"
 binary linux-arm64 "https://nodejs.org/dist/v11.6.0/node-v11.6.0-linux-arm64.tar.gz#a112c89390965356036597e712ec3939c37090bbafd513b90ab2a524bd29190a"
