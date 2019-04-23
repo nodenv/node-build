@@ -1,0 +1,5 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+install_git "12.x-dev" "https://github.com/nodejs/node.git" "v12.x-staging" standard
