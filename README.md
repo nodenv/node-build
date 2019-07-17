@@ -172,7 +172,6 @@ simply replacing `https://nodejs.org/dist` with `NODE_BUILD_MIRROR_URL`.
 If you don't have an SHA2 program installed, node-build will skip the download
 mirror and use official URLs instead. You can force node-build to bypass the
 mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
-mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
 
 
 #### Keeping the build directory after installation
