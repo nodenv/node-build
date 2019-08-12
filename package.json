@@ -41,7 +41,7 @@
     "publish:github": "scripty"
   },
   "devDependencies": {
-    "@nodenv/node-build-update-defs": "^2.9.3",
+    "@nodenv/node-build-update-defs": "^2.9.4",
     "bats": "^1.1.0",
     "bats-assert": "jasonkarns/bats-assert-1",
     "bats-mock": "^1.0.1",
