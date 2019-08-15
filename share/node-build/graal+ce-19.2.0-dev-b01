@@ -1,0 +1,7 @@
+echo "This package only contains compiled binaries."
+echo "If no binary matches your platform, source compilation will not be attempted."
+
+binary darwin-x64 "https://github.com/oracle/graal/releases/download/vm-19.2.0-dev-b01/graalvm-ce-darwin-amd64-19.2.0-dev-b01.tar.gz#c6ad3e3d193edb539321a0847602985e829728cc7a050adb09a37544693749af"
+binary linux-x64 "https://github.com/oracle/graal/releases/download/vm-19.2.0-dev-b01/graalvm-ce-linux-amd64-19.2.0-dev-b01.tar.gz#8b648b3cdf7f1748b05538397284e76eb9a2767dc7abc5d82dc9509348773864"
+
+install_package "graal+ce-19.2.0-dev-b01" "#" graal
