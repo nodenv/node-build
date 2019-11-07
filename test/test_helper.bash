@@ -17,8 +17,22 @@ if [ "$FIXTURE_ROOT" != "$BATS_TEST_DIRNAME/fixtures" ]; then
   fi
   PATH="$BATS_TEST_DIRNAME/../bin:$PATH"
   PATH="$BATS_MOCK_BINDIR:$PATH"
+  PATH="$BATS_TMPDIR/bin:$PATH"
   export PATH
 fi
+
+remove_commands_from_path() {
+  local path cmd
+  local paths=( $(command -v "$@" | sed 's!/[^/]*$!!' | sort -u) )
+  local NEWPATH=":$PATH:"
+  for path in "${paths[@]}"; do
+    local tmp_path="$(mktemp -d "$BATS_TMPDIR/path.XXXXX")"
+    ln -fs "$path"/* "$tmp_path/"
+    for cmd; do rm -f "$tmp_path/$cmd"; done
+    NEWPATH="${NEWPATH/:$path:/:$tmp_path:}"
+  done
+  echo "${NEWPATH#:}"
+}
 
 teardown() {
   rm -fr "${BATS_TMPDIR:?}"/*
