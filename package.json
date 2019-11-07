@@ -22,16 +22,17 @@
   },
   "files": [
     "bin",
+    "etc",
     "share"
   ],
   "scripts": {
+    "clean": "git clean -f -- share",
     "start": "bin/node-build",
-    "test": "bats ${CI:+--tap} test",
-    "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
-    "verify-definitions": "scripty",
     "scrape-definitions": "nodenv-update-version-defs --nodejs --chakracore --graal -d share/node-build/",
     "submit-definitions": "scripty",
-    "clean": "git clean -f -- share",
+    "verify-definitions": "scripty",
+    "test": "bats ${CI:+--tap} test",
+    "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
     "preversion": "scripty",
     "version": "script/version-sync",
     "postversion": "git push --follow-tags"
