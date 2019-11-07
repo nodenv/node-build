@@ -33,12 +33,8 @@
     "submit-definitions": "scripty",
     "clean": "git clean -f -- share",
     "preversion": "scripty",
-    "version": "scripty",
-    "version:sync": "scripty",
-    "postversion": "npm publish",
-    "prepublishOnly": "npm run publish:github && npm run publish:brew",
-    "publish:brew": "brew-publish",
-    "publish:github": "scripty"
+    "version": "script/version-sync",
+    "postversion": "git push --follow-tags"
   },
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.9.4",
@@ -46,7 +42,6 @@
     "bats-assert": "jasonkarns/bats-assert-1",
     "bats-mock": "^1.0.1",
     "bats-support": "jasonkarns/bats-support",
-    "brew-publish": "^2.3.1",
     "scripty": "^2.0.0-0"
   },
   "scripty": {
