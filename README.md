@@ -1,7 +1,5 @@
 # node-build
 
-[![Build Status][build-status-img]][build-status]
-
 node-build is a command-line utility that makes it easy to install virtually any
 version of Node, from source or precompiled binary.
 
@@ -216,7 +214,5 @@ and modified for node.
 [build-env]: https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
 [issue tracker]: https://github.com/nodenv/node-build/issues
 [node-build-update-defs]: https://github.com/nodenv/node-build-update-defs
-[build-status]: https://travis-ci.org/nodenv/node-build
-[build-status-img]: https://travis-ci.org/nodenv/node-build.svg?branch=master
 [Sam Stephenson]: https://github.com/sstephenson
 [Will McKenzie]: https://github.com/oinutter
