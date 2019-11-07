@@ -406,7 +406,7 @@ http() {
   [ -n "$2" ] || return 1
   shift 1
 
-  NODE_BUILD_HTTP_CLIENT="${NODE_BUILD_HTTP_CLIENT:-$(detect_http_client)}"
+  NODE_BUILD_HTTP_CLIENT="${NODE_BUILD_HTTP_CLIENT:-$(detect_http_client 2>&3)}"
   [ -n "$NODE_BUILD_HTTP_CLIENT" ] || return 1
 
   "http_${method}_${NODE_BUILD_HTTP_CLIENT}" "$@"
@@ -420,7 +420,7 @@ detect_http_client() {
       return
     fi
   done
-  echo "error: please install \`aria2c\`, \`curl\`, or \`wget\` and try again" >&2
+  echo "error: install \`curl\`, \`wget\`, or \`aria2c\` to download packages" >&2
   return 1
 }
 
@@ -810,7 +810,7 @@ apply_node_patch() {
     cat "${2:--}" >"$patchfile"
 
     local striplevel=0
-    grep -q '^diff --git a/' "$patchfile" && striplevel=1
+    grep -q '^--- a/' "$patchfile" && striplevel=1
     patch -p$striplevel --force -i "$patchfile"
     ;;
   esac
@@ -980,7 +980,7 @@ NODE_BIN="${PREFIX_PATH}/bin/node"
 CWD="$(pwd)"
 
 if [ -z "$NODE_BUILD_BUILD_PATH" ]; then
-  BUILD_PATH="${TMP}/node-build.${SEED}"
+  BUILD_PATH="$(mktemp -d "${LOG_PATH%.log}.XXXXXX")"
 else
   BUILD_PATH="$NODE_BUILD_BUILD_PATH"
 fi

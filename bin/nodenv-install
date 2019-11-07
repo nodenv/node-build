@@ -83,9 +83,7 @@ for option in "${OPTIONS[@]}"; do
     SKIP_BINARY="-c"
     ;;
   "l" | "list" )
-    echo "Available versions:"
-    definitions | indent
-    exit
+    exec node-build --definitions
     ;;
   "f" | "force" )
     FORCE=true

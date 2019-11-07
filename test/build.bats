@@ -64,7 +64,11 @@ assert_build_log() {
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
-  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<<""
+  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<PATCH
+diff -pU3 align.c align.c
+--- align.c 2017-09-14 21:09:29.000000000 +0900
++++ align.c 2017-09-15 05:56:46.000000000 +0900
+PATCH
   assert_success
 
   unstub make
@@ -78,6 +82,31 @@ make install
 OUT
 }
 
+@test "striplevel node patch before building" {
+  cached_tarball "node-v4.0.0"
+
+  stub brew false
+  stub_make_install
+  stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
+
+  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<PATCH
+diff -pU3 a/configure b/configure
+--- a/configure 2017-09-14 21:09:29.000000000 +0900
++++ b/configure 2017-09-15 05:56:46.000000000 +0900
+PATCH
+  assert_success
+
+  unstub make
+  unstub patch
+
+  assert_build_log <<OUT
+patch -p1 --force -i $BATS_TMPDIR/node-patch.XXX
+node-v4.0.0: --prefix=$INSTALL_ROOT
+make -j 2
+make install
+OUT
+}
+
 @test "apply node patch from git diff before building" {
   cached_tarball "node-v4.0.0"
 
@@ -85,7 +114,12 @@ OUT
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
-  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<<"diff --git a/script.rb"
+  TMPDIR="$BATS_TMPDIR" install_fixture --patch definitions/vanilla-node <<PATCH
+diff --git a/test/build.bats b/test/build.bats
+index 4760c31..66a237a 100755
+--- a/test/build.bats
++++ b/test/build.bats
+PATCH
   assert_success
 
   unstub make
