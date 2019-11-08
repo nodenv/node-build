@@ -18,6 +18,15 @@ setup() {
   assert_output --partial "error: failed to download package-1.0.0.tar.gz"
 }
 
+@test "no download tool" {
+  export -n NODE_BUILD_HTTP_CLIENT
+  clean_path="$(remove_commands_from_path curl wget aria2c)"
+
+  PATH="$clean_path" install_fixture definitions/without-checksum
+  assert_failure
+  assert_output --partial 'error: install `curl`, `wget`, or `aria2c` to download packages'
+}
+
 @test "using aria2c if available" {
   export NODE_BUILD_ARIA2_OPTS=
   export -n NODE_BUILD_HTTP_CLIENT

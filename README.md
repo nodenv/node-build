@@ -1,7 +1,5 @@
 # node-build
 
-[![Build Status][build-status-img]][build-status]
-
 node-build is a command-line utility that makes it easy to install virtually any
 version of Node, from source or precompiled binary.
 
@@ -117,7 +115,7 @@ The build process may be configured through the following environment variables:
 | `NODE_BUILD_WGET_OPTS`   | Additional options to pass to `wget` for downloading.                                              |
 | `NODE_BUILD_MIRROR_CMD`  | A command to construct the package mirror URL.                                                     |
 | `NODE_BUILD_MIRROR_URL`  | Custom mirror URL root.                                                                            |
-| `NODE_BUILD_SKIP_MIRROR` | Always download from official sources, not mirrors. (Default: unset)                               |
+| `NODE_BUILD_SKIP_MIRROR` | Bypass the download mirror and fetch all package files from their original URLs.                   |
 | `NODE_BUILD_ROOT`        | Custom build definition directory. (Default: `share/node-build`)                                   |
 | `NODE_BUILD_DEFINITIONS` | Additional paths to search for build definitions. (Colon-separated list)                           |
 | `CC`                     | Path to the C compiler.                                                                            |
@@ -154,25 +152,32 @@ automatically verify the SHA2 checksum of each downloaded package before
 installing it.
 
 Checksums are optional and specified as anchors on the package URL in each
-definition. (All bundled definitions include checksums.)
+definition. All definitions bundled with node-build include checksums.
 
 #### Package Mirrors
 
-By default, node-build downloads package files from the official
-URL specified in the definition file.
+By default, node-build downloads package files from the official URL specified in the definition file.
 
-You can point node-build to a mirror by specifying the
-`NODE_BUILD_MIRROR_URL` environment variable--useful if you'd like to run your
-own local mirror, for example. Package mirror URLs are constructed by invoking
-`NODE_BUILD_MIRROR_CMD` with two arguments: `package_url` and `checksum`. The
-provided command should print the desired mirror's package URL. If
-`NODE_BUILD_MIRROR_CMD` is unset, package mirror URL construction defaults to
-simply replacing `https://nodejs.org/dist` with `NODE_BUILD_MIRROR_URL`.
+```sh
+ # example:
+ install_package "node-v12.0.0" "https://nodejs.org/dist/v12.0.0/node-v12.0.0.tar.gz#<SHA2>"
+```
 
-If you don't have an SHA2 program installed, node-build will skip the download
-mirror and use official URLs instead. You can force node-build to bypass the
-mirror by setting the `NODE_BUILD_SKIP_MIRROR` environment variable.
+node-build will attempt to construct a mirror url by invoking `NODE_BUILD_MIRROR_CMD` with two arguments: `package_url` and `checksum`.
+The provided command should print the desired mirror's complete package URL.
+If `NODE_BUILD_MIRROR_CMD` is unset, package mirror URL construction defaults to replacing `https://nodejs.org/dist` with `NODE_BUILD_MIRROR_URL`.
 
+node-build will first try to fetch this package from `$NODE_BUILD_MIRROR_URL/<SHA2>`
+(note: this is the complete URL), where `<SHA2>` is the checksum for the file.
+
+It will fall back to downloading the package from the original location if:
+- the package was not found on the mirror;
+- the mirror is down;
+- the download is corrupt, i.e. the file's checksum doesn't match;
+- no tool is available to calculate the checksum; or
+- `NODE_BUILD_SKIP_MIRROR` is enabled.
+
+You may specify a custom mirror by setting `NODE_BUILD_MIRROR_URL`.
 
 #### Keeping the build directory after installation
 
@@ -216,7 +221,5 @@ and modified for node.
 [build-env]: https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
 [issue tracker]: https://github.com/nodenv/node-build/issues
 [node-build-update-defs]: https://github.com/nodenv/node-build-update-defs
-[build-status]: https://travis-ci.org/nodenv/node-build
-[build-status-img]: https://travis-ci.org/nodenv/node-build.svg?branch=master
 [Sam Stephenson]: https://github.com/sstephenson
 [Will McKenzie]: https://github.com/oinutter

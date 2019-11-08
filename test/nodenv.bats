@@ -43,12 +43,11 @@ stub_node_build() {
   run nodenv-install --list
   assert_success
   assert_output - <<OUT
-Available versions:
-  0.8.7
-  0.10.4
-  0.11.0
-  1.0.0
-  4.1.2
+0.8.7
+0.10.4
+0.11.0
+1.0.0
+4.1.2
 OUT
 
   unstub node-build
@@ -130,10 +129,9 @@ OUT
   run nodenv-install --list
   assert_success
   assert_output - <<OUT
-Available versions:
-  
-  ${NODENV_ROOT}/plugins/bar/share/node-build
-  ${NODENV_ROOT}/plugins/foo/share/node-build
+
+${NODENV_ROOT}/plugins/bar/share/node-build
+${NODENV_ROOT}/plugins/foo/share/node-build
 OUT
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@nodenv/node-build",
-  "version": "4.6.4",
+  "version": "4.6.7",
   "description": "Install NodeJS versions",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
@@ -16,29 +16,29 @@
   "bugs": {
     "url": "https://github.com/nodenv/node-build/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "directories": {
     "bin": "bin",
     "test": "test"
   },
   "files": [
     "bin",
+    "etc",
     "share"
   ],
   "scripts": {
+    "clean": "git clean -f -- share",
     "start": "bin/node-build",
-    "test": "bats ${CI:+--tap} test",
-    "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
-    "verify-definitions": "scripty",
     "scrape-definitions": "nodenv-update-version-defs --nodejs --chakracore --graal -d share/node-build/",
     "submit-definitions": "scripty",
-    "clean": "git clean -f -- share",
+    "verify-definitions": "scripty",
+    "test": "bats ${CI:+--tap} test",
+    "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
     "preversion": "scripty",
-    "version": "scripty",
-    "version:sync": "scripty",
-    "postversion": "npm publish",
-    "prepublishOnly": "npm run publish:github && npm run publish:brew",
-    "publish:brew": "brew-publish",
-    "publish:github": "scripty"
+    "version": "script/version-sync",
+    "postversion": "git push --follow-tags"
   },
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.9.4",
@@ -46,7 +46,6 @@
     "bats-assert": "jasonkarns/bats-assert-1",
     "bats-mock": "^1.0.1",
     "bats-support": "jasonkarns/bats-support",
-    "brew-publish": "^2.3.1",
     "scripty": "^2.0.0-0"
   },
   "scripty": {
