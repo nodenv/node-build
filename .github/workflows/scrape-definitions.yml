@@ -1,7 +1,7 @@
 name: Generate Definitions
 on:
   schedule:
-    - cron:  '0 */2 * * *' # once every other hour
+    - cron:  '0 */4 * * *' # every 4 hrs
 
 jobs:
   scrape:
