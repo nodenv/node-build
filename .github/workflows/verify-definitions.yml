@@ -1,8 +1,7 @@
 name: Verify Definitions
 on:
   pull_request:
-    paths:
-    - 'share/node-build/**'
+    paths: 'share/node-build/**'
 
 jobs:
   verify:
@@ -14,6 +13,5 @@ jobs:
       with:
         path: node_modules
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-    - uses: actions/setup-node@v1
     - run: npm ci
     - run: npm run verify-definitions -- origin/${{github.base_ref}}
