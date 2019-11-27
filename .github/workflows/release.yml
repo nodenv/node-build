@@ -1,7 +1,9 @@
 name: Release
 on:
   push:
-    tags: ['v*', '!*-*'] # only v tags, but skip prereleases
+    tags:
+      - 'v*'
+      - '!*-*' # skip prereleases
 
 jobs:
   github:
