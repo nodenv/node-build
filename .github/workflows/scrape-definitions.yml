@@ -9,9 +9,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
     - run: npm ci
     - run: npm run scrape-definitions
