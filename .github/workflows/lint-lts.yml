@@ -4,7 +4,7 @@ on:
     - cron:  '0 0 * * *' # https://crontab.guru/daily
 
 jobs:
-  scrape:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
