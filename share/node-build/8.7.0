@@ -1,5 +1,5 @@
 before_install_package() {
-  build_package_warn_lts_maintenance "$1"
+  build_package_warn_eol "$1"
 }
 
 binary aix-ppc64 "https://nodejs.org/dist/v8.7.0/node-v8.7.0-aix-ppc64.tar.gz#b5b39887d41c12c5dbecddb9f7c9a40887776bcd7bee598ce1f5a6fd2373e542"
