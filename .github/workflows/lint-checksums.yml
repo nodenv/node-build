@@ -4,7 +4,7 @@ on:
     paths: 'share/node-build/**'
 
 jobs:
-  verify:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
