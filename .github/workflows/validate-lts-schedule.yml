@@ -1,0 +1,13 @@
+name: Validate LTS Schedule
+on:
+  schedule:
+    - cron:  '0 0 * * *' # https://crontab.guru/daily
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: npm run lint:lts

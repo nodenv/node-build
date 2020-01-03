@@ -6,8 +6,13 @@
 # Prints status messages to STDERR
 # Prints failing definition filenames to STDOUT
 
+# Expects CWD to be share/node-build
+# or to be given the directory as first arg.
+
 set -euo pipefail
 IFS=$'\n\t'
+
+[ $# = 0 ] || cd "$1"
 
 schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
@@ -65,8 +70,6 @@ assert_warnings() {
 }
 
 declare -a versions
-
-
 eval "$(schedule_json | parse_json)"
 
 status=0
