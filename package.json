@@ -36,6 +36,7 @@
     "verify-definitions": "scripty",
     "test": "bats ${CI:+--tap} test",
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
+    "lint:lts": "test/helpers/warning_messages share/node-build/",
     "preversion": "scripty",
     "version": "script/version-sync",
     "postversion": "git push --follow-tags"
