@@ -35,7 +35,7 @@
     "submit-definitions": "scripty",
     "test": "bats ${CI:+--tap} test",
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
-    "lint:lts": "test/helpers/warning_messages share/node-build/",
+    "lint:lts": "scripty share/node-build/",
     "lint:checksums": "npm_lifecycle_event=verify-definitions scripty",
     "preversion": "scripty",
     "version": "script/version-sync",
