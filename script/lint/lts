@@ -44,7 +44,7 @@ parse_json() {
 }
 
 past() {
- test "$(date -j +'%s')" -gt "$(date -j -f "%F" "$1" "+%s")"
+  [[ "$1" < "$(date -u +'%F')" ]]
 }
 
 assert_message() {
