@@ -1,7 +1,7 @@
 name: Generate Definitions
 on:
   schedule:
-    - cron:  '* */2 * * *' # once every other hour
+    - cron:  '0 */4 * * *' # every 4 hrs
 
 jobs:
   scrape:
@@ -9,10 +9,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-    - uses: actions/setup-node@v1
     - run: npm ci
     - run: npm run scrape-definitions

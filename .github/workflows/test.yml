@@ -1,19 +1,14 @@
 name: Test
-on: [push]
+on: push
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu, macOS]
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-    - uses: actions/setup-node@v1
     - run: npm ci
     - run: npm test

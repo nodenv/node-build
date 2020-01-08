@@ -1,9 +1,7 @@
 name: Release
-on:
+on: # only semver tags, exclusing prereleases
   push:
-    tags:
-      - 'v*'
-      - '!*-*' # skip prereleases
+    tags: 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   github:
@@ -34,6 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          scope: '@nodenv'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

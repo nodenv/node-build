@@ -1,6 +1,6 @@
 {
   "name": "@nodenv/node-build",
-  "version": "4.6.7",
+  "version": "4.7.0",
   "description": "Install NodeJS versions",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
@@ -33,9 +33,10 @@
     "start": "bin/node-build",
     "scrape-definitions": "nodenv-update-version-defs --nodejs --chakracore --graal -d share/node-build/",
     "submit-definitions": "scripty",
-    "verify-definitions": "scripty",
     "test": "bats ${CI:+--tap} test",
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
+    "lint:lts": "scripty share/node-build/",
+    "lint:checksums": "npm_lifecycle_event=verify-definitions scripty",
     "preversion": "scripty",
     "version": "script/version-sync",
     "postversion": "git push --follow-tags"
