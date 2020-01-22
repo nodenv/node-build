@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v13.7.0/node-v13.7.0-aix-ppc64.tar.gz#50cf1dfcf1cfbc32def91e43f28ea5886135776c7dee5b3f7a4818487028f03b"
+binary darwin-x64 "https://nodejs.org/dist/v13.7.0/node-v13.7.0-darwin-x64.tar.gz#866ea9bdbd7b734c593af96b946397d9c7cb9c291aa8ea52a6a2af271b972169"
+binary linux-arm64 "https://nodejs.org/dist/v13.7.0/node-v13.7.0-linux-arm64.tar.gz#fb492b493e13ddad73533f5b06318b7f46120ff4289475e0e91445370be1b13c"
+binary linux-armv7l "https://nodejs.org/dist/v13.7.0/node-v13.7.0-linux-armv7l.tar.gz#dd31f9b0cc351b4f46e25670a0c41737fc7815b0069da15948ac38cb976a0987"
+binary linux-ppc64le "https://nodejs.org/dist/v13.7.0/node-v13.7.0-linux-ppc64le.tar.gz#3f445104065bf9be4d33b103fe45ef7edea7d0e338bc902f73fc446f8bf812cd"
+binary linux-s390x "https://nodejs.org/dist/v13.7.0/node-v13.7.0-linux-s390x.tar.gz#87d54ef48ad8b56032992824e40cfca1ea6a766fc745aab8f6ac239af76d7de6"
+binary linux-x64 "https://nodejs.org/dist/v13.7.0/node-v13.7.0-linux-x64.tar.gz#49ecb710e29c3ea0617803f450e2dc9b229688f1576190826ffdd5a9eaae7869"
+binary sunos-x64 "https://nodejs.org/dist/v13.7.0/node-v13.7.0-sunos-x64.tar.gz#8b4bc9cabc3b1fdda0498f15e011e58c01d1ff768aee2ac28118b24256daf632"
+
+install_package "node-v13.7.0" "https://nodejs.org/dist/v13.7.0/node-v13.7.0.tar.gz#441a1b2b6031f359597fb68b82fd27dfbbe5933f9e1242f6a03062c2abd88368"
