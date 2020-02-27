@@ -47,10 +47,5 @@
     "bats-assert": "jasonkarns/bats-assert-1",
     "bats-mock": "^1.0.1",
     "bats-support": "jasonkarns/bats-support"
-  },
-  "scripty": {
-    "modules": [
-      "@nodenv/node-build-update-defs"
-    ]
   }
 }
