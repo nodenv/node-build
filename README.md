@@ -49,7 +49,7 @@ $ PREFIX=/usr/local ./node-build/install.sh
 $ brew update && brew upgrade node-build
 
 # As a nodenv plugin
-$ cd "$(nodenv root)"/plugins/node-build && git pull
+$ git -C "$(nodenv root)"/plugins/node-build pull
 ```
 
 #### Updating available build versions
