@@ -39,7 +39,8 @@
     "lint:checksums": "node_modules/@nodenv/node-build-update-defs/script/verify-definitions",
     "preversion": "script/preversion",
     "version": "script/version-sync",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "unmerged": "git for-each-ref refs/rbenv-tags --format='%(refname)' --merged"
   },
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.9.4",
