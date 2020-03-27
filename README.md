@@ -1,5 +1,7 @@
 # node-build
 
+[![Test](https://github.com/nodenv/node-build/workflows/Test/badge.svg)](https://github.com/nodenv/node-build/actions?query=workflow%3ATest)
+
 node-build is a command-line utility that makes it easy to install virtually any
 version of Node, from source or precompiled binary.
 
