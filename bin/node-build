@@ -760,8 +760,11 @@ JX
 
 build_package_graal() {
   cd "$PREFIX_PATH" || return 1
-  mv -f Contents/Home/* .
-  rm -rf Contents demo sample src
+  if [ -d Contents/Home ]; then
+    mv -f Contents/Home/* .
+    rm -rf Contents
+  fi
+  rm -rf demo sample src
 }
 
 before_install_package() {
