@@ -760,7 +760,7 @@ JX
 
 build_package_graal() {
   cd "$PREFIX_PATH" || return 1
-  if is_mac; then
+  if [ -d Contents/Home ]; then
     mv -f Contents/Home/* .
     rm -rf Contents
   fi
