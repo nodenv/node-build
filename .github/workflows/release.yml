@@ -1,7 +1,5 @@
 name: Release
-on:
-  push: # only semver tags, excluding prereleases
-    tags: 'v[0-9]+.[0-9]+.[0-9]+'
+on: { push: { tags: 'v[0-9]+.[0-9]+.[0-9]+' }}
 
 jobs:
   github:
