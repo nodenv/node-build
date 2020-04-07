@@ -12,8 +12,16 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-DIR=${1:-share/node-build}
+FIX=
+DIR=share/node-build
 TODAY=$(date -u +'%F')
+
+for arg in "$@"; do
+  case "$arg" in
+    --fix) FIX=1;;
+    *) DIR=$arg;;
+  esac
+done
 
 schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
