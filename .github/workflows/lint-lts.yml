@@ -2,7 +2,7 @@ name: Lint LTS Warnings
 on:
   pull_request:
   push: { branches: master }
-  schedule: [{ cron:  '0 0 * * *' }] # https://crontab.guru/daily
+  schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
 
 jobs:
   lint:
@@ -11,4 +11,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: npm ci
-    - run: npm run lint:lts
+    - run: npm run lint:lts -- --fix
