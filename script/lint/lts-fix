@@ -2,9 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# shellcheck disable=2016,2034 (variable indirection)
+# shellcheck disable=2016,2034
 eol='build_package_warn_eol "$1"'
-# shellcheck disable=2016,2034 (variable indirection)
+# shellcheck disable=2016,2034
 lts='build_package_warn_lts_maintenance "$1"'
 
 prepend_message() {

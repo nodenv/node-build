@@ -14,9 +14,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# shellcheck disable=2034 (variable indirection)
+# shellcheck disable=2034
 eol=1
-# shellcheck disable=2034 (variable indirection)
+# shellcheck disable=2034
 lts=1
 
 case "${1:-}" in
@@ -25,6 +25,8 @@ case "${1:-}" in
 esac
 
 dir=${1:-share/node-build}
+
+TODAY=$(date -u +'%F')
 
 schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
@@ -65,7 +67,7 @@ parse_json() {
 }
 
 past() {
-  [[ "$1" < "$(date -u +'%F')" ]]
+  [[ "$1" < "$TODAY" ]]
 }
 
 assert_message() {
