@@ -12,7 +12,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-[ $# = 0 ] || cd "$1"
+dir=${1:-share/node-build}
 
 schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
@@ -54,7 +54,7 @@ assert_message() {
 
   echo "asserting $msg message for v$v" >&2
 
-  files_missing_messages="$(grep -e "warn_$msg" --files-without-match "$v".*)"
+  files_missing_messages="$(grep -e "warn_$msg" --files-without-match "${dir%/}/$v".*)"
 
   test -z "$files_missing_messages" || { echo "v$v nodes missing $msg message:" >&2; echo "$files_missing_messages"; return 1; }
 }
