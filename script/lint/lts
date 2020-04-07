@@ -8,9 +8,19 @@
 
 # Expects CWD to be share/node-build
 # or to be given the directory as first arg.
+#
+# Pass --eol xor --maint to only check for those particular warnings.
 
 set -euo pipefail
 IFS=$'\n\t'
+
+eol=1
+lts=1
+
+case "${1:-}" in
+  --eol) unset lts; shift;;
+  --maint) unset eol; shift;;
+esac
 
 dir=${1:-share/node-build}
 
@@ -51,6 +61,8 @@ assert_message() {
   local msg=$1
   local v=$2
   local files_missing_messages
+
+  if [ -z "${!msg-}" ]; then return; fi
 
   echo "asserting $msg message for v$v" >&2
 
