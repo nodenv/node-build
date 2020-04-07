@@ -85,26 +85,27 @@ assert_message() {
 }
 
 assert_warnings() {
-  local version=$1
-  local maint_date=$2
-  local eol_date=$3
+  local status=0
 
-  if past "$eol_date"; then assert_message eol "$version"
-  elif past "$maint_date"; then assert_message lts "$version"
-  fi
+  for version in "${versions[@]}"; do
+    local eol_date_var="v${version}_end"
+    local maint_date_var="v${version}_maintenance"
+
+    local eol_date=${!eol_date_var}
+    local maint_date=${!maint_date_var}
+
+    echo "v$version maint: $maint_date eol: $eol_date" >&2
+    {
+      if past "$eol_date"; then assert_message eol "$version"
+      elif past "$maint_date"; then assert_message lts "$version"
+      fi
+    } || status=$?
+  done
+
+  return $status
 }
 
 declare -a versions
 eval "$(schedule_json | parse_json)"
 
-status=0
-
-for version in "${versions[@]}"; do
-  maint_date="v${version}_maintenance"
-  eol_date="v${version}_end"
-
-  echo "v$version maint: ${!maint_date} eol: ${!eol_date}" >&2
-  assert_warnings "$version" "${!maint_date}" "${!eol_date}" || status=$?
-done
-
-exit $status
+assert_warnings
