@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+eol='build_package_warn_eol "$1"'
+lts='build_package_warn_lts_maintenance "$1"'
+
+prepend_message() {
+  msg=${!1}
+  file=$2
+
+  sed -i '' -e "
+    1 i\\
+    before_install_package() {\\
+    \  ${msg}\\
+    }\\
+    \\
+    " "$file"
+}
+
+for stage in eol lts; do
+  ./script/lint/lts --$stage 2>/dev/null | while read -r file; do
+    prepend_message $stage "$file"
+  done
+done

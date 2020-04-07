@@ -19,7 +19,7 @@ lts=1
 
 case "${1:-}" in
   --eol) unset lts; shift;;
-  --maint) unset eol; shift;;
+  --maint|--lts) unset eol; shift;;
 esac
 
 dir=${1:-share/node-build}
