@@ -56,7 +56,7 @@ assert_message() {
 
   files_missing_messages="$(grep -e "warn_$msg" --files-without-match "$v".*)"
 
-  test -z "$files_missing_messages" || { echo "v$v nodes missing $msg message:"; echo "$files_missing_messages"; return 1; }
+  test -z "$files_missing_messages" || { echo "v$v nodes missing $msg message:" >&2; echo "$files_missing_messages"; return 1; }
 }
 
 assert_warnings() {
