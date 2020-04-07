@@ -5,9 +5,7 @@
 # as appropriate.
 # Prints status messages to STDERR
 # Prints failing definition filenames to STDOUT
-
-# Expects CWD to be share/node-build
-# or to be given the directory as first arg.
+# Expects path to directory of definitions as first argument. (default: share/node-build)
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -22,6 +20,19 @@ for arg in "$@"; do
     *) DIR=$arg;;
   esac
 done
+
+# shellcheck disable=2034
+EOL_WARNING="before_install_package() {\\
+\  build_package_warn_eol \"\$1\"\\
+}\\
+\\
+"
+# shellcheck disable=2034
+LTS_WARNING="before_install_package() {\\
+\  build_package_warn_lts_maintenance \"\$1\"\\
+}\\
+\\
+"
 
 schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
@@ -65,15 +76,27 @@ past() {
   [[ "$1" < "$TODAY" ]]
 }
 
+prepend_message() {
+  local msg=${!1}
+  local file=$2
+
+  sed -i'' -e "1 i\\
+$msg" "$file"
+}
+
 assert_message() {
-  local msg=$1
+  local stage=$1
   local v=$2
+  local msg_var=${stage^^}_WARNING
 
-  echo "asserting $msg message for v$v" >&2
+  echo "asserting $stage message for v$v" >&2
 
-  # returns the appropriate status code
-  grep -e "warn_$msg" --files-without-match "${DIR%/}/$v".* | while read -r file; do
+  grep -e "warn_$stage" --files-without-match "${DIR%/}/$v".* | while read -r file; do
     echo "$file"
+    if [ -n "$FIX" ]; then
+      prepend_message "${msg_var}" "$file"
+    fi
+    false # execution of this loop indicates failure; must force nonzero exit
   done
 }
 
