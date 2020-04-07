@@ -14,7 +14,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# shellcheck disable=2034 (variable indirection)
 eol=1
+# shellcheck disable=2034 (variable indirection)
 lts=1
 
 case "${1:-}" in
@@ -28,6 +30,15 @@ schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
 }
 
+# Flattens the LTS schedule.json into bash variables:
+# eg:
+#   v4_start="2015-09-08"
+#   v4_lts="2015-10-12"
+#   v4_maintenance="2017-04-01"
+#   v4_end="2018-04-30"
+#   v4_codename="Argon"
+# and creates a 'versions' array of the versions to check.
+# The output should be eval'd to make the variables available to this script.
 parse_json() {
   awk '
   /"v[[:digit:]]+":/ {
@@ -72,12 +83,12 @@ assert_message() {
 }
 
 assert_warnings() {
-  local v=$1
-  local maint=$2
-  local eol=$3
+  local version=$1
+  local maint_date=$2
+  local eol_date=$3
 
-  if past "$eol"; then assert_message eol "$v"
-  elif past "$maint"; then assert_message lts "$v"
+  if past "$eol_date"; then assert_message eol "$version"
+  elif past "$maint_date"; then assert_message lts "$version"
   fi
 }
 
@@ -86,12 +97,12 @@ eval "$(schedule_json | parse_json)"
 
 status=0
 
-for v in "${versions[@]}"; do
-  maint="v${v}_maintenance"
-  eol="v${v}_end"
+for version in "${versions[@]}"; do
+  maint_date="v${version}_maintenance"
+  eol_date="v${version}_end"
 
-  echo "v$v maint: ${!maint} eol: ${!eol}" >&2
-  assert_warnings "$v" "${!maint}" "${!eol}" || status=$?
+  echo "v$version maint: ${!maint_date} eol: ${!eol_date}" >&2
+  assert_warnings "$version" "${!maint_date}" "${!eol_date}" || status=$?
 done
 
 exit $status
