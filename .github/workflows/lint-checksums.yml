@@ -1,7 +1,5 @@
 name: Lint Checksums
-on:
-  pull_request:
-    paths: 'share/node-build/**'
+on: { pull_request: { paths: 'share/node-build/**' }}
 
 jobs:
   lint:

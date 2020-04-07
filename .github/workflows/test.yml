@@ -1,14 +1,13 @@
 name: Test
-on: push
+on:
+  pull_request:
+  push: { branches: master }
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}-latest
-    strategy:
-      matrix:
-        os: [ubuntu, macOS]
+    strategy: { matrix: { os: [ubuntu, macOS] }}
 
     steps:
-    - uses: actions/checkout@v1
-    - run: npm ci
-    - run: npm test
+    - uses: actions/checkout@v2
+    - run: npm cit
