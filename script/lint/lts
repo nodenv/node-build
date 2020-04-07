@@ -8,24 +8,11 @@
 
 # Expects CWD to be share/node-build
 # or to be given the directory as first arg.
-#
-# Pass --eol xor --maint to only check for those particular warnings.
 
 set -euo pipefail
 IFS=$'\n\t'
 
-# shellcheck disable=2034
-eol=1
-# shellcheck disable=2034
-lts=1
-
-case "${1:-}" in
-  --eol) unset lts; shift;;
-  --maint|--lts) unset eol; shift;;
-esac
-
-dir=${1:-share/node-build}
-
+DIR=${1:-share/node-build}
 TODAY=$(date -u +'%F')
 
 schedule_json() {
@@ -73,15 +60,13 @@ past() {
 assert_message() {
   local msg=$1
   local v=$2
-  local files_missing_messages
-
-  if [ -z "${!msg-}" ]; then return; fi
 
   echo "asserting $msg message for v$v" >&2
 
-  files_missing_messages="$(grep -e "warn_$msg" --files-without-match "${dir%/}/$v".*)"
-
-  test -z "$files_missing_messages" || { echo "v$v nodes missing $msg message:" >&2; echo "$files_missing_messages"; return 1; }
+  # returns the appropriate status code
+  grep -e "warn_$msg" --files-without-match "${DIR%/}/$v".* | while read -r file; do
+    echo "$file"
+  done
 }
 
 assert_warnings() {
