@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
     - run: npm ci
     - run: npm run lint:lts -- --fix || true
     - uses: stefanzweifel/git-auto-commit-action@v4.1.1
