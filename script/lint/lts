@@ -22,13 +22,13 @@ for arg in "$@"; do
 done
 
 # shellcheck disable=2034
-EOL_WARNING="before_install_package() {\\
+eol_WARNING="before_install_package() {\\
 \  build_package_warn_eol \"\$1\"\\
 }\\
 \\
 "
 # shellcheck disable=2034
-LTS_WARNING="before_install_package() {\\
+lts_WARNING="before_install_package() {\\
 \  build_package_warn_lts_maintenance \"\$1\"\\
 }\\
 \\
@@ -87,7 +87,7 @@ $msg" "$file"
 assert_message() {
   local stage=$1
   local v=$2
-  local msg_var=${stage^^}_WARNING
+  local msg_var=${stage}_WARNING
 
   echo "asserting $stage message for v$v" >&2
 
