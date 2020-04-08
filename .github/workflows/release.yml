@@ -1,11 +1,12 @@
 name: Release
-on: { push: { tags: 'v[0-9]+.[0-9]+.[0-9]+' }}
+on:
+  push: { tags: 'v[0-9]+.[0-9]+.[0-9]+' }
 
 jobs:
   github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: script/release-notes | tee relnotes.txt
       - uses: olegtarasov/get-tag@v1
         id: tagname
@@ -28,7 +29,7 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           scope: '@nodenv'
