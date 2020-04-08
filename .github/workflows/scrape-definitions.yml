@@ -1,13 +1,12 @@
 name: Generate Definitions
 on:
-  schedule:
-    - cron:  '0 */4 * * *' # every 4 hrs
+  schedule: [{ cron:  '0 */4 * * *' }] # every 4 hrs: https://crontab.guru/#0_*/4_*_*_*
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - run: npm ci
     - run: npm run scrape-definitions

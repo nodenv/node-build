@@ -1,11 +1,12 @@
 name: Lint Checksums
-on: { pull_request: { paths: 'share/node-build/**' }}
+on:
+  pull_request: { paths: 'share/node-build/**' }
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - run: npm ci
     - run: npm run lint:checksums -- origin/${{github.base_ref}}
