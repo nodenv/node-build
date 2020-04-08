@@ -5,19 +5,48 @@
 # as appropriate.
 # Prints status messages to STDERR
 # Prints failing definition filenames to STDOUT
-
-# Expects CWD to be share/node-build
-# or to be given the directory as first arg.
+# Expects path to directory of definitions as first argument. (default: share/node-build)
 
 set -euo pipefail
 IFS=$'\n\t'
 
-[ $# = 0 ] || cd "$1"
+FIX=
+DIR=share/node-build
+TODAY=$(date -u +'%F')
+
+for arg in "$@"; do
+  case "$arg" in
+    --fix) FIX=1;;
+    *) DIR=$arg;;
+  esac
+done
+
+# shellcheck disable=2034
+eol_WARNING="before_install_package() {\\
+\  build_package_warn_eol \"\$1\"\\
+}\\
+\\
+"
+# shellcheck disable=2034
+lts_WARNING="before_install_package() {\\
+\  build_package_warn_lts_maintenance \"\$1\"\\
+}\\
+\\
+"
 
 schedule_json() {
   curl -qsSfJL https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
 }
 
+# Flattens the LTS schedule.json into bash variables:
+# eg:
+#   v4_start="2015-09-08"
+#   v4_lts="2015-10-12"
+#   v4_maintenance="2017-04-01"
+#   v4_end="2018-04-30"
+#   v4_codename="Argon"
+# and creates a 'versions' array of the versions to check.
+# The output should be eval'd to make the variables available to this script.
 parse_json() {
   awk '
   /"v[[:digit:]]+":/ {
@@ -44,42 +73,55 @@ parse_json() {
 }
 
 past() {
-  [[ "$1" < "$(date -u +'%F')" ]]
+  [[ "$1" < "$TODAY" ]]
+}
+
+prepend_message() {
+  local msg=${!1}
+  local file=$2
+
+  sed -i'' -e "1 i\\
+$msg" "$file"
 }
 
 assert_message() {
-  local msg=$1
+  local stage=$1
   local v=$2
-  local files_missing_messages
+  local msg_var=${stage}_WARNING
 
-  echo "asserting $msg message for v$v" >&2
+  echo "asserting $stage message for v$v" >&2
 
-  files_missing_messages="$(grep -e "warn_$msg" --files-without-match "$v".*)"
-
-  test -z "$files_missing_messages" || { echo "v$v nodes missing $msg message:"; echo "$files_missing_messages"; return 1; }
+  grep -e "warn_$stage" --files-without-match "${DIR%/}/$v".* | while read -r file; do
+    echo "$file"
+    if [ -n "$FIX" ]; then
+      prepend_message "${msg_var}" "$file"
+    fi
+    false # execution of this loop indicates failure; must force nonzero exit
+  done
 }
 
 assert_warnings() {
-  local v=$1
-  local maint=$2
-  local eol=$3
+  local status=0
 
-  if past "$eol"; then assert_message eol "$v"
-  elif past "$maint"; then assert_message lts "$v"
-  fi
+  for version in "${versions[@]}"; do
+    local eol_date_var="v${version}_end"
+    local maint_date_var="v${version}_maintenance"
+
+    local eol_date=${!eol_date_var}
+    local maint_date=${!maint_date_var}
+
+    echo "v$version maint: $maint_date eol: $eol_date" >&2
+    {
+      if past "$eol_date"; then assert_message eol "$version"
+      elif past "$maint_date"; then assert_message lts "$version"
+      fi
+    } || status=$?
+  done
+
+  return $status
 }
 
 declare -a versions
 eval "$(schedule_json | parse_json)"
 
-status=0
-
-for v in "${versions[@]}"; do
-  maint="v${v}_maintenance"
-  eol="v${v}_end"
-
-  echo "v$v maint: ${!maint} eol: ${!eol}" >&2
-  assert_warnings "$v" "${!maint}" "${!eol}" || status=$?
-done
-
-exit $status
+assert_warnings

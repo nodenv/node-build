@@ -2,13 +2,29 @@ name: Lint LTS Warnings
 on:
   pull_request:
   push: { branches: master }
-  schedule: [{ cron:  '0 0 * * *' }] # https://crontab.guru/daily
+  schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
 
 jobs:
   lint:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - run: npm ci
     - run: npm run lint:lts
+
+  fix:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+        token: ${{ secrets.REPO_TOKEN }}
+    - run: npm ci
+    - run: npm run lint:lts -- --fix
+    - if: failure()
+      uses: stefanzweifel/git-auto-commit-action@v4.1.1
+      with:
+        commit_message: 'Include warning message per LTS schedule'
+        file_pattern: share/node-build
