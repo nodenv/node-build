@@ -21,8 +21,9 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
     - run: npm ci
-    - run: npm run lint:lts -- --fix || true
-    - uses: stefanzweifel/git-auto-commit-action@v4.1.1
+    - run: npm run lint:lts -- --fix
+    - if: failure()
+      uses: stefanzweifel/git-auto-commit-action@v4.1.1
       with:
         commit_message: 'Include warning message per LTS schedule'
         file_pattern: share/node-build
