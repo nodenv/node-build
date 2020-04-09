@@ -5,13 +5,13 @@ on:
   schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
 
 jobs:
-  lint:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - run: npm ci
-    - run: npm run lint:lts
+  # lint:
+  #   if: github.event_name == 'push'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - run: npm ci
+  #   - run: npm run lint:lts
 
   fix:
     if: github.event_name == 'pull_request'
@@ -41,3 +41,5 @@ jobs:
       with:
         COMMIT_MESSAGE: 'Include warning message per LTS schedule'
         PR_BRANCH_NAME: lts-warning-message
+        PR_TITLE: auto
+        PR_BODY: fixing lint
