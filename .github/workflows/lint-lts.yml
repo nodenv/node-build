@@ -1,7 +1,7 @@
 name: Lint LTS Warnings
 on:
   pull_request:
-  push: { branches: master }
+  push: { branches: [ master, auto-pr-test ] }
   schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
 
 jobs:
