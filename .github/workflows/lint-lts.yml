@@ -37,9 +37,7 @@ jobs:
     - run: npm ci
     - run: npm run lint:lts -- --fix
     - if: failure()
-      uses: technote-space/create-pr-action@v2
+      uses: peter-evans/create-pull-request@v2
       with:
-        COMMIT_MESSAGE: 'Include warning message per LTS schedule'
-        PR_BRANCH_NAME: lts-warning-message
-        PR_TITLE: auto
-        PR_BODY: fixing lint
+        commit-message: 'Prepend warning message per LTS schedule'
+        branch: lts-warning-message
