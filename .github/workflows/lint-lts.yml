@@ -20,7 +20,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.head_ref }}
-        token: ${{ secrets.REPO_TOKEN }}
     - run: npm ci
     - run: npm run lint:lts -- --fix
     - if: failure()
@@ -28,3 +27,19 @@ jobs:
       with:
         commit_message: 'Include warning message per LTS schedule'
         file_pattern: share/node-build
+
+  pr:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm run lint:lts -- --fix
+    - if: failure()
+      uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        branch: lts-warning-message
+        title: 'Update warning messages per LTS Schedule'
+        author: '${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+        commit-message: 'Prepend warning message per LTS schedule'
