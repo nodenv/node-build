@@ -41,3 +41,4 @@ jobs:
       with:
         commit-message: 'Prepend warning message per LTS schedule'
         branch: lts-warning-message
+        base: refs/heads/master
