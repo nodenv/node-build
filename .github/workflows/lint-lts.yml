@@ -34,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
     - run: npm ci
     - run: npm run lint:lts -- --fix
     - if: failure()
@@ -41,4 +43,3 @@ jobs:
       with:
         commit-message: 'Prepend warning message per LTS schedule'
         branch: lts-warning-message
-        base: refs/heads/master
