@@ -5,13 +5,13 @@ on:
   schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
 
 jobs:
-  # lint:
-  #   if: github.event_name == 'push'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - run: npm ci
-  #   - run: npm run lint:lts
+  lint:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm run lint:lts
 
   fix:
     if: github.event_name == 'pull_request'
@@ -30,7 +30,7 @@ jobs:
         file_pattern: share/node-build
 
   pr:
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
