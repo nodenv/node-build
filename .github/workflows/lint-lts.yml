@@ -39,5 +39,5 @@ jobs:
     - if: failure()
       uses: technote-space/create-pr-action@v2
       with:
-        commit_message: 'Include warning message per LTS schedule'
-        pr_branch_name: lts-warning-message
+        COMMIT_MESSAGE: 'Include warning message per LTS schedule'
+        PR_BRANCH_NAME: lts-warning-message
