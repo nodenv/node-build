@@ -10,3 +10,18 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm ci
     - run: npm run scrape-definitions
+    - id: scraped
+      run: |
+        nodes=$(git ls-files --others --exclude-standard -- share/node-build |
+            while read -r node; do echo "- ${node##*/}"; done)
+        echo "::set-output name=nodes::${nodes//$'\n'/'%0A'}"
+    - uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        branch: latest-scraped-definitions
+        title: 'Scraped latest node definitions'
+        body: ${{ steps.scraped.outputs.nodes }}
+        commit-message: |
+          Created definitions with `npm run scrape-definitions`
+
+          ${{ steps.scraped.outputs.nodes }}
