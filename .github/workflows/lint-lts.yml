@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,21 +14,6 @@ jobs:
     - run: npm run lint:lts
 
   fix:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.head_ref }}
-    - run: npm ci
-    - run: npm run lint:lts -- --fix
-    - if: failure()
-      uses: stefanzweifel/git-auto-commit-action@v4.1.1
-      with:
-        commit_message: 'Include warning message per LTS schedule'
-        file_pattern: share/node-build
-
-  pr:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
