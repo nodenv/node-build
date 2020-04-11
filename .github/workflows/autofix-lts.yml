@@ -1,0 +1,20 @@
+name: Fix LTS Warnings
+on:
+  schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
+
+jobs:
+  fix:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm run lint:lts -- --fix
+    - if: failure()
+      uses: peter-evans/create-pull-request@v2
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        branch: lts-warning-message
+        title: 'Update warning messages per LTS Schedule'
+        author: '${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+        commit-message: 'Prepend warning message per LTS schedule'
