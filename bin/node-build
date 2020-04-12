@@ -767,6 +767,13 @@ build_package_graal() {
   rm -rf demo sample src
 }
 
+build_package_quickjs() {
+  export QUICKJS_CONFIGURE=true
+  build_package_standard_build "$@"
+  export QUICKJS_MAKE_INSTALL_OPTS="prefix=$PREFIX_PATH"
+  build_package_standard_install "$@"
+}
+
 before_install_package() {
   :
 }
