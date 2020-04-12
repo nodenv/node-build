@@ -1,0 +1,8 @@
+echo "This package only contains compiled binaries."
+echo "If no binary matches your platform, source compilation will not be attempted."
+
+binary darwin-x64 "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-19.3.1/graalvm-ce-java11-darwin-amd64-19.3.1.tar.gz#b3ea6cf6545332f667b2cc742bbff9949d47e49eecea06334d14f0b69aa1a3f3"
+binary linux-x64 "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-19.3.1/graalvm-ce-java11-linux-amd64-19.3.1.tar.gz#691f0577c75c4ba0fb50916087925e6eb8a5a73de51994a37eee022d1e2c9e7d"
+binary linux-arm64 "https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-19.3.1/graalvm-ce-java11-linux-aarch64-19.3.1.tar.gz#5c774ec6158ddf3c66488e6b6c6fe6db4e244f0eac08d2b48804cc2ec74845e0"
+
+install_package "graal+ce_java11-19.3.1" "#" graal
