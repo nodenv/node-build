@@ -11,7 +11,10 @@ jobs:
     - run: npm ci
     - run: npm run scrape-definitions
     - id: scraped
+      name: Commit new definitions
       run: |
+        git config user.name 'nodenv actions [bot]'
+        git config user.email 'noreply@github.com'
         nodes=$(git ls-files --others --exclude-standard -- share/node-build |
             while read -r node_def; do
               node_name=${node_def##*/}
