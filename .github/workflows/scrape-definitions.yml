@@ -1,6 +1,6 @@
 name: Generate Definitions
-on:
-  schedule: [{ cron:  '0 */4 * * *' }] # every 4 hrs: https://crontab.guru/#0_*/4_*_*_*
+on: push
+  # schedule: [{ cron:  '0 */4 * * *' }] # every 4 hrs: https://crontab.guru/#0_*/4_*_*_*
 
 jobs:
   scrape:
@@ -26,6 +26,6 @@ jobs:
     - uses: peter-evans/create-pull-request@v2
       with:
         token: ${{ secrets.REPO_TOKEN }}
-        branch: latest-scraped-definitions
+        branch: latest-scraped-definitions-testing
         title: 'Scraped latest definitions'
         body: ${{ steps.scraped.outputs.nodes }}
