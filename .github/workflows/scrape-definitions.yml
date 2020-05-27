@@ -13,7 +13,11 @@ jobs:
     - id: scraped
       run: |
         nodes=$(git ls-files --others --exclude-standard -- share/node-build |
-            while read -r node; do echo "- ${node##*/}"; done)
+            while read -r node_def; do
+              node_name=${node_def##*/}
+              git commit -m "$node_name" -m 'Created with `npm run submit-definitions`.' --only -- "$node_def"
+              echo "- $node_name"
+            done)
         echo "::set-output name=nodes::${nodes//$'\n'/'%0A'}"
     - uses: peter-evans/create-pull-request@v2
       with:
@@ -21,7 +25,3 @@ jobs:
         branch: latest-scraped-definitions
         title: 'Scraped latest node definitions'
         body: ${{ steps.scraped.outputs.nodes }}
-        commit-message: |
-          Created definitions with `npm run scrape-definitions`
-
-          ${{ steps.scraped.outputs.nodes }}
