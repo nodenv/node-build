@@ -15,7 +15,8 @@ jobs:
         nodes=$(git ls-files --others --exclude-standard -- share/node-build |
             while read -r node_def; do
               node_name=${node_def##*/}
-              git commit -m "$node_name" -m 'Created with `npm run submit-definitions`.' --only -- "$node_def"
+              git add "$node_def"
+              git commit -m "$node_name" -m 'Created with `npm run submit-definitions`.'
               echo "- $node_name"
             done)
         echo "::set-output name=nodes::${nodes//$'\n'/'%0A'}"
