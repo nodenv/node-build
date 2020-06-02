@@ -1,0 +1,11 @@
+binary aix-ppc64 "https://nodejs.org/dist/v10.21.0/node-v10.21.0-aix-ppc64.tar.gz#73f0bc9348b2f70f2deed898843f7212f494b085ee3022ff67967005852130fa"
+binary darwin-x64 "https://nodejs.org/dist/v10.21.0/node-v10.21.0-darwin-x64.tar.gz#596900700c4a0de0303bb4c378a1abcd63f31efc848704c5fbc1230de628577a"
+binary linux-arm64 "https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-arm64.tar.gz#43f821147c18367c227ea63ce173ee3acfd3da1fa3ea0581f6de1a27ca5b7d4e"
+binary linux-armv6l "https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-armv6l.tar.gz#220dcfa45ddab2c0217260a15fb0d6d18ecd457503f05bb97420a05e4795a452"
+binary linux-armv7l "https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-armv7l.tar.gz#a8009ea75f05c0b5cb13a233b9a09a3c83fd1715ba2eae1464bd1472cae885db"
+binary linux-ppc64le "https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-ppc64le.tar.gz#56d82acd26898515d2cc27e5102c0f7253ced7ff3e35078a0a0472d6c9cbaa45"
+binary linux-s390x "https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-s390x.tar.gz#fc5a87fb704474077997839c22f93c579f957335589fee5293a383dc94578be9"
+binary linux-x64 "https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-x64.tar.gz#d0bac246001eed9268ba9cadbfc6cfd8b6eb0728ad000a0f9fa7ce29e66c2be4"
+binary sunos-x64 "https://nodejs.org/dist/v10.21.0/node-v10.21.0-sunos-x64.tar.gz#ec1d79603065a01aa017a5e519b56a5448d789142163284ec6dcc8ee3f6bc4b6"
+
+install_package "node-v10.21.0" "https://nodejs.org/dist/v10.21.0/node-v10.21.0.tar.gz#bee7497e29c6c8f350fdf7dfa198c97041c7bf8d57cc2b58dfbfe6607d1ebf8f"
