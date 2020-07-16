@@ -67,7 +67,7 @@ fi
 
 if [ -n "${strict-}" ] &&
   ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
-  abort "Changes detected outside ${files[*]}"
+  abort "Changes detected outside '${files[*]}'"
 fi
 
 if [ -n "${verbose-}" ]; then
