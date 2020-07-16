@@ -5,6 +5,7 @@
 # Usage: script/preversion [-v] [--] [FILES...]
 #
 # Options:
+#   -o     Detect unreleased changes in (and only in) FILES
 #   -v     Print log since last tag
 #   FILES  Files to check for changes.
 #          [default: package.json#files read via $npm_package_files_*]
@@ -17,18 +18,26 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-unset verbose
-while getopts "v" opt; do
+[ -n "${DEBUG-}" ] && set -x
+
+unset verbose strict
+while getopts "ov" opt; do
   case "$opt" in
+  o) strict=1 ;;
   v) verbose=1 ;;
   *) break ;;
   esac
-  shift
 done
+shift $((OPTIND-1))
 
 if [ "${1-}" = -- ]; then
   shift
 fi
+
+abort() {
+  echo "Aborting: $1" >&2
+  exit "${2:-1}"
+}
 
 declare -a files
 if [ "$#" -gt 0 ]; then
@@ -43,20 +52,22 @@ git fetch --quiet --tags origin master
 
 existing="$(git tag --points-at HEAD)"
 if [ -n "$existing" ]; then
-  echo "Aborting: HEAD is already tagged as '${existing}'" >&2
-  exit 1
+  abort "HEAD is already tagged as '${existing}'"
 fi
 
 current_branch="$(git symbolic-ref --short HEAD)"
 if [ "$current_branch" != master ]; then
-  echo "Aborting: Not currently on master branch" >&2
-  exit 1
+  abort "Not currently on master branch" 2
 fi
 
 previous_tag="$(git describe --tags --abbrev=0)"
 if git diff --quiet "${previous_tag}..HEAD" -- "${files[@]}"; then
-  echo "Aborting: No features to release since '${previous_tag}'" >&2
-  exit 1
+  abort "No features to release since '${previous_tag}'"
+fi
+
+if [ -n "${strict-}" ] &&
+  ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
+  abort "Changes detected outside '${files[*]}'" 2
 fi
 
 if [ -n "${verbose-}" ]; then
