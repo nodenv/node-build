@@ -18,6 +18,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+[ -n "${DEBUG-}" ] && set -x
+
 unset verbose strict
 while getopts "v" opt; do
   case "$opt" in
