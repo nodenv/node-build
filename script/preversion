@@ -34,6 +34,11 @@ if [ "${1-}" = -- ]; then
   shift
 fi
 
+abort() {
+  echo "Aborting: $*" >&2
+  exit 1
+}
+
 declare -a files
 if [ "$#" -gt 0 ]; then
   files=("$@")
@@ -47,25 +52,22 @@ git fetch --quiet --tags origin master
 
 existing="$(git tag --points-at HEAD)"
 if [ -n "$existing" ]; then
-  echo "Aborting: HEAD is already tagged as '${existing}'" >&2
-  exit 1
+  abort "HEAD is already tagged as '${existing}'"
 fi
 
 current_branch="$(git symbolic-ref --short HEAD)"
 if [ "$current_branch" != master ]; then
-  echo "Aborting: Not currently on master branch" >&2
-  exit 1
+  abort "Not currently on master branch"
 fi
 
 previous_tag="$(git describe --tags --abbrev=0)"
 if git diff --quiet "${previous_tag}..HEAD" -- "${files[@]}"; then
-  echo "Aborting: No features to release since '${previous_tag}'" >&2
-  exit 1
+  abort "No features to release since '${previous_tag}'"
 fi
 
-if [ -n "${strict-}" ] && ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
-  echo "Aborting: Changes detected outside ${files[*]}"
-  exit 1
+if [ -n "${strict-}" ] &&
+  ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
+  abort "Changes detected outside ${files[*]}"
 fi
 
 if [ -n "${verbose-}" ]; then
