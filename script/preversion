@@ -35,8 +35,8 @@ if [ "${1-}" = -- ]; then
 fi
 
 abort() {
-  echo "Aborting: $*" >&2
-  exit 1
+  echo "Aborting: $1" >&2
+  exit "${2:-1}"
 }
 
 declare -a files
@@ -57,7 +57,7 @@ fi
 
 current_branch="$(git symbolic-ref --short HEAD)"
 if [ "$current_branch" != master ]; then
-  abort "Not currently on master branch"
+  abort "Not currently on master branch" 2
 fi
 
 previous_tag="$(git describe --tags --abbrev=0)"
@@ -67,7 +67,7 @@ fi
 
 if [ -n "${strict-}" ] &&
   ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
-  abort "Changes detected outside '${files[*]}'"
+  abort "Changes detected outside '${files[*]}'" 2
 fi
 
 if [ -n "${verbose-}" ]; then
