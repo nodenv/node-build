@@ -21,14 +21,14 @@ IFS=$'\n\t'
 [ -n "${DEBUG-}" ] && set -x
 
 unset verbose strict
-while getopts "v" opt; do
+while getopts "ov" opt; do
   case "$opt" in
   o) strict=1 ;;
   v) verbose=1 ;;
   *) break ;;
   esac
-  shift
 done
+shift $((OPTIND-1))
 
 if [ "${1-}" = -- ]; then
   shift
