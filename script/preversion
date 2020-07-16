@@ -5,6 +5,7 @@
 # Usage: script/preversion [-v] [--] [FILES...]
 #
 # Options:
+#   -o     Detect unreleased changes in (and only in) FILES
 #   -v     Print log since last tag
 #   FILES  Files to check for changes.
 #          [default: package.json#files read via $npm_package_files_*]
@@ -17,9 +18,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-unset verbose
+unset verbose strict
 while getopts "v" opt; do
   case "$opt" in
+  o) strict=1 ;;
   v) verbose=1 ;;
   *) break ;;
   esac
@@ -56,6 +58,11 @@ fi
 previous_tag="$(git describe --tags --abbrev=0)"
 if git diff --quiet "${previous_tag}..HEAD" -- "${files[@]}"; then
   echo "Aborting: No features to release since '${previous_tag}'" >&2
+  exit 1
+fi
+
+if [ -n "${strict-}" ] && ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
+  echo "Aborting: Changes detected outside ${files[*]}"
   exit 1
 fi
 
