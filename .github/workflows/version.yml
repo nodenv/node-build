@@ -1,6 +1,6 @@
 name: Version Bump
 on:
-  schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
+  schedule: [{ cron:  '0 10 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
 
 jobs:
   bump:
