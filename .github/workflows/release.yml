@@ -24,7 +24,7 @@ jobs:
         with:
           formula-name: node-build
         env:
-          COMMITTER_TOKEN: ${{ secrets.REPO_TOKEN }}
+          COMMITTER_TOKEN: ${{ secrets.BREWTAP_TOKEN }}
 
   npm:
     runs-on: ubuntu-latest
