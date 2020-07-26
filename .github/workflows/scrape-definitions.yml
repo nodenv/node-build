@@ -13,7 +13,7 @@ jobs:
     - id: scraped
       name: Commit new definitions
       run: |
-        git config user.name 'Nodenv Bot'
+        git config user.name 'nodenv bot'
         git config user.email 'jason.karns+nodenv@gmail.com'
         nodes=$(git ls-files --others --exclude-standard -- share/node-build |
             while read -r node_def; do
