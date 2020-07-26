@@ -13,8 +13,8 @@ jobs:
     - id: scraped
       name: Commit new definitions
       run: |
-        git config user.name 'GitHub Actions'
-        git config user.email 'noreply@github.com'
+        git config user.name 'Nodenv Bot'
+        git config user.email 'jason.karns+nodenv@gmail.com'
         nodes=$(git ls-files --others --exclude-standard -- share/node-build |
             while read -r node_def; do
               node_name=${node_def##*/}
@@ -25,7 +25,7 @@ jobs:
         echo "::set-output name=nodes::${nodes//$'\n'/'%0A'}"
     - uses: peter-evans/create-pull-request@v2
       with:
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ secrets.BOT_TOKEN }}
         branch: latest-scraped-definitions
         title: 'Scraped latest definitions'
         body: ${{ steps.scraped.outputs.nodes }}
