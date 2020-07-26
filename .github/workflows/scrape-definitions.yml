@@ -1,6 +1,7 @@
 name: Generate Definitions
 on:
   schedule: [{ cron:  '0 */4 * * *' }] # every 4 hrs: https://crontab.guru/#0_*/4_*_*_*
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -10,22 +11,20 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm ci
     - run: npm run scrape-definitions
-    - id: scraped
-      name: Commit new definitions
+    - run: npm run commit-definitions
+      env:
+        GIT_AUTHOR_NAME: 'nodenv bot'
+        GIT_AUTHOR_EMAIL: 'jason.karns+nodenv@gmail.com'
+        GIT_COMMITTER_NAME: 'nodenv bot'
+        GIT_COMMITTER_EMAIL: 'jason.karns+nodenv@gmail.com'
+
+    - id: log
       run: |
-        git config user.name 'nodenv bot'
-        git config user.email 'jason.karns+nodenv@gmail.com'
-        nodes=$(git ls-files --others --exclude-standard -- share/node-build |
-            while read -r node_def; do
-              node_name=${node_def##*/}
-              git add "$node_def"
-              git commit -q -m "$node_name" -m 'Created with `npm run submit-definitions`.'
-              echo "- $node_name"
-            done)
-        echo "::set-output name=nodes::${nodes//$'\n'/'%0A'}"
+        msg=$(git log --format='- %s' --reverse ${{github.sha}}..)
+        echo "::set-output name=message::${msg//$'\n'/'%0A'}"
     - uses: peter-evans/create-pull-request@v2
       with:
         token: ${{ secrets.BOT_TOKEN }}
         branch: latest-scraped-definitions
         title: 'Scraped latest definitions'
-        body: ${{ steps.scraped.outputs.nodes }}
+        body: ${{ steps.log.outputs.message }}
