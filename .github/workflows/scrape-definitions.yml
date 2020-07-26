@@ -1,6 +1,7 @@
 name: Generate Definitions
 on:
   schedule: [{ cron:  '0 */4 * * *' }] # every 4 hrs: https://crontab.guru/#0_*/4_*_*_*
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -17,14 +18,13 @@ jobs:
         GIT_COMMITTER_NAME: 'nodenv bot'
         GIT_COMMITTER_EMAIL: 'jason.karns+nodenv@gmail.com'
 
-    - id: scraped
-      name: git log
+    - id: log
       run: |
-        msg=$(git log master.. --format='- %s')
-        echo "::set-output name=nodes::${msg//$'\n'/'%0A'}"
+        msg=$(git log --format='- %s' --reverse ${{github.sha}}..)
+        echo "::set-output name=message::${msg//$'\n'/'%0A'}"
     - uses: peter-evans/create-pull-request@v2
       with:
         token: ${{ secrets.BOT_TOKEN }}
         branch: latest-scraped-definitions
         title: 'Scraped latest definitions'
-        body: ${{ steps.scraped.outputs.nodes }}
+        body: ${{ steps.log.outputs.message }}
