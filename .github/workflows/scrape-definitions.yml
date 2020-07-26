@@ -2,6 +2,7 @@ name: Generate Definitions
 on:
   - schedule: [{ cron:  '0 */4 * * *' }] # every 4 hrs: https://crontab.guru/#0_*/4_*_*_*
   - workflow_dispatch
+  - push
 
 jobs:
   scrape:
