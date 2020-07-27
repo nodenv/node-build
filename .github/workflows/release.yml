@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with: { fetch-depth: 0 }
-      - run: script/release-notes | tee relnotes.txt
+      - run: npm run -s relnotes | tee relnotes.txt
       - uses: jasonkarns/create-release@master
         with: { body_path: relnotes.txt }
 
