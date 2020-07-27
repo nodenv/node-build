@@ -1,23 +1,20 @@
 name: Version Bump
 on:
   schedule: [{ cron:  '0 10 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
+  workflow_dispatch:
 
 jobs:
   bump:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # fetch all history
-
+        with: { fetch-depth: 0 }
       - run: |-
           npm run preversion --silent -- -o -v -- share/node-build || status=$?
-
           case "${status:-0}" in
             0) echo "::set-env name=release::true" ;;
             1) exit 0;; # exit successfully to mask error, but don't release
             *) exit $status ;; # all other error codes are true failures
           esac
-
       - if: ${{ env.release }}
         run: echo npm version patch

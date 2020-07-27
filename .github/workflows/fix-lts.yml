@@ -1,6 +1,7 @@
 name: Fix LTS Warnings
 on:
   schedule: [{ cron:  '0 0 * * *' }] # daily: https://crontab.guru/#0_0_*_*_*
+  workflow_dispatch:
 
 jobs:
   fix:
