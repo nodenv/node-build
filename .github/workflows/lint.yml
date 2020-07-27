@@ -1,9 +1,16 @@
-name: Lint Checksums
+name: Lint Definitions
 on:
   pull_request: { paths: 'share/node-build/**' }
 
 jobs:
-  lint:
+  lts:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm ci
+    - run: npm run lint:lts
+
+  checksums:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
