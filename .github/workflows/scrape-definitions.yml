@@ -16,8 +16,6 @@ jobs:
       env:
         GIT_AUTHOR_NAME: 'nodenv bot'
         GIT_AUTHOR_EMAIL: 'jason.karns+nodenv@gmail.com'
-        GIT_COMMITTER_NAME: 'nodenv bot'
-        GIT_COMMITTER_EMAIL: 'jason.karns+nodenv@gmail.com'
 
     - id: scraped
       name: git log
