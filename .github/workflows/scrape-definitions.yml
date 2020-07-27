@@ -22,7 +22,7 @@ jobs:
     - id: scraped
       name: git log
       run: |
-        msg=$(git log master.. --format='- %s')
+        msg=$(git log --format='- %s' ${{github.sha}}..)
         echo "::set-output name=nodes::${msg//$'\n'/'%0A'}"
     - uses: peter-evans/create-pull-request@v2
       with:
