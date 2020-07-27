@@ -5,9 +5,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - run: git fetch --depth=1 origin +${{github.base_ref}}
+      with: { fetch-depth: 0 }
     - run: npm ci
     - run: npm run lint:checksums -- origin/${{github.base_ref}}
