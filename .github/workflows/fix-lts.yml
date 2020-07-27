@@ -13,12 +13,12 @@ jobs:
     - if: failure()
       uses: peter-evans/create-pull-request@v2
       with:
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ secrets.BOT_TOKEN }}
         branch: lts-warning-message
         title: 'Update warning messages per LTS Schedule'
         body: |-
           [![node lts schedule](https://raw.githubusercontent.com/nodejs/Release/master/schedule.svg)](https://github.com/nodejs/Release)
 
           > Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
-        author: '${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>'
+        author: 'nodenv bot <jason.karns+nodenv@github.com>'
         commit-message: 'Prepend warning message per LTS schedule'
