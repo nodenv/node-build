@@ -33,7 +33,7 @@
     "start": "bin/node-build",
     "scrape-definitions": "nodenv-update-version-defs --nodejs --chakracore --graal -d share/node-build/",
     "commit-definitions": "npm explore @nodenv/node-build-update-defs -- npm run defs:commit",
-    "submit-definitions": "node_modules/@nodenv/node-build-update-defs/script/submit-definitions",
+    "submit-definitions": "npm explore @nodenv/node-build-update-defs -- npm run defs:submit",
     "test": "bats ${CI:+--tap} test",
     "lint": "git ls-files bin script **/*.*sh | xargs shellcheck",
     "lint:lts": "script/lint/lts",
