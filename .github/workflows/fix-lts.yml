@@ -5,7 +5,6 @@ on:
 
 jobs:
   fix:
-    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -15,11 +14,11 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.BOT_TOKEN }}
+        committer: 'nodenv bot <jason.karns+nodenv@github.com>'
+        commit-message: 'Add LTS warning messages'
         branch: lts-warning-message
-        title: 'Update warning messages per LTS Schedule'
+        title: 'Adds/Updates LTS warning messages'
         body: |-
           [![node lts schedule](https://raw.githubusercontent.com/nodejs/Release/master/schedule.svg)](https://github.com/nodejs/Release)
 
           > Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
-        committer: 'nodenv bot <jason.karns+nodenv@github.com>'
-        commit-message: 'Prepend warning message per LTS schedule'
