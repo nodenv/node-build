@@ -6,7 +6,6 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - run: npm ci
@@ -17,12 +16,11 @@ jobs:
         GIT_AUTHOR_EMAIL: 'jason.karns+nodenv@gmail.com'
         GIT_COMMITTER_NAME: 'nodenv bot'
         GIT_COMMITTER_EMAIL: 'jason.karns+nodenv@gmail.com'
-
     - id: log
       run: |
         msg=$(git log --format='- %s' --reverse ${{github.sha}}..)
         echo "::set-output name=message::${msg//$'\n'/'%0A'}"
-    - uses: peter-evans/create-pull-request@v2
+    - uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.BOT_TOKEN }}
         branch: latest-scraped-definitions

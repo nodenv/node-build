@@ -7,8 +7,6 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}-latest
     strategy: { matrix: { os: [ubuntu, macOS] }}
-
     steps:
     - uses: actions/checkout@v2
-    - run: npm ci
-    - run: npm test
+    - run: npm cit

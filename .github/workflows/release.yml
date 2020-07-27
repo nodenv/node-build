@@ -7,15 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with: { fetch-depth: 0 }
       - run: script/release-notes | tee relnotes.txt
-      - uses: olegtarasov/get-tag@v1
-        id: tagname
-      - uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          name: node-build ${{ steps.tagname.outputs.tag }}
-          body_path: relnotes.txt
+      - uses: jasonkarns/create-release@master
+        with: { body_path: relnotes.txt }
 
   homebrew:
     runs-on: ubuntu-latest
