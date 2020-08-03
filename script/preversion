@@ -67,6 +67,10 @@ fi
 
 if [ -n "${strict-}" ] &&
   ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
+  {
+    echo "git diff --stat ${previous_tag}..HEAD -- ':!'${files[*]}"
+    git diff --stat "${previous_tag}..HEAD" -- ":!${files[*]}"
+  } >&2
   abort "Changes detected outside '${files[*]}'" 2
 fi
 
