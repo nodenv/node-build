@@ -17,4 +17,4 @@ jobs:
             *) exit $status ;; # all other error codes are true failures
           esac
       - if: ${{ env.release }}
-        run: echo npm version patch
+        run: npm version patch
