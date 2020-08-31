@@ -16,7 +16,6 @@
 # - ensure there are bin or definition changes to release
 
 set -euo pipefail
-IFS=$'\n\t'
 
 [ -n "${DEBUG-}" ] && set -x
 
@@ -65,13 +64,16 @@ if git diff --quiet "${previous_tag}..HEAD" -- "${files[@]}"; then
   abort "No features to release since '${previous_tag}'"
 fi
 
+allowed_changes=( "${files[@]}" .github script *.md )
+allowed_changes=( "${allowed_changes[@]/#/\':!\'}" ) # prefix pathspecs with git's "ignore"
+
 if [ -n "${strict-}" ] &&
-  ! git diff --quiet "${previous_tag}..HEAD" -- ":!${files[*]}"; then
+  ! git diff --quiet "${previous_tag}..HEAD" -- "${allowed_changes[@]}"; then
   {
-    echo "git diff --stat ${previous_tag}..HEAD -- ':!'${files[*]}"
-    git diff --stat "${previous_tag}..HEAD" -- ":!${files[*]}"
+    echo "git diff --stat ${previous_tag}..HEAD -- ${allowed_changes[*]}"
+    git diff --stat "${previous_tag}..HEAD" -- "${allowed_changes[@]}"
   } >&2
-  abort "Changes detected outside '${files[*]}'" 2
+  abort "Changes detected outside '${allowed_changes[*]#:!}'" 2
 fi
 
 if [ -n "${verbose-}" ]; then
