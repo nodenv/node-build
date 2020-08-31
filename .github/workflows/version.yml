@@ -8,7 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.BOT_TOKEN }}
+
       - run: |-
           npm run preversion --silent -- -o -v -- share/node-build || status=$?
           case "${status:-0}" in
@@ -16,6 +19,7 @@ jobs:
             1) exit 0;; # exit successfully to mask error, but don't release
             *) exit $status ;; # all other error codes are true failures
           esac
+
       - if: ${{ env.release }}
         run: npm version patch
         env:
