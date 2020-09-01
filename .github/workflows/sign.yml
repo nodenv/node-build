@@ -1,6 +1,6 @@
 name: Test Signing
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   bump:
