@@ -1,0 +1,9 @@
+binary aix-ppc64 "https://nodejs.org/dist/v15.1.0/node-v15.1.0-aix-ppc64.tar.gz#39b7152a34b5d391355c86b4081639b09795853e3fb1b91b3e86ec3eb78a8d07"
+binary darwin-x64 "https://nodejs.org/dist/v15.1.0/node-v15.1.0-darwin-x64.tar.gz#af4d2208a577501464cf39bff4de4d756b2e15b62ba83ab424ac0b5aa3e45c24"
+binary linux-arm64 "https://nodejs.org/dist/v15.1.0/node-v15.1.0-linux-arm64.tar.gz#292a5ed3db3ae2acc7cc88bf965c8fca3c39068e867f473f1e2c355549d653b3"
+binary linux-armv7l "https://nodejs.org/dist/v15.1.0/node-v15.1.0-linux-armv7l.tar.gz#268495b91a6fdc86681f8b890c51c4a6606e5de028c179582c655317707ffbaa"
+binary linux-ppc64le "https://nodejs.org/dist/v15.1.0/node-v15.1.0-linux-ppc64le.tar.gz#56a8ccf54cf60208b3b9c082a8589ff5f023c2995243b60b9fb46e6ed87352a0"
+binary linux-s390x "https://nodejs.org/dist/v15.1.0/node-v15.1.0-linux-s390x.tar.gz#03afd980583cd00b32168585a792bb68b22898f3f1c846dd1eb3899af1727c81"
+binary linux-x64 "https://nodejs.org/dist/v15.1.0/node-v15.1.0-linux-x64.tar.gz#f7f5d9d313462771095fe121c0dbb95b229a6a8119cb75cace433df748438f20"
+
+install_package "node-v15.1.0" "https://nodejs.org/dist/v15.1.0/node-v15.1.0.tar.gz#b44e4ac58b0660909e41390c3380a14669480c3f947d078d78d356ce3d1ba4bc"
