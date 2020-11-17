@@ -15,7 +15,7 @@ jobs:
       - run: |-
           npm run preversion --silent -- -o -v -- share/node-build || status=$?
           case "${status:-0}" in
-            0) echo "::set-env name=release::true" ;;
+            0) echo "release=true" >> $GITHUB_ENV;;
             1) exit 0;; # exit successfully to mask error, but don't release
             *) exit $status ;; # all other error codes are true failures
           esac
