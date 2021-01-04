@@ -1,0 +1,16 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
+binary aix-ppc64 "https://nodejs.org/dist/v10.23.1/node-v10.23.1-aix-ppc64.tar.gz#33bf67ad4a5843b0c1a5a9f3800ccbe1f30b068889177049bd6faca4a843c64a"
+binary darwin-x64 "https://nodejs.org/dist/v10.23.1/node-v10.23.1-darwin-x64.tar.gz#07da39e4c122d1cee744f3a3ace904edf23c3256879adedafcca6a1da4ca4681"
+binary linux-arm64 "https://nodejs.org/dist/v10.23.1/node-v10.23.1-linux-arm64.tar.gz#e7d0476b1e9add7b21297698517356bb7c7d7f10e75f5abad6ab5806518a6cd6"
+binary linux-armv6l "https://nodejs.org/dist/v10.23.1/node-v10.23.1-linux-armv6l.tar.gz#75f04c8c26b83afe40eb1de97a04efca1adf1dd2ad1b887bed297888d7760aaf"
+binary linux-armv7l "https://nodejs.org/dist/v10.23.1/node-v10.23.1-linux-armv7l.tar.gz#8f965f2757efcf3077d655bfcea36f7a29c58958355e0eb23cfb725740c3ccbe"
+binary linux-ppc64le "https://nodejs.org/dist/v10.23.1/node-v10.23.1-linux-ppc64le.tar.gz#46e590ecef7bfa76e2de1f57e0a1b0b0df2bd0142a25e2329ccfbd9fc33e7cc8"
+binary linux-s390x "https://nodejs.org/dist/v10.23.1/node-v10.23.1-linux-s390x.tar.gz#7b51c8bc1d15fac73245685437079ca6952c38560d94732630645a61303d6b47"
+binary linux-x64 "https://nodejs.org/dist/v10.23.1/node-v10.23.1-linux-x64.tar.gz#2a5f9d862468a4c677630923531e52339526cfd075cc6df30da4636782eb7bda"
+binary sunos-x64 "https://nodejs.org/dist/v10.23.1/node-v10.23.1-sunos-x64.tar.gz#5c6e8f40b3d36d59035d998bbcaffbd9a326efa57c15c32941c23529f1a2da6c"
+
+install_package "node-v10.23.1" "https://nodejs.org/dist/v10.23.1/node-v10.23.1.tar.gz#a5348b5dfdbe32e0be2837576e66ac285a59907e11e5439fbcda25e70f52550d"
