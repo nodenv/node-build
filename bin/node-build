@@ -62,10 +62,10 @@ try_lock(){
   local cmd="$@"
   if flock=$(detect_flock); then
     (${flock} -s 7; ${cmd}) 7>"${lockfile}" # If flock is available, isolate cmd with lockfile (fd 7)
+    rm -f "${lockfile}"
   else
     ${cmd}
   fi
-  rm -f "${lockfile}"
 }
 
 resolve_link() {
