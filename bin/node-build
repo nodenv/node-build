@@ -53,6 +53,20 @@ lib() {
 }
 lib "$1"
 
+detect_flock(){
+  type -p flock
+}
+
+try_lock(){
+  local lockfile="${PREFIX_PATH}.lock"
+  local cmd="$@"
+  if flock=$(detect_flock); then
+    (${flock} -s 7; ${cmd}) 7>"${lockfile}" # If flock is available, isolate cmd with lockfile (fd 7)
+  else
+    ${cmd}
+  fi
+  rm -f "${lockfile}"
+}
 
 resolve_link() {
   $(type -p greadlink readlink | head -1) "$1"
@@ -232,15 +246,15 @@ binary() {
 }
 
 install_package() {
-  install_package_using "tarball" 1 "$@"
+  try_lock install_package_using "tarball" 1 "$@"
 }
 
 install_git() {
-  install_package_using "git" 2 "$@"
+  try_lock install_package_using "git" 2 "$@"
 }
 
 install_svn() {
-  install_package_using "svn" 2 "$@"
+  try_lock install_package_using "svn" 2 "$@"
 }
 
 install_binary() {
@@ -251,7 +265,7 @@ install_binary() {
   name="${name%.tar.gz*}"
   name="${name%.zip*}"
 
-  install_package "$name" "$url" copy "${@:2}"
+  try_lock install_package "$name" "$url" copy "${@:2}"
 }
 
 install_package_using() {
