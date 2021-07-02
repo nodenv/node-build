@@ -4,10 +4,11 @@
 #
 # Usage: nodenv install [-f|-s] [-kpv] <version>
 #        nodenv install [-f|-s] [-kpv] <definition-file>
-#        nodenv install -l|--list
+#        nodenv install -l|--list|--list-latest
 #        nodenv install --version
 #
 #   -l/--list          List all available versions
+#   --list-latest      List latest minor version for each available major version
 #   -f/--force         Install even if the version appears to be installed already
 #   -s/--skip-existing Skip if the version appears to be installed already
 #
@@ -39,6 +40,7 @@ shopt -u nullglob
 # Provide nodenv completions
 if [ "$1" = "--complete" ]; then
   echo --list
+  echo --list-latest
   echo --force
   echo --skip-existing
   echo --compile
@@ -60,6 +62,24 @@ usage() {
 definitions() {
   local query="$1"
   node-build --definitions | $(type -p ggrep grep | head -1) -F "$query" || true
+}
+
+list_latest() {
+  node-build --definitions | awk '
+    {
+      key = $0
+      if (match($0, /(^|-)[0-9]+[.]/))
+        key = substr($0, 1, RSTART + RLENGTH - 1)
+      if (NR > 1 && lastkey != key)
+        print lastline
+      lastkey = key
+      lastline = $0
+    }
+    END {
+      if (NR > 0)
+        print lastline
+    }
+  '
 }
 
 indent() {
@@ -84,6 +104,10 @@ for option in "${OPTIONS[@]}"; do
     ;;
   "l" | "list" )
     exec node-build --definitions
+    ;;
+  "list-latest" )
+    list_latest
+    exit
     ;;
   "f" | "force" )
     FORCE=true
