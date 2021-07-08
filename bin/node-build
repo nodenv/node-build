@@ -775,6 +775,21 @@ after_install_package() {
   :
 }
 
+alias_version_name() {
+  local name=${1:-$(./bin/node --version)}
+  local prefix=$(dirname "$PREFIX_PATH")
+  local new_path=${prefix:?not set}/${name#v}
+
+  if [ -d "$new_path" ]; then
+    echo "node-build: $new_path already exists" >&2
+    return 1
+  fi
+
+  mv "$PREFIX_PATH" "$new_path"
+  ln -s "$(basename $new_path)" "$PREFIX_PATH"
+  PREFIX_PATH=$new_path
+}
+
 fix_jxcore_directory_structure() {
   {
     mkdir -p "$PREFIX_PATH/bin"
