@@ -1,0 +1,10 @@
+echo "This package only contains compiled binaries."
+echo "If no binary matches your platform, source compilation will not be attempted."
+
+binary darwin-x64 "https://www.neonious.com/lowjs/downloads/lowjs-darwin-x86_64-20200402_1028ffb.tar.gz#4e724b9820cab4fce90fb8c03acfe58a1de4be88f2263d8ac079e19201cbf293"
+binary linux-arm64 "https://www.neonious.com/lowjs/downloads/lowjs-linux-aarch64-20200402_1028ffb.tar.gz#ddab0d38d8e23d476baa23f2faa3ef81f7fe7455045bcdc611f7327d74598de7"
+binary linux-armv6l "https://www.neonious.com/lowjs/downloads/lowjs-linux-armv6l-20200402_1028ffb.tar.gz#7477868b1b10bf037a96ae8c7c7714c19f2a271897cccf158b053306e1faf3ee"
+binary linux-x86 "https://www.neonious.com/lowjs/downloads/lowjs-linux-i686-20200402_1028ffb.tar.gz#2c19e2fe458d0d53a9ceac6389c2615b3b3d1f3703a020cf6a82f33d39f0f77b"
+binary linux-x64 "https://www.neonious.com/lowjs/downloads/lowjs-linux-x86_64-20200402_1028ffb.tar.gz#938040787cd047de1d709fcf4d3e65cfe980f87cc4d6f147492206ac2af1d3aa"
+
+install_package "lowjs-20200402+1028ffb" "#"
