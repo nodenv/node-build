@@ -14,7 +14,7 @@
 #   --version        Show version of node-build
 #
 
-NODE_BUILD_VERSION=4.9.47
+NODE_BUILD_VERSION=4.9.48
 
 OLDIFS="$IFS"
 
