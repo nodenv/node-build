@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v17.3.0/node-v17.3.0-aix-ppc64.tar.gz#5300264598a643445378a51bf1d62242281ae602045934bf6fcacf6f6ba3abda"
+binary darwin-arm64 "https://nodejs.org/dist/v17.3.0/node-v17.3.0-darwin-arm64.tar.gz#b504ba3628337f7ac2c67d04bf30e56082942345aa1a50e0e464f51df6662ff3"
+binary darwin-x64 "https://nodejs.org/dist/v17.3.0/node-v17.3.0-darwin-x64.tar.gz#d4fa7d01c3b08cecdb71eee1da27a5e0e2d31bd25ad3bee1807df95811c2ce3f"
+binary linux-arm64 "https://nodejs.org/dist/v17.3.0/node-v17.3.0-linux-arm64.tar.gz#6f236f47fc68fa535bd0f769d9e12767a6b5251875aea2632c227ca55d1ab7ae"
+binary linux-armv7l "https://nodejs.org/dist/v17.3.0/node-v17.3.0-linux-armv7l.tar.gz#f92c17fc61af2a47a9b9e42b8e795abfbe18a1fa4e51de52d7362cae74ad487d"
+binary linux-ppc64le "https://nodejs.org/dist/v17.3.0/node-v17.3.0-linux-ppc64le.tar.gz#7161e93479e3df1b18f2fb75b36ef75fd1cbdf2cc610262f510531ef731d0050"
+binary linux-s390x "https://nodejs.org/dist/v17.3.0/node-v17.3.0-linux-s390x.tar.gz#de1b0007f4d46e786f2583b7312e3262820e6535bc16b45da57de65a8472e824"
+binary linux-x64 "https://nodejs.org/dist/v17.3.0/node-v17.3.0-linux-x64.tar.gz#479fb0b4b6405fb7240376187e2823cf384635a4998bdbaddc3ea826b63c8c74"
+
+install_package "node-v17.3.0" "https://nodejs.org/dist/v17.3.0/node-v17.3.0.tar.gz#2914a3f0dc02ec6046f81ff12e1fb1fcf2b346b6b50e2c944440fdd165efd3ff"
