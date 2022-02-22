@@ -171,6 +171,11 @@ num_cpu_cores() {
   echo "${num:-2}"
 }
 
+system_is_muslc() {
+  # Implicit return
+  ldd /bin/sh | grep -qw musl
+}
+
 platform() {
   local arch os distro
 
@@ -180,6 +185,10 @@ platform() {
     x86_64 | amd64 | i686-64 ) arch=x64 ;;
     i[36]86* | [ix]86pc )      arch=x86 ;;
   esac
+
+  if system_is_muslc; then
+    arch="$arch-musl"
+  fi
 
   os="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
