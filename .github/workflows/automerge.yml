@@ -1,7 +1,7 @@
 name: Auto-merge Nodenv Bot PR
 on:
   # pull_request:
-  check_suite:
+  check_run:
     types: [completed]
 
 jobs:
