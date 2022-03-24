@@ -6,7 +6,7 @@ on:
 
 jobs:
   automerge:
-    if: github.actor == 'nodenv-bot'
+    if: github.actor == 'usmanyunusov'
     runs-on: ubuntu-latest
     steps:
       - name: Enable Automerge
