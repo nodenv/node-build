@@ -1,0 +1,15 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
+binary aix-ppc64 "https://nodejs.org/dist/v17.9.0/node-v17.9.0-aix-ppc64.tar.gz#0e6d3b1677c1b9b1228a0df241ae2fa72952a35dba5d1fe165b0cac5a8e230db"
+binary darwin-arm64 "https://nodejs.org/dist/v17.9.0/node-v17.9.0-darwin-arm64.tar.gz#bad50341f8a1fd737c53efc01aa3f4eaf63df5601adf9ba036a8adb695d13428"
+binary darwin-x64 "https://nodejs.org/dist/v17.9.0/node-v17.9.0-darwin-x64.tar.gz#0920116e6507fdc8dcf16bdd717e08797b6d1b97a7a6990294bbf62da9471256"
+binary linux-arm64 "https://nodejs.org/dist/v17.9.0/node-v17.9.0-linux-arm64.tar.gz#d4acf5c0380c96c867428d0232666d3327dc5fa83a694d7b63f728a76ece84b2"
+binary linux-armv7l "https://nodejs.org/dist/v17.9.0/node-v17.9.0-linux-armv7l.tar.gz#912bfd3cbeaf395a4593ac752759202727839ceaae34d20df1766b56b741c764"
+binary linux-ppc64le "https://nodejs.org/dist/v17.9.0/node-v17.9.0-linux-ppc64le.tar.gz#fa42d94e3904cabc43022f3bbb0ff761be67f8850b5a1750063609ba825b4d6e"
+binary linux-s390x "https://nodejs.org/dist/v17.9.0/node-v17.9.0-linux-s390x.tar.gz#2f9ccbaa5b575110af64c71d6d973f5b24d8169984fa59f90ceff5823b3eedc5"
+binary linux-x64 "https://nodejs.org/dist/v17.9.0/node-v17.9.0-linux-x64.tar.gz#8c9f4c95c254336fcb2c768e746f4316b8176adc0fb599cbbb460d0933991d12"
+
+install_package "node-v17.9.0" "https://nodejs.org/dist/v17.9.0/node-v17.9.0.tar.gz#25d8c6559456d548823e3f7f4fae7dc8c7d5a0f7772c79c8d902528e801ba09a"
