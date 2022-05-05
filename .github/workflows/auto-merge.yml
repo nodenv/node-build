@@ -1,0 +1,16 @@
+name: Auto-Merge
+on:
+  workflow_run:
+    workflows: ["Test"]
+    types:
+      - completed
+
+jobs:
+  enable-auto-merge:
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.user.login == 'nodenv-bot'
+    steps:
+    - uses: alexwilson/enable-github-automerge-action@main
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
