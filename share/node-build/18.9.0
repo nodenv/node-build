@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v18.9.0/node-v18.9.0-aix-ppc64.tar.gz#e4d8d6030efe1e0b103ba7a158996b2ff4ceef0f8fd05af9ea61eb4b17d6fa0c"
+binary darwin-arm64 "https://nodejs.org/dist/v18.9.0/node-v18.9.0-darwin-arm64.tar.gz#60300b40f539fc93005859fcb7ea585bfd111800e90b6ee744a07f2380512bbb"
+binary darwin-x64 "https://nodejs.org/dist/v18.9.0/node-v18.9.0-darwin-x64.tar.gz#dce1144cbfc01e03c2e84582461c3ce83541968b2b52a3d3a6f2bbfb09183fba"
+binary linux-arm64 "https://nodejs.org/dist/v18.9.0/node-v18.9.0-linux-arm64.tar.gz#0d0e671158e072a63c24714bfc4c19a4bb0a70c89d219b1f23d67cbea9c5ffcf"
+binary linux-armv7l "https://nodejs.org/dist/v18.9.0/node-v18.9.0-linux-armv7l.tar.gz#195bea2e5be6c791bc460fdc0939375f25b6246cbb57521374eddc9e77323829"
+binary linux-ppc64le "https://nodejs.org/dist/v18.9.0/node-v18.9.0-linux-ppc64le.tar.gz#794bb57444e14e3282f8f2416483c385e3ae1d66b8babb025ed2b78e22d8157d"
+binary linux-s390x "https://nodejs.org/dist/v18.9.0/node-v18.9.0-linux-s390x.tar.gz#1061f5ed96290df7f3e5b1f183fdacfd82bba0d8c2dfb984505110f83e9ac215"
+binary linux-x64 "https://nodejs.org/dist/v18.9.0/node-v18.9.0-linux-x64.tar.gz#7fdbfdb985a48db3d22a2472330db05d94c9aff59192b09d8f9ab5fcedba76d5"
+
+install_package "node-v18.9.0" "https://nodejs.org/dist/v18.9.0/node-v18.9.0.tar.gz#89af82a3f8df01a24bb61b69a4e9a0482bfa8793a7686c88227bce10ee0c72bc"
