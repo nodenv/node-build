@@ -1,0 +1,14 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
+binary aix-ppc64 "https://nodejs.org/dist/v14.20.1/node-v14.20.1-aix-ppc64.tar.gz#1140709298833d74fad652fd4f7e3e76eff0ce496756df2acf7b9872c9d0b7e7"
+binary darwin-x64 "https://nodejs.org/dist/v14.20.1/node-v14.20.1-darwin-x64.tar.gz#7fe00e1e5949c9b99d0b888b9d32b8b2f35a117cd3a94a16c0a2524cb71e3c59"
+binary linux-arm64 "https://nodejs.org/dist/v14.20.1/node-v14.20.1-linux-arm64.tar.gz#05fe791367dbce8d76be7e18bac0c9b88a0ed6ab721c31321b96a2dbc31355ce"
+binary linux-armv7l "https://nodejs.org/dist/v14.20.1/node-v14.20.1-linux-armv7l.tar.gz#ddf58c8e8a259afbe341f257d3f34646bfdbaffab27d2228e93a99327ce3d14f"
+binary linux-ppc64le "https://nodejs.org/dist/v14.20.1/node-v14.20.1-linux-ppc64le.tar.gz#80fb1ea56a4e858ceeccd9deff99dd894778e97c593489789a0a2cd3bfa48729"
+binary linux-s390x "https://nodejs.org/dist/v14.20.1/node-v14.20.1-linux-s390x.tar.gz#bca79e1931e1962c6b9f1c7045521db5d8adea7998ea50ecfc2f335e62ce1f4b"
+binary linux-x64 "https://nodejs.org/dist/v14.20.1/node-v14.20.1-linux-x64.tar.gz#0aab09a55c11fbd1e6c40356809a86eaaf3330fc96e26f9443f82d46d8f8da5f"
+
+install_package "node-v14.20.1" "https://nodejs.org/dist/v14.20.1/node-v14.20.1.tar.gz#fd261ab13e8f72ba11afeae713a9e40b1e2318012db3170abc69ecfddef4fe89"
