@@ -1,3 +1,8 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
 binary aix-ppc64 "https://nodejs.org/dist/v16.3.0/node-v16.3.0-aix-ppc64.tar.gz#4241dc60ff8bb1748391fd16cde459a486824e23b96b13c223fb97b3fecd9fe9"
 binary darwin-arm64 "https://nodejs.org/dist/v16.3.0/node-v16.3.0-darwin-arm64.tar.gz#aeac294dbe54a4dfd222eedfbae704b185c40702254810e2c5917f6dbc80e017"
 binary darwin-x64 "https://nodejs.org/dist/v16.3.0/node-v16.3.0-darwin-x64.tar.gz#3e075bcfb6130dda84bfd04633cb228ec71e72d9a844c57efb7cfff130b4be89"
