@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v19.2.0/node-v19.2.0-aix-ppc64.tar.gz#8b5ab2cec5a20df8e99242b248a6345f4a393facd29a5b077ba6d7dafd629b4c"
+binary darwin-arm64 "https://nodejs.org/dist/v19.2.0/node-v19.2.0-darwin-arm64.tar.gz#394341380de1b1c6e5a5ab8af86e08e8f097ba7d101d4315bdd7cdcf3b306467"
+binary darwin-x64 "https://nodejs.org/dist/v19.2.0/node-v19.2.0-darwin-x64.tar.gz#e3cfa8f82ea334c3c23bc1d9c9c3a87c4ffff8d29eab17e6bb9d53008103b08b"
+binary linux-arm64 "https://nodejs.org/dist/v19.2.0/node-v19.2.0-linux-arm64.tar.gz#5010dc1b0e6417c61906de1a8d05e752c23d0493e5f419a59e8bf959a2f52628"
+binary linux-armv7l "https://nodejs.org/dist/v19.2.0/node-v19.2.0-linux-armv7l.tar.gz#2bd6ef5e75a750c835c810fc6d2156fd719901732f4170ea86d3da24dcff6a27"
+binary linux-ppc64le "https://nodejs.org/dist/v19.2.0/node-v19.2.0-linux-ppc64le.tar.gz#b27f78c5d8c70185373ef520f04192f998be700f10d93c0cc876e02e93cf48e5"
+binary linux-s390x "https://nodejs.org/dist/v19.2.0/node-v19.2.0-linux-s390x.tar.gz#e83d0f4e9db0dfea79901bedd40b1f502935a1acad7d8209fa3ff0d153730bcf"
+binary linux-x64 "https://nodejs.org/dist/v19.2.0/node-v19.2.0-linux-x64.tar.gz#64cad7fb9ff6c0bc85b7f58275f23177a11c820240a0a7cb036e764a98c3527e"
+
+install_package "node-v19.2.0" "https://nodejs.org/dist/v19.2.0/node-v19.2.0.tar.gz#aac9d1a366fb57d68f4639f9204d1de5d6387656959a97ed929a5ba9e62c033a"
