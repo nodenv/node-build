@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v21.2.0/node-v21.2.0-aix-ppc64.tar.gz#fbe1a66068e0ca1900d9795e3b8da027c62073062f78040d453aed9d86189001"
+binary darwin-arm64 "https://nodejs.org/dist/v21.2.0/node-v21.2.0-darwin-arm64.tar.gz#e085e9e695a5fc715c24d0d2ee73a2cebfc2a2b456a28b58f31077609591f4a0"
+binary darwin-x64 "https://nodejs.org/dist/v21.2.0/node-v21.2.0-darwin-x64.tar.gz#ff6483bdf4f9817d9915f5fdf1b9154c7689f47ef310eac5ab3c40f6a6e4b700"
+binary linux-arm64 "https://nodejs.org/dist/v21.2.0/node-v21.2.0-linux-arm64.tar.gz#d202d583e5cf3b0a8ba4f8e242467fd7bdea57c94a81c63cfa78aa224bdec7e1"
+binary linux-armv7l "https://nodejs.org/dist/v21.2.0/node-v21.2.0-linux-armv7l.tar.gz#ed8364dc4a43f9d5f4ab407d3ad5fa6469f89417b6d8a62ad3611677b2b0d7a0"
+binary linux-ppc64le "https://nodejs.org/dist/v21.2.0/node-v21.2.0-linux-ppc64le.tar.gz#43b157d3d7ddf6cdc9097f1e3d2cb6e271ea749807d07465c3cc52abf24e0252"
+binary linux-s390x "https://nodejs.org/dist/v21.2.0/node-v21.2.0-linux-s390x.tar.gz#e27b04945661a8319ad5ce2ee6b1bad1188a6f70f10029d1a9ae4d8a74d55ea7"
+binary linux-x64 "https://nodejs.org/dist/v21.2.0/node-v21.2.0-linux-x64.tar.gz#2600d1103d9963ca194aa52b5610ea28f1e4c2df81e525799fba9b7b530c6e54"
+
+install_package "node-v21.2.0" "https://nodejs.org/dist/v21.2.0/node-v21.2.0.tar.gz#ce5e44838a18d96a8e5d2e835e38785c885acbcfc661d59ff0454298c716e8d6"
