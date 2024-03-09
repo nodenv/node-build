@@ -6,7 +6,7 @@ jobs:
   github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
       - run: npm ci
       - run: npm run -s relnotes | tee relnotes.txt
@@ -25,8 +25,8 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           scope: '@nodenv'
           registry-url: 'https://registry.npmjs.org'
