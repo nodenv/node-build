@@ -16,7 +16,7 @@ jobs:
   homebrew:
     runs-on: ubuntu-latest
     steps:
-      - uses: mislav/bump-homebrew-formula-action@v1.4
+      - uses: mislav/bump-homebrew-formula-action@v2.3
         with:
           formula-name: node-build
         env:
