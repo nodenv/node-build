@@ -725,8 +725,6 @@ build_package_autoconf() {
 }
 
 build_package_copy() {
-  # Make sure there are no leftover files in $PREFIX_PATH
-  rm -rf "$PREFIX_PATH"
   mkdir -p "$PREFIX_PATH"
   cp -fR . "$PREFIX_PATH"
 }
