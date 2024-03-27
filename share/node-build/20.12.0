@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v20.12.0/node-v20.12.0-aix-ppc64.tar.gz#8d2ce67d19e2eafe7581f5865382f19ce7f6e66c1d19ed451b7290dcb7b74bd9"
+binary darwin-arm64 "https://nodejs.org/dist/v20.12.0/node-v20.12.0-darwin-arm64.tar.gz#422a74b7ede14b697a8c2ca887ea161fe79898a35f163fdfb98435c5ab25027b"
+binary darwin-x64 "https://nodejs.org/dist/v20.12.0/node-v20.12.0-darwin-x64.tar.gz#5c7d71a1c1cf613037432e0b6c3d913d96604d9293b3397ec70b344730c81daf"
+binary linux-arm64 "https://nodejs.org/dist/v20.12.0/node-v20.12.0-linux-arm64.tar.gz#8e180526df8ad4086a4df7bfaaa14d21eb2a6cf58b1c5493c639022c165c2884"
+binary linux-armv7l "https://nodejs.org/dist/v20.12.0/node-v20.12.0-linux-armv7l.tar.gz#259626b4825d9abba3721941d97f56f10ca7c56757a2468835e40b6fe4520757"
+binary linux-ppc64le "https://nodejs.org/dist/v20.12.0/node-v20.12.0-linux-ppc64le.tar.gz#767d6150c086fcdeb9f689b9f487194e3fb459a6ec4e5668d51a051fce67a161"
+binary linux-s390x "https://nodejs.org/dist/v20.12.0/node-v20.12.0-linux-s390x.tar.gz#d14fc89595949a6bde905158ad54f77f1be3b3341dc9876699f5fa77a5397e9e"
+binary linux-x64 "https://nodejs.org/dist/v20.12.0/node-v20.12.0-linux-x64.tar.gz#b6b998947595c9550d6b89c815a68d608f5920275f1b48812f89792de3fdd893"
+
+install_package "node-v20.12.0" "https://nodejs.org/dist/v20.12.0/node-v20.12.0.tar.gz#6d81620a0d328ec3039184ad2f5a0fc340ed44a59e90947765567346671525e7"
