@@ -1,0 +1,15 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
+binary aix-ppc64 "https://nodejs.org/dist/v21.7.2/node-v21.7.2-aix-ppc64.tar.gz#6290bc006ee81332da8345b2d254ecf75674de0898a6dd5e348c7685ca0df325"
+binary darwin-arm64 "https://nodejs.org/dist/v21.7.2/node-v21.7.2-darwin-arm64.tar.gz#d00a2b5002db121d798f1c9556342abb6ec6a4fac9d6197bc86c922a796812ae"
+binary darwin-x64 "https://nodejs.org/dist/v21.7.2/node-v21.7.2-darwin-x64.tar.gz#6211829236013582fb654b4b9f8c6528dcb07620f6f82878ef514fae1b30685e"
+binary linux-arm64 "https://nodejs.org/dist/v21.7.2/node-v21.7.2-linux-arm64.tar.gz#5cf1cb89feb40404adad999307659754dd17fc9afa6c086aaff690ecbf8af66c"
+binary linux-armv7l "https://nodejs.org/dist/v21.7.2/node-v21.7.2-linux-armv7l.tar.gz#73df605f0aaa18c4a8e9789206d18045b277f4233f50837b1563f9b3dd50f696"
+binary linux-ppc64le "https://nodejs.org/dist/v21.7.2/node-v21.7.2-linux-ppc64le.tar.gz#4ece271c97fc434c34328081245e406e23a23fed32868f90fe901f1a232a27bd"
+binary linux-s390x "https://nodejs.org/dist/v21.7.2/node-v21.7.2-linux-s390x.tar.gz#9df7a1c8c9be7a7f4a62b822c3cbbc0f4c66ad185b7383c6bfb021e99a9441b0"
+binary linux-x64 "https://nodejs.org/dist/v21.7.2/node-v21.7.2-linux-x64.tar.gz#06b891c82c9b19b8d8553222de5de8afd43a38c1b898f9ca323e1d2e22da9075"
+
+install_package "node-v21.7.2" "https://nodejs.org/dist/v21.7.2/node-v21.7.2.tar.gz#dc1b18771e7ed3da051fc2242806bfde5ae02b63fe7205e80156e92de8f8fa3d"
