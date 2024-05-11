@@ -1,0 +1,9 @@
+name: Sync Master
+on:
+  push: { branches: main }
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    uses: nodenv/.github/.github/workflows/sync-master.yml@v1
