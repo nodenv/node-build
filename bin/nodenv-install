@@ -7,7 +7,8 @@
 #        nodenv install -l|--list
 #        nodenv install --version
 #
-#   -l/--list          List all available versions
+#   -l/--list          List latest stable versions for each Node
+#   -L/--list-all      List all local versions
 #   -f/--force         Install even if the version appears to be installed already
 #   -s/--skip-existing Skip if the version appears to be installed already
 #
@@ -39,6 +40,7 @@ shopt -u nullglob
 # Provide nodenv completions
 if [ "$1" = "--complete" ]; then
   echo --list
+  echo --list-all
   echo --force
   echo --skip-existing
   echo --compile
@@ -83,7 +85,17 @@ for option in "${OPTIONS[@]}"; do
     SKIP_BINARY="-c"
     ;;
   "l" | "list" )
-    exec node-build --definitions
+    node-build --list
+    {
+      echo
+      echo "Only latest stable releases for each Node implementation are shown."
+      echo "Use 'nodenv install --list-all' to show all local versions."
+    } 1>&2
+    exit
+    ;;
+  "L" | "list-all" )
+    node-build --definitions
+    exit
     ;;
   "f" | "force" )
     FORCE=true

@@ -3,7 +3,7 @@
 load test_helper
 NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
 
-@test "list built-in definitions" {
+@test "list all local definitions" {
   run node-build --definitions
   assert_success
   assert_output --partial "0.10.40"
@@ -85,6 +85,72 @@ iojs-3.3.1"
     touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
   done
   run node-build --definitions
+  assert_success
+  assert_output "$expected"
+}
+
+@test "filtering previous Node versions" {
+  export NODE_BUILD_ROOT="$BATS_TMPDIR"
+  mkdir -p "${NODE_BUILD_ROOT}/share/node-build"
+
+  all_versions="
+2.4.0
+2.4.1
+2.4.2
+2.4.3
+2.4.4
+2.4.5
+2.4.6
+2.4.7
+2.4.8
+2.4.9
+2.5.0
+2.5.1
+2.5.2
+2.5.3
+2.5.4
+2.5.5
+2.5.6
+2.5.7
+2.6.0
+2.6.1
+2.6.2
+2.6.3
+2.6.4
+2.6.5
+2.7.0
+jruby-1.5.6
+jruby-9.2.7.0
+jruby-9.2.8.0
+jruby-9.2.9.0
+maglev-1.0.0
+mruby-1.4.1
+mruby-2.0.0
+mruby-2.0.1
+mruby-2.1.0
+rbx-3.104
+rbx-3.105
+rbx-3.106
+rbx-3.107
+truffleruby-19.2.0.1
+truffleruby-19.3.0
+truffleruby-19.3.0.2
+truffleruby-19.3.1"
+
+  expected="2.4.9
+2.5.7
+2.6.5
+2.7.0
+jruby-9.2.9.0
+maglev-1.0.0
+mruby-2.1.0
+rbx-3.107
+truffleruby-19.3.1"
+
+  for ver in $all_versions; do
+    touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
+  done
+  run node-build --list
   assert_success
   assert_output "$expected"
 }
