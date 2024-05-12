@@ -217,7 +217,7 @@ and modified for node.
 
 [nodenv]: https://github.com/nodenv/nodenv
 [ruby-build]: https://github.com/rbenv/ruby-build
-[definitions]: https://github.com/nodenv/node-build/tree/master/share/node-build
+[definitions]: https://github.com/nodenv/node-build/tree/main/share/node-build
 [wiki]: https://github.com/nodenv/node-build/wiki
 [ruby-build wiki]: https://github.com/rbenv/ruby-build/wiki
 [build-env]: https://github.com/nodenv/node-build/wiki#suggested-build-environment

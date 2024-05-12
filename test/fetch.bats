@@ -45,10 +45,10 @@ OUT
 }
 
 @test "fetching from git repository" {
-  stub git "clone --depth 1 --branch master http://example.com/packages/package.git package-dev : mkdir package-dev"
+  stub git "clone --depth 1 --branch main http://example.com/packages/package.git package-dev : mkdir package-dev"
 
   run_inline_definition <<DEF
-install_git "package-dev" "http://example.com/packages/package.git" master copy
+install_git "package-dev" "http://example.com/packages/package.git" main copy
 DEF
   assert_success
   assert_output - <<OUT
@@ -62,11 +62,11 @@ OUT
 @test "updating existing git repository" {
   mkdir -p "${NODE_BUILD_BUILD_PATH}/package-dev"
   stub git \
-    "fetch --depth 1 origin +master : true" \
-    "checkout -q -B master origin/master : true"
+    "fetch --depth 1 origin +main : true" \
+    "checkout -q -B main origin/main : true"
 
   run_inline_definition <<DEF
-install_git "package-dev" "http://example.com/packages/package.git" master copy
+install_git "package-dev" "http://example.com/packages/package.git" main copy
 DEF
   assert_success
   assert_output - <<OUT

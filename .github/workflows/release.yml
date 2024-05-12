@@ -10,7 +10,8 @@ jobs:
         with: { fetch-depth: 0 }
       - run: npm ci
       - run: npm run -s relnotes | tee relnotes.txt
-      - uses: jasonkarns/create-release@master
+      # TODO: Port to using gh-cli instead of dedicated action
+      - uses: jasonkarns/create-release@9249b73
         with: { body_path: relnotes.txt }
 
   homebrew:
