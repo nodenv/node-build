@@ -11,7 +11,7 @@ jobs:
       - run: npm ci
       - run: npm run -s relnotes | tee relnotes.txt
       # TODO: Port to using gh-cli instead of dedicated action
-      - uses: jasonkarns/create-release@9249b73
+      - uses: jasonkarns/create-release@9249b73e127bea00eb6f2caa7244657983df0557
         with: { body_path: relnotes.txt }
 
   homebrew:
