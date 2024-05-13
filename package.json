@@ -44,11 +44,10 @@
     "unmerged": "git for-each-ref refs/rbenv-tags --format='%(refname)' --merged"
   },
   "devDependencies": {
-    "@nodenv/devutil": "^0.1.1",
     "@nodenv/node-build-update-defs": "^2.11.0",
     "bats": "^1.11.0",
     "bats-assert": "jasonkarns/bats-assert-1",
-    "bats-mock": "^1.0.1",
+    "bats-mock": "^1",
     "bats-support": "jasonkarns/bats-support"
   }
 }
