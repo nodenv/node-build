@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v22.2.0/node-v22.2.0-aix-ppc64.tar.gz#52d5cd604f2ac283c03f1ebb7746ee74e09e8f52d3e17d29fed1fd58da59d2a8"
+binary darwin-arm64 "https://nodejs.org/dist/v22.2.0/node-v22.2.0-darwin-arm64.tar.gz#66dd98bd28d19603f2e5ab0aa0e07b64f8cad28bbc446bb44fb61cc3da62e685"
+binary darwin-x64 "https://nodejs.org/dist/v22.2.0/node-v22.2.0-darwin-x64.tar.gz#b3cd4ab4bb4ac7f9bd5c7603baf6bbdcf466c86bb6ca49abf5e221ab8fad7ceb"
+binary linux-arm64 "https://nodejs.org/dist/v22.2.0/node-v22.2.0-linux-arm64.tar.gz#7fc74ddeb3e2317c905fdebd2b681d565fc2a2980515430d4f01dad4ce312175"
+binary linux-armv7l "https://nodejs.org/dist/v22.2.0/node-v22.2.0-linux-armv7l.tar.gz#eb14ff993a1a4b6c0417b5f086b1629c82a3665edfa1c83f3b5ab1250b721307"
+binary linux-ppc64le "https://nodejs.org/dist/v22.2.0/node-v22.2.0-linux-ppc64le.tar.gz#e70cb8c5dde31c5e0ee998124f74f7fb7dc7efd7e1549fa162e7fbc20bd937cc"
+binary linux-s390x "https://nodejs.org/dist/v22.2.0/node-v22.2.0-linux-s390x.tar.gz#48a1999e35c5f8b7cf2240239d588d52fad424635b4dd4933062eb9f2a3608f4"
+binary linux-x64 "https://nodejs.org/dist/v22.2.0/node-v22.2.0-linux-x64.tar.gz#2c6eaf8bfd0f886ed8764ffce19c795e909639105e4056b1d9f8f917bad12cf1"
+
+install_package "node-v22.2.0" "https://nodejs.org/dist/v22.2.0/node-v22.2.0.tar.gz#2210ce0a40aa6aec3cc118228fdad6536607002319b1fde24260d179118c1055"
