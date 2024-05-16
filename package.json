@@ -1,6 +1,6 @@
 {
   "name": "@nodenv/node-build",
-  "version": "4.9.148",
+  "version": "4.9.149",
   "description": "Install NodeJS versions",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
