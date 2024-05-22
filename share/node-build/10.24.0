@@ -2,12 +2,6 @@ before_install_package() {
   build_package_warn_eol "$1"
 }
 
-
-before_install_package() {
-  build_package_warn_lts_maintenance "$1"
-}
-
-
 binary aix-ppc64 "https://nodejs.org/dist/v10.24.0/node-v10.24.0-aix-ppc64.tar.gz#59bdb393035c605627bf4ba64ad8edcc74f067043790c7edc545333cca8630c4"
 binary darwin-x64 "https://nodejs.org/dist/v10.24.0/node-v10.24.0-darwin-x64.tar.gz#265ccad26fdfdcd86d6571b0bf5f1815b55f6a4a9b367816ad0369790501f55e"
 binary linux-arm64 "https://nodejs.org/dist/v10.24.0/node-v10.24.0-linux-arm64.tar.gz#65e6255c6f95b6dcf87f13c21994bc80205b4bd7c7d9a3fe1f8f2a18daec576d"
