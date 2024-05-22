@@ -1,5 +1,0 @@
-before_install_package() {
-  build_package_warn_eol "$1"
-}
-
-install_git "9.x-dev" "https://github.com/nodejs/node.git" "v9.x-staging" standard
