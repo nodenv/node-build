@@ -1,0 +1,5 @@
+before_install_package() {
+  build_package_warn_eol "$1"
+}
+
+install_git "3.x-next" "https://github.com/nodejs/node.git" "v3.x" standard
