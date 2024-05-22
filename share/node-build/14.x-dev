@@ -2,10 +2,4 @@ before_install_package() {
   build_package_warn_eol "$1"
 }
 
-
-before_install_package() {
-  build_package_warn_lts_maintenance "$1"
-}
-
-
 install_git "14.x-dev" "https://github.com/nodejs/node.git" "v14.x-staging" standard
