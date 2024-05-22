@@ -1,4 +1,0 @@
-before_install_package() {
-  build_package_warn_eol "$1"
-}
-
