@@ -851,18 +851,19 @@ list_maintained_versions() {
   { for DEFINITION_DIR in "${NODE_BUILD_DEFINITIONS[@]}"; do
       [ -d "$DEFINITION_DIR" ] && \
         grep -L -e warn_eol "$DEFINITION_DIR"/* 2>/dev/null | \
-        sed 's|.*/||' | \
-        grep -v -e '-rc[0-9]*$' -e '-preview[0-9]*$' -e '-dev$'
+        sed 's|.*/||'
     done
-  } | extract_latest_versions | sort_versions | uniq
+  } | exclude_prereleases | extract_latest_versions | sort_versions | uniq
+}
+
+exclude_prereleases() {
+  grep -vE -e'-(dev|next|rc|nightly)'
 }
 
 extract_latest_versions() {
-  # sort in this function looks redundunt but it is necessary
-  # rbx-3.99 appears latest unless the sort
-  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z.\1/; s/$/.z/; G; s/\n/ /' | \
-    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | \
-    sed 's/[+.]/ /; s/[0-9].*z //; s/^\([0-9].[0-9]\)/mri\1 \1/' | \
+  sort_versions |
+    sed -E 'h; s/$/.z/; G; s/\n/ /' | # create 'index' for each major version
+    sed -E 's/([0-9]+).*z/\1/' | # truncate to major from first column
     awk '{ latest[$1] =$2 } END{ for(key in latest) { print latest[key] } }'
 }
 
