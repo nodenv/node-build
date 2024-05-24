@@ -33,4 +33,4 @@ for file in "${files[@]}"; do
   binary "$file" "${downloads}/${version}/node-${version}-${file}.tar.gz"
 done
 
-install_package "$version" "${downloads}/${version}/node-${version}.tar.gz"
+install_package "$version" "${downloads}/${version}/node-${version}.tar.gz" warn_eol

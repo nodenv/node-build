@@ -1,1 +1,1 @@
-install_git chakracore "https://github.com/nodejs/node-chakracore.git" xplat standard
+install_git chakracore "https://github.com/nodejs/node-chakracore.git" xplat warn_eol standard
