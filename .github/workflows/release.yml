@@ -5,17 +5,7 @@ on:
 jobs:
   github:
     permissions: { contents: write }
-    uses: nodenv/.github/.github/workflows/release.yml@v3
-
-  # TODO: skip pre-releases
-  homebrew:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: mislav/bump-homebrew-formula-action@v3
-        with:
-          formula-name: node-build
-        env:
-          COMMITTER_TOKEN: ${{ secrets.BOT_TOKEN }}
+    uses: nodenv/.github/.github/workflows/release.yml@release-brew
 
   npm:
     runs-on: ubuntu-latest
