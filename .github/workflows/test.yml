@@ -21,7 +21,11 @@ jobs:
   checksums:
     runs-on: ubuntu-latest
     steps:
+      # FIXME workaround https://github.com/actions/checkout/issues/910
     - uses: actions/checkout@v4
       with: { fetch-depth: 0 }
     - run: npm ci
-    - run: npm run lint:checksums -- origin/${{github.base_ref}}
+    - if: github.event_name == 'pull_request'
+      run: npm run lint:checksums -- origin/${{github.base_ref}}
+    - run: npm run lint:checksums -- HEAD^
+      if: github.event_name == 'push'
