@@ -5,7 +5,7 @@ on:
 jobs:
   release:
     permissions: { contents: write }
-    uses: nodenv/.github/.github/workflows/release.yml@release-brew
+    uses: nodenv/.github/.github/workflows/release.yml@v4
     secrets: inherit
 
   npm:
