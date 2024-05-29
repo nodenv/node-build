@@ -23,7 +23,7 @@ jobs:
       - if: ${{ env.release }}
         run: npm version patch
         env:
-          GIT_AUTHOR_NAME: "nodenv[bot]"
-          GIT_AUTHOR_EMAIL: "68817010+nodenv-bot@users.noreply.github.com"
-          GIT_COMMITTER_NAME: "github-actions[bot]"
-          GIT_COMMITTER_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+          GIT_AUTHOR_NAME: ${{ vars.NODENV_BOT_NAME }}
+          GIT_AUTHOR_EMAIL: ${{ vars.NODENV_BOT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ vars.GHA_BOT_NAME }}
+          GIT_COMMITTER_EMAIL: ${{ vars.GHA_BOT_EMAIL }}
