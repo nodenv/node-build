@@ -10,7 +10,8 @@
 #   -v/--verbose     Verbose mode: print compilation status to stdout
 #   -4/--ipv4        Resolve names to IPv4 addresses only
 #   -6/--ipv6        Resolve names to IPv6 addresses only
-#   --definitions    List all built-in definitions
+#   --definitions    List all local definitions
+#   -l/--list        List latest stable releases for each Node
 #   --version        Show version of node-build
 #
 
@@ -837,11 +838,33 @@ usage() {
   [ -z "$1" ] || exit "$1"
 }
 
+# list all versions
 list_definitions() {
   { for DEFINITION_DIR in "${NODE_BUILD_DEFINITIONS[@]}"; do
       [ -d "$DEFINITION_DIR" ] && ls "$DEFINITION_DIR"
     done
   } | sort_versions | uniq
+}
+
+# list only latest stable versions excluding RC, preview, dev and EoL'ed
+list_maintained_versions() {
+  { for DEFINITION_DIR in "${NODE_BUILD_DEFINITIONS[@]}"; do
+      [ -d "$DEFINITION_DIR" ] && \
+        grep -L -e warn_eol "$DEFINITION_DIR"/* 2>/dev/null | \
+        sed 's|.*/||'
+    done
+  } | exclude_prereleases | extract_latest_versions | sort_versions | uniq
+}
+
+exclude_prereleases() {
+  grep -vE -e'-(dev|next|rc|nightly)'
+}
+
+extract_latest_versions() {
+  sort_versions |
+    sed -E 'h; s/$/.z/; G; s/\n/ /' | # create 'index' for each major version
+    sed -E 's/([0-9]+).*z/\1/' | # truncate to major from first column
+    awk '{ latest[$1] =$2 } END{ for(key in latest) { print latest[key] } }'
 }
 
 sort_versions() {
@@ -878,6 +901,10 @@ for option in "${OPTIONS[@]}"; do
     ;;
   "c" | "compile" )
     SKIP_BINARY=true
+    ;;
+  "l" | "list")
+    list_maintained_versions
+    exit 0
     ;;
   "k" | "keep" )
     KEEP_BUILD_PATH=true

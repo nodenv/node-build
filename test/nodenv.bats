@@ -40,7 +40,7 @@ stub_node_build() {
   stub_node_build \
     "--definitions : echo 0.8.7 0.10.4 0.11.0 1.0.0 4.1.2 | tr ' ' $'\\n'"
 
-  run nodenv-install --list
+  run nodenv-install --list-all
   assert_success
   assert_output - <<OUT
 0.8.7
@@ -126,7 +126,7 @@ OUT
   mkdir -p "${NODENV_ROOT}/plugins/bar/share/node-build"
   stub_node_build "--definitions : echo \$NODE_BUILD_DEFINITIONS | tr ':' $'\\n'"
 
-  run nodenv-install --list
+  run nodenv-install --list-all
   assert_success
   assert_output - <<OUT
 
@@ -144,6 +144,7 @@ OUT
   assert_success
   assert_output - <<OUT
 --list
+--list-all
 --force
 --skip-existing
 --compile

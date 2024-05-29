@@ -3,7 +3,7 @@
 load test_helper
 NUM_DEFINITIONS="$(ls "$BATS_TEST_DIRNAME"/../share/node-build | wc -l)"
 
-@test "list built-in definitions" {
+@test "list all local definitions" {
   run node-build --definitions
   assert_success
   assert_output --partial "0.10.40"
@@ -85,6 +85,79 @@ iojs-3.3.1"
     touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
   done
   run node-build --definitions
+  assert_success
+  assert_output "$expected"
+}
+
+@test "filtering previous Node versions" {
+  export NODE_BUILD_ROOT="$BATS_TMPDIR"
+  mkdir -p "${NODE_BUILD_ROOT}/share/node-build"
+
+ eol_versions="17.0.0
+17.9.1
+19.0.0
+19.9.0
+21.0.0
+21.7.3
+graal+ce_java11-19.3.0
+graal+ce_java11-19.3.0.2
+graal+ce_java8-19.3.0
+graal+ce_java8-19.3.0.2
+graal+ce_java11-19.3.1
+graal+ce_java8-19.3.1
+iojs-1.0.0
+iojs-1.8.4
+iojs-2.0.0
+iojs-2.5.0
+iojs-3.0.0
+iojs-3.3.1"
+
+pre_versions="9.x-dev
+chakracore-nightly
+graal+ce-1.0.0-rc1
+"
+
+  all_versions=$eol_versions\
+$pre_versions"
+18.0.0
+18.20.2
+20.0.0
+20.12.2
+22.0.0
+22.1.0
+chakracore-8.1.2
+chakracore-8.11.1
+chakracore-10.0.0
+chakracore-10.13.0
+graal+ce-19.0.0
+graal+ce-19.2.1
+graal+ce_java11-19.3.0
+graal+ce_java11-19.3.0.2
+graal+ce_java8-19.3.0
+graal+ce_java8-19.3.0.2
+graal+ce_java11-19.3.1
+graal+ce_java8-19.3.1
+graal+ce_java11-20.0.0
+graal+ce_java8-20.0.0"
+
+  expected="18.20.2
+20.12.2
+22.1.0
+chakracore-8.11.1
+chakracore-10.13.0
+graal+ce-19.2.1
+graal+ce_java11-20.0.0
+graal+ce_java8-20.0.0"
+
+  for ver in $all_versions; do
+    touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
+  done
+
+  for eol in $eol_versions; do
+    echo "warn_eol" >> "${NODE_BUILD_ROOT}/share/node-build/$eol"
+  done
+
+  run node-build --list
   assert_success
   assert_output "$expected"
 }
