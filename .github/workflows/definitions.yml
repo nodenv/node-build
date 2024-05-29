@@ -1,7 +1,6 @@
-name: Generate Definitions
+name: Definitions
 on:
-  # https://crontab.guru/#0_*/4_*_*_*
-  schedule: [{ cron: '0 */4 * * *' }] # every 4 hrs
+  schedule: [{cron: '0 */6 * * *'}] # 6hrly https://crontab.guru/#0_*/6_*_*_*
   workflow_dispatch:
 
 jobs:
@@ -29,3 +28,22 @@ jobs:
         branch: latest-scraped-definitions
         title: 'Scraped latest definitions'
         body: ${{ steps.log.outputs.message }}
+
+  lts:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: npm ci
+    - run: npm run lint:lts -- --fix
+    - if: failure()
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.BOT_TOKEN }}
+        committer: 'nodenv bot <jason.karns+nodenv@github.com>'
+        commit-message: 'Add LTS warning messages'
+        branch: lts-warning-message
+        title: 'Adds/Updates LTS warning messages'
+        body: |-
+          [![node lts schedule](https://raw.githubusercontent.com/nodejs/Release/main/schedule.svg)](https://github.com/nodejs/Release)
+
+          > Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
