@@ -14,7 +14,7 @@ set -euo pipefail
 trace() { (set -x; "$@"); }
 
 clean_branch() {
-  br=${1:-ruby-build-upstream}
+  br=${1:-pull-ruby-build-upstream}
   start=${2:-origin/main}
 
   # TODO: explicitly use the rbenv-tags refspec
