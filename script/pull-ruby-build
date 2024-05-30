@@ -1,42 +1,45 @@
 #! /usr/bin/env bash
 
 # This is intended to help automate the process of pull changes down from
-# ruby-build upstream. It depends on customized rbenv-tags refspec for
-# namespacing ruby-build's tags (that way ruby-builds tags don't pollute
-# node-build's tags). It re-uses a staging branch where ruby-build's tags
-# will be merged into. It finds only the very "next" un-merged ruby-build
-# tag; diffs against that and merges it. Then removes the ruby-build defs
-# and known scripts that don't apply to node-build. Should leave the 
-# working copy in a MERGING state.
+# ruby-build upstream. It uses custom 'rbtags' ref namespace for ruby-build's
+# tags (that way ruby-builds tags don't pollute node-build's tags). It re-uses
+# a staging branch where ruby-build's tags will be merged into. It finds only
+# the very "next" un-merged ruby-build tag; diffs against that and merges it.
+# Then removes the ruby-build defs and known scripts that don't apply to
+# node-build. Should leave the working copy in a MERGING state.
 
 set -euo pipefail
 
 trace() { (set -x; "$@"); }
 
+rbtags='refs/rbtags/'
+ruby_build='https://github.com/rbenv/ruby-build.git'
+
 clean_branch() {
-  br=${1:-pull-ruby-build-upstream}
+  br=${1:-pull-ruby-build}
   start=${2:-origin/main}
 
-  # TODO: explicitly use the rbenv-tags refspec
-  git fetch --all
+  git fetch --no-tags $ruby_build "refs/tags/*:$rbtags*"
   git checkout --no-track -b "$br" "$start" ||
   [ "$br" = "$(git rev-parse --abbrev-ref HEAD)" ]
 
   # TODO: check clean WC here
 }
 
-# FIXME: this is brittle; based on chronological listing of revs
-rbenv_tag(){
+rbtag(){
   merged=$1
   main=${2:-HEAD}
+  case $merged in
+  --merged) only='tail' ;;
+  --no-merged) only='head' ;;
+  *) exit 1 ;;
+  esac
 
-  only=$(test "$merged" = --merged && echo tail || echo head)
-
-  trace git for-each-ref 'refs/rbenv-tags/' \
+  trace git for-each-ref $rbtags \
   --format '%(refname)' --sort=refname "$merged" "$main" | $only -1
 }
 
-prepare(){
+next_unmerged_rbtag(){
   {
     upstream=${1:-ruby-build/master}
     main=${2:-HEAD}
@@ -44,8 +47,8 @@ prepare(){
     trace git describe --all --exact-match \
       "$(trace git merge-base "$main" "$upstream")"
 
-    vlast=$(rbenv_tag --merged)
-    vnext=$(rbenv_tag --no-merged)
+    vlast=$(rbtag --merged)
+    vnext=$(rbtag --no-merged)
 
     trace git diff "${vlast:?}"..."${vnext:?}" \
       -- ':!share/' ':!script/*ruby*'
@@ -68,6 +71,4 @@ merge(){
 
 # clean_branch ruby-build-update origin/main
 
-rbenv_tag=$(prepare ruby-build/master)
-
-merge "$rbenv_tag"
+merge "$(next_unmerged_rbtag ruby-build/master)"
