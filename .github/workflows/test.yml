@@ -1,15 +1,21 @@
 name: Test
 on:
   pull_request:
-  push: { branches: main }
+  push: {branches: main}
+  schedule: [{cron: '0 0 10 * *'}] # monthly https://crontab.guru/#0_0_10_*_*
+  workflow_dispatch:
+
+permissions: read-all
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}-latest
-    strategy: { matrix: { os: [ubuntu, macOS] }}
-    steps:
-    - uses: actions/checkout@v4
-    - run: npm cit
+    uses: nodenv/.github/.github/workflows/test.yml@v4
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+      security-events: write
+      statuses: write
 
   lts:
     runs-on: ubuntu-latest
