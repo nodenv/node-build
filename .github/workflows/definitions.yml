@@ -1,0 +1,49 @@
+name: Definitions
+on:
+  schedule: [{cron: '0 */6 * * *'}] # 6hrly https://crontab.guru/#0_*/6_*_*_*
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: npm ci
+    - run: npm run scrape-definitions
+    - run: npm run lint:lts -- --fix
+      continue-on-error: true
+    - run: npm run commit-definitions
+      env:
+        GIT_AUTHOR_NAME: ${{ vars.NODENV_BOT_NAME }}
+        GIT_AUTHOR_EMAIL: ${{ vars.NODENV_BOT_EMAIL }}
+        GIT_COMMITTER_NAME: ${{ vars.GHA_BOT_NAME }}
+        GIT_COMMITTER_EMAIL: ${{ vars.GHA_BOT_EMAIL }}
+    - id: log
+      run: |
+        msg=$(git log --format='- %s' --reverse ${{github.sha}}..)
+        echo "::set-output name=message::${msg//$'\n'/'%0A'}"
+    - uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.BOT_TOKEN }}
+        branch: latest-scraped-definitions
+        title: 'Scraped latest definitions'
+        body: ${{ steps.log.outputs.message }}
+
+  lts:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: npm ci
+    - run: npm run lint:lts -- --fix
+    - if: failure()
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.BOT_TOKEN }}
+        committer: 'nodenv bot <jason.karns+nodenv@github.com>'
+        commit-message: 'Add LTS warning messages'
+        branch: lts-warning-message
+        title: 'Adds/Updates LTS warning messages'
+        body: |-
+          [![node lts schedule](https://raw.githubusercontent.com/nodejs/Release/main/schedule.svg)](https://github.com/nodejs/Release)
+
+          > Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
