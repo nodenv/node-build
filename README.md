@@ -1,6 +1,17 @@
 # node-build
 
-[![Test](https://github.com/nodenv/node-build/workflows/Test/badge.svg)](https://github.com/nodenv/node-build/actions?query=workflow%3ATest)
+[![Tests](
+https://img.shields.io/github/actions/workflow/status/nodenv/node-build/test.yml?label=tests&logo=github)](
+https://github.com/nodenv/node-build/actions/workflows/test.yml)
+[![Latest Homebrew Release](
+https://img.shields.io/homebrew/v/node-build?logo=homebrew&logoColor=white)](
+https://formulae.brew.sh/formula/node-build)
+[![Latest GitHub Release](
+https://img.shields.io/github/v/release/nodenv/node-build?label=github&logo=github&sort=semver)](
+https://github.com/nodenv/node-build/releases/latest)
+[![Latest npm Release](
+https://img.shields.io/npm/v/@nodenv/node-build?logo=npm&logoColor=white)](
+https://www.npmjs.com/package/@nodenv/node-build/v/latest)
 
 node-build is a command-line utility that makes it easy to install virtually any
 version of Node, from source or precompiled binary.
