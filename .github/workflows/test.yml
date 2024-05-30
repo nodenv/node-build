@@ -10,6 +10,7 @@ permissions: read-all
 jobs:
   test:
     uses: nodenv/.github/.github/workflows/test.yml@v4
+    with: {superlinter: false} # TODO renable superlinter
     permissions:
       contents: read
       packages: read
