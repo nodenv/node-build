@@ -73,7 +73,13 @@ merge(){
   git rm -rf script/update-*ruby
 }
 
+# TODO accept --log flag
+# TODO accept --diff flag
+
 fetch_rbtags
 clean_branch
 
-merge "$(next_unmerged_rbtag ruby-build/master)"
+rbtag=${1:-$(next_unmerged_rbtag ruby-build/master)}
+rbtag=$rbtags${rbtag#"$rbtags"} # ensure prefixed
+
+merge "$rbtag"
