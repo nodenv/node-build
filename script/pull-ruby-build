@@ -10,20 +10,24 @@
 
 set -euo pipefail
 
+confirm() { read -rp "Press Enter to continue or Ctrl-C to quit"; }
+fail() { echo "Aborting: ${1-$(cat -)}" >&2; false; }
 trace() { (set -x; "$@"); }
+usage() { sed -ne "/^#/ !q; s/^#$/# /; /^# / { s/^# //; p; }"; }
 
 rbtags='refs/rbtags/'
 ruby_build='https://github.com/rbenv/ruby-build.git'
+branch='pull-ruby-build'
+
+fetch_rbtags() {
+  git fetch --no-tags $ruby_build "refs/tags/*:$rbtags*"
+}
 
 clean_branch() {
-  br=${1:-pull-ruby-build}
-  start=${2:-origin/main}
+  git diff --stat --exit-code HEAD || fail "Unclean working directory"
 
-  git fetch --no-tags $ruby_build "refs/tags/*:$rbtags*"
-  git checkout --no-track -b "$br" "$start" ||
-  [ "$br" = "$(git rev-parse --abbrev-ref HEAD)" ]
-
-  # TODO: check clean WC here
+  [ "$branch" = "$(git rev-parse --abbrev-ref HEAD)" ] ||
+  git checkout --no-track -b "$branch" 'origin/main'
 }
 
 rbtag(){
@@ -69,6 +73,7 @@ merge(){
   git rm -rf script/update-*ruby
 }
 
-# clean_branch ruby-build-update origin/main
+fetch_rbtags
+clean_branch
 
 merge "$(next_unmerged_rbtag ruby-build/master)"
