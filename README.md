@@ -117,29 +117,30 @@ definitions.
 
 The build process may be configured through the following environment variables:
 
-| Variable                 | Function                                                                                           |
-| ------------------------ | -------------------------------------------------------------------------------------------------- |
-| `TMPDIR`                 | Where temporary files are stored.                                                                  |
-| `NODE_BUILD_BUILD_PATH`  | Where sources are downloaded and built. (Default: a timestamped subdirectory of `TMPDIR`)          |
-| `NODE_BUILD_CACHE_PATH`  | Where to cache downloaded package files. (Default: `~/.nodenv/cache` if invoked as nodenv plugin)  |
-| `NODE_BUILD_HTTP_CLIENT` | One of `aria2c`, `curl`, or `wget` to use for downloading. (Default: first one found in PATH)      |
-| `NODE_BUILD_ARIA2_OPTS`  | Additional options to pass to `aria2c` for downloading.                                            |
-| `NODE_BUILD_CURL_OPTS`   | Additional options to pass to `curl` for downloading.                                              |
-| `NODE_BUILD_WGET_OPTS`   | Additional options to pass to `wget` for downloading.                                              |
-| `NODE_BUILD_MIRROR_CMD`  | A command to construct the package mirror URL.                                                     |
-| `NODE_BUILD_MIRROR_URL`  | Custom mirror URL root.                                                                            |
-| `NODE_BUILD_SKIP_MIRROR` | Bypass the download mirror and fetch all package files from their original URLs.                   |
-| `NODE_BUILD_ROOT`        | Custom build definition directory. (Default: `share/node-build`)                                   |
-| `NODE_BUILD_DEFINITIONS` | Additional paths to search for build definitions. (Colon-separated list)                           |
-| `CC`                     | Path to the C compiler.                                                                            |
-| `NODE_CFLAGS`            | Additional `CFLAGS` options (_e.g.,_ to override `-O3`).                                           |
-| `CONFIGURE_OPTS`         | Additional `./configure` options.                                                                  |
-| `MAKE`                   | Custom `make` command (_e.g.,_ `gmake`).                                                           |
-| `MAKE_OPTS` / `MAKEOPTS` | Additional `make` options.                                                                         |
-| `MAKE_INSTALL_OPTS`      | Additional `make install` options.                                                                 |
-| `NODE_CONFIGURE_OPTS`    | Additional `./configure` options (applies only to Node source).                                    |
-| `NODE_MAKE_OPTS`         | Additional `make` options (applies only to Node source).                                           |
-| `NODE_MAKE_INSTALL_OPTS` | Additional `make install` options (applies only to Node source).                                   |
+| Variable                        | Function                                                                                           |
+| ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `TMPDIR`                        | Where temporary files are stored.                                                                  |
+| `NODE_BUILD_BUILD_PATH`         | Where sources are downloaded and built. (Default: a timestamped subdirectory of `TMPDIR`)          |
+| `NODE_BUILD_CACHE_PATH`         | Where to cache downloaded package files. (Default: `~/.nodenv/cache` if invoked as nodenv plugin)  |
+| `NODE_BUILD_HTTP_CLIENT`        | One of `aria2c`, `curl`, or `wget` to use for downloading. (Default: first one found in PATH)      |
+| `NODE_BUILD_ARIA2_OPTS`         | Additional options to pass to `aria2c` for downloading.                                            |
+| `NODE_BUILD_CURL_OPTS`          | Additional options to pass to `curl` for downloading.                                              |
+| `NODE_BUILD_WGET_OPTS`          | Additional options to pass to `wget` for downloading.                                              |
+| `NODE_BUILD_MIRROR_CMD`         | A command to construct the package mirror URL.                                                     |
+| `NODE_BUILD_MIRROR_URL`         | Custom mirror URL root.                                                                            |
+| `NODE_BUILD_MIRROR_PACKAGE_URL` | Custom complete mirror URL (e.g. http://mirror.example.com/package-1.0.0.tar.gz).                  |
+| `NODE_BUILD_SKIP_MIRROR`        | Bypass the download mirror and fetch all package files from their original URLs.                   |
+| `NODE_BUILD_ROOT`               | Custom build definition directory. (Default: `share/node-build`)                                   |
+| `NODE_BUILD_DEFINITIONS`        | Additional paths to search for build definitions. (Colon-separated list)                           |
+| `CC`                            | Path to the C compiler.                                                                            |
+| `NODE_CFLAGS`                   | Additional `CFLAGS` options (_e.g.,_ to override `-O3`).                                           |
+| `CONFIGURE_OPTS`                | Additional `./configure` options.                                                                  |
+| `MAKE`                          | Custom `make` command (_e.g.,_ `gmake`).                                                           |
+| `MAKE_OPTS` / `MAKEOPTS`        | Additional `make` options.                                                                         |
+| `MAKE_INSTALL_OPTS`             | Additional `make install` options.                                                                 |
+| `NODE_CONFIGURE_OPTS`           | Additional `./configure` options (applies only to Node source).                                    |
+| `NODE_MAKE_OPTS`                | Additional `make` options (applies only to Node source).                                           |
+| `NODE_MAKE_INSTALL_OPTS`        | Additional `make install` options (applies only to Node source).                                   |
 
 #### Applying Patches
 
@@ -191,6 +192,10 @@ It will fall back to downloading the package from the original location if:
 - `NODE_BUILD_SKIP_MIRROR` is enabled.
 
 You may specify a custom mirror by setting `NODE_BUILD_MIRROR_URL`.
+
+If a mirror site doesn't conform to the above URL format, you can specify the
+complete URL by setting `NODE_BUILD_MIRROR_PACKAGE_URL`. It behaves the same as
+`NODE_BUILD_MIRROR_URL` except being a complete URL.
 
 #### Keeping the build directory after installation
 

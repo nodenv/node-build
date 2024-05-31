@@ -22,6 +22,7 @@ OLDIFS="$IFS"
 set -E
 exec 3<&2 # preserve original stderr at fd 3
 
+
 lib() {
   parse_options() {
     OPTIONS=()
@@ -213,7 +214,11 @@ mirror() {
   local package_url="$1"
   local checksum="$2"
 
-  echo "${package_url/https:\/\/nodejs.org\/dist/$NODE_BUILD_MIRROR_URL}"
+  if [ -n "$NODE_BUILD_MIRROR_URL" ]; then
+    echo "${package_url/https:\/\/nodejs.org\/dist/$NODE_BUILD_MIRROR_URL}"
+  elif [ -n "$NODE_BUILD_MIRROR_PACKAGE_URL" ]; then
+    echo "$NODE_BUILD_MIRROR_PACKAGE_URL"
+  fi
 }
 
 try_binary(){
@@ -1011,7 +1016,7 @@ WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
 NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
 
 if ! has_checksum_support compute_sha2 ||
-  { [ -z "$NODE_BUILD_MIRROR_URL" ] && [ -z "$NODE_BUILD_MIRROR_CMD" ]; } then
+  [ -z "$NODE_BUILD_MIRROR_URL" -a -z "$NODE_BUILD_MIRROR_CMD" -a -z "$NODE_BUILD_MIRROR_PACKAGE_URL" ]; then
   NODE_BUILD_SKIP_MIRROR=true
 fi
 

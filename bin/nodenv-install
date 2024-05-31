@@ -89,7 +89,7 @@ for option in "${OPTIONS[@]}"; do
     {
       echo
       echo "Only latest stable releases for each Node implementation are shown."
-      echo "Use 'nodenv install --list-all' to show all local versions."
+      echo "Use 'nodenv install --list-all / -L' to show all local versions."
     } 1>&2
     exit
     ;;
