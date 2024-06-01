@@ -170,21 +170,17 @@ definition. All definitions bundled with node-build include checksums.
 
 #### Package Mirrors
 
-By default, node-build downloads package files from the official URL specified in the definition file.
+To speed up downloads, node-build can fetch package files from a mirror.
+To benefit from this, the packages must specify their checksum:
 
 ```sh
  # example:
  install_package "node-v12.0.0" "https://nodejs.org/dist/v12.0.0/node-v12.0.0.tar.gz#<SHA2>"
 ```
 
-node-build will attempt to construct a mirror url by invoking `NODE_BUILD_MIRROR_CMD` with two arguments: `package_url` and `checksum`.
-The provided command should print the desired mirror's complete package URL.
-If `NODE_BUILD_MIRROR_CMD` is unset, package mirror URL construction defaults to replacing `https://nodejs.org/dist` with `NODE_BUILD_MIRROR_URL`.
-
 node-build will first try to fetch this package from `$NODE_BUILD_MIRROR_URL/<SHA2>`
-(note: this is the complete URL), where `<SHA2>` is the checksum for the file.
-
-It will fall back to downloading the package from the original location if:
+(note: this is the complete URL), where `<SHA2>` is the checksum for the file. It
+will fall back to downloading the package from the original location if:
 - the package was not found on the mirror;
 - the mirror is down;
 - the download is corrupt, i.e. the file's checksum doesn't match;
@@ -196,6 +192,11 @@ You may specify a custom mirror by setting `NODE_BUILD_MIRROR_URL`.
 If a mirror site doesn't conform to the above URL format, you can specify the
 complete URL by setting `NODE_BUILD_MIRROR_PACKAGE_URL`. It behaves the same as
 `NODE_BUILD_MIRROR_URL` except being a complete URL.
+
+For more control over the construction of the mirror url, you can specify a command
+by setting `NODE_BUILD_MIRROR_CMD`. node-build will invoke `NODE_BUILD_MIRROR_CMD`
+with two arguments: `package_url` and `checksum`. The provided command should
+print the desired mirror's complete package URL to `STDOUT`.
 
 #### Keeping the build directory after installation
 
