@@ -5,4 +5,4 @@ on:
 
 jobs:
   sync:
-    uses: nodenv/.github/.github/workflows/sync-main-master.yml@v2
+    uses: nodenv/.github/.github/workflows/sync-main-master.yml@v4
