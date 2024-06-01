@@ -1,0 +1,19 @@
+name: Sync Default Branch
+on:
+  push: { branches: main }
+  workflow_dispatch:
+
+permissions: { contents: write }
+
+jobs:
+  sync:
+    uses: nodenv/.github/.github/workflows/sync-default-branch.yml@v4
+
+# One-time commands for users to switch-over:
+#
+# ```console
+# git branch -m master main
+# git fetch origin
+# git branch -u origin/main main
+# git remote set-head origin -a
+# ```
