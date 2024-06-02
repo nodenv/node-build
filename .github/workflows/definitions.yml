@@ -9,6 +9,11 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
     - run: npm ci
     - run: npm run scrape-definitions
@@ -34,6 +39,11 @@ jobs:
   lts:
     runs-on: ubuntu-latest
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
     - run: npm ci
     - run: npm run lint:lts -- --fix

@@ -23,6 +23,11 @@ jobs:
     permissions: {contents: read, security-events: write}
     runs-on: ubuntu-latest
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
       with: {fetch-depth: 0}
     - uses: redhat-plumbers-in-action/differential-shellcheck@v5
@@ -33,6 +38,11 @@ jobs:
   lts:
     runs-on: ubuntu-latest
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
     - run: npm ci
     - run: npm run lint:lts
@@ -41,6 +51,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # FIXME workaround https://github.com/actions/checkout/issues/910
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2
+      with:
+        egress-policy: audit
+
     - uses: actions/checkout@v4
       with: { fetch-depth: 0 }
     - run: npm ci
