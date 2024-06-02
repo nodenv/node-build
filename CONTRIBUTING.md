@@ -1,3 +1,8 @@
+## Adding a new Node version
+
+> TODO
+> Use one of the scripts `script/update-*` to add a new Node version.
+
 ## Git configuration for fetching rbenv upstream
 
 In order to continually pull changes from rbenv/ruby-build into node-build, it is necessary to add rbenv/ruby-build as a git remote.
@@ -37,4 +42,3 @@ To reference ruby-build's tags, use the fully qualified refspec: `refs/rbtags/vY
     git show refs/rbtags/v20200224
     git checkout refs/rbtags/v20200224
     git merge refs/rbtags/v20200224
-
