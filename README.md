@@ -68,18 +68,6 @@ tar -xzf node-build-*.tar.gz
 PREFIX=/usr/local ./node-build-*/install.sh
 ```
 
-#### Updating available build versions
-
-To grab the latest versions from nodejs.org and generate definition files for
-node-build to use, check out the [node-build-update-defs][] plugin.
-Once installed:
-
-``` shell
-nodenv update-version-defs
-```
-
-No need to wait for node-build to provide the latest definitions!
-
 ## Usage
 
 ### Basic Usage
@@ -120,6 +108,17 @@ instead of compiling from source. To force compilation, pass the `-c` or
 To install a version of Node that is not recognized by node-build, you can specify the path to a custom build definition file in place of a Node version number.
 
 Check out [default build definitions][definitions] as examples on how to write definition files.
+
+##### Generating Latest-Release Build Definitions
+
+Additionally, check out the [node-build-update-defs][] plugin.
+It generates the standard build definitions for releases available from nodejs.org.
+This allows you to install node versions as soon as they are available from nodejs.org,
+without waiting for node-build itself to provide them. Once installed:
+
+``` shell
+nodenv update-version-defs
+```
 
 #### Custom Build Configuration
 
