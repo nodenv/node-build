@@ -3,6 +3,10 @@
 > TODO
 > Use one of the scripts `script/update-*` to add a new Node version.
 
+## Updating OpenSSL
+
+Use `script/update-openssl`.
+
 ## Git configuration for fetching rbenv upstream
 
 In order to continually pull changes from rbenv/ruby-build into node-build, it is necessary to add rbenv/ruby-build as a git remote.

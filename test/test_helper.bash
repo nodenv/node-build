@@ -3,6 +3,7 @@
 BATS_TMPDIR="$BATS_TEST_DIRNAME/tmp"
 export NODE_BUILD_CURL_OPTS=
 export NODE_BUILD_HTTP_CLIENT="curl"
+export NODE_BUILD_TESTING=true
 
 load ../node_modules/bats-support/load
 load ../node_modules/bats-assert/load
