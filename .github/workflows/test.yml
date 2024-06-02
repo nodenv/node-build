@@ -18,6 +18,18 @@ jobs:
       security-events: write
       statuses: write
 
+  # https://github.com/redhat-plumbers-in-action/differential-shellcheck
+  shellcheck:
+    permissions: {contents: read, security-events: write}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with: {fetch-depth: 0}
+    - uses: redhat-plumbers-in-action/differential-shellcheck@v5
+      with:
+        severity: warning
+        token: ${{ secrets.GITHUB_TOKEN }}
+
   lts:
     runs-on: ubuntu-latest
     steps:
