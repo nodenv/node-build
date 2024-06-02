@@ -732,11 +732,6 @@ build_package_autoconf() {
   } >&4 2>&1
 }
 
-clean_prefix_path() {
-  # Make sure there are no leftover files in $PREFIX_PATH
-  rm -rf "$PREFIX_PATH"
-}
-
 build_package_copy_to() {
   to="$1"
   mkdir -p "$to"
@@ -744,7 +739,6 @@ build_package_copy_to() {
 }
 
 build_package_copy() {
-  clean_prefix_path
   build_package_copy_to "$PREFIX_PATH"
 }
 
