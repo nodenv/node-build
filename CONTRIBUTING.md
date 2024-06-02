@@ -14,9 +14,9 @@ The configuration assumes node-build's remote is `origin`, and ruby-build's remo
 
    **Beware:** the `--tags` option to `fetch` et. al. will override this setting.
 
-2. Fetch ruby-build's tags to their own refspec namespace (`rbenv-tags`, in this case):
+2. Fetch ruby-build's tags to their own refspec namespace (`rbtags`, in this case):
 
-        git config --add remote.ruby-build.fetch '+refs/tags/*:refs/rbenv-tags/*'
+        git config --add remote.ruby-build.fetch '+refs/tags/*:refs/rbtags/*'
 
 
 Resulting snippet in `.git/config`:
@@ -28,13 +28,13 @@ Resulting snippet in `.git/config`:
 [remote "ruby-build"]
 	url = git@github.com:rbenv/ruby-build.git
 	fetch = +refs/heads/*:refs/remotes/ruby-build/*
-	fetch = +refs/tags/*:refs/rbenv-tags/*
+	fetch = +refs/tags/*:refs/rbtags/*
 	tagopt = --no-tags
 ```
 
-To reference ruby-build's tags, use the fully qualified refspec: `refs/rbenv-tags/vYYYYMMDD`
+To reference ruby-build's tags, use the fully qualified refspec: `refs/rbtags/vYYYYMMDD`
 
-    git show refs/rbenv-tags/v20200224
-    git checkout refs/rbenv-tags/v20200224
-    git merge refs/rbenv-tags/v20200224
+    git show refs/rbtags/v20200224
+    git checkout refs/rbtags/v20200224
+    git merge refs/rbtags/v20200224
 
