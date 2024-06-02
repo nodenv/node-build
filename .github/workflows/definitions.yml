@@ -9,10 +9,7 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@v2
-      with:
-        egress-policy: audit
+    - uses: step-security/harden-runner@v2
 
     - uses: actions/checkout@v4
     - run: npm ci
