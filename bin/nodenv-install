@@ -64,6 +64,23 @@ definitions() {
   node-build --definitions | $(type -p ggrep grep | head -1) -F "$query" || true
 }
 
+suggest_selecting_global() {
+  local version_file
+  version_file="$(nodenv-version-file)"
+  [[ "$version_file" != "$NODENV_ROOT"/version || -e "$version_file" ]] && return 0
+  echo
+  colorize 1 "NOTE:"
+  echo -n " to activate this Node version as the new default, run: "
+  colorize 33 "nodenv global $VERSION_NAME"
+  echo
+}
+
+colorize() {
+  if [ -t 1 ]; then printf "\e[%sm%s\e[m" "$1" "$2"
+  else printf "%s" "$2"
+  fi
+}
+
 indent() {
   sed 's/^/  /'
 }
@@ -86,7 +103,7 @@ for option in "${OPTIONS[@]}"; do
     ;;
   "l" | "list" )
     node-build --list
-    {
+    [ -t 1 ] && {
       echo
       echo "Only latest stable releases for each Node implementation are shown."
       echo "Use 'nodenv install --list-all / -L' to show all local versions."
@@ -243,6 +260,7 @@ for hook in "${after_hooks[@]}"; do eval "$hook"; done
 # Run `nodenv-rehash` after a successful installation.
 if [ "$STATUS" == "0" ]; then
   nodenv-rehash
+  suggest_selecting_global
 else
   cleanup
 fi

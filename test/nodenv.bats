@@ -6,6 +6,9 @@ export NODENV_ROOT="${BATS_TMPDIR}/nodenv"
 setup() {
   stub nodenv-hooks 'install : true'
   stub nodenv-rehash 'true'
+  stub nodenv-version-file 'echo $NODENV_ROOT/version'
+  mkdir -p "$NODENV_ROOT"
+  echo "system" > "$NODENV_ROOT/version"
 }
 
 stub_node_build() {
@@ -22,6 +25,20 @@ stub_node_build() {
   unstub node-build
   unstub nodenv-hooks
   unstub nodenv-rehash
+}
+
+@test "suggest running nodenv global after install" {
+  rm -rf "$NODENV_ROOT/version"
+  stub_node_build 'echo node-build "$@"'
+
+  run nodenv-install 4.1.2
+  assert_success <<OUT
+node-build 4.1.2 ${NODENV_ROOT}/versions/4.1.2
+
+NOTE: to activate this Node version as the new default, run: nodenv global 4.1.2
+OUT
+
+  unstub node-build
 }
 
 @test "install nodenv local version by default" {

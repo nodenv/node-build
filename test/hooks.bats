@@ -15,6 +15,7 @@ after_install 'echo after: \$STATUS'
 OUT
   stub nodenv-hooks "install : echo '$HOOK_PATH'/install.bash"
   stub nodenv-rehash "echo rehashed"
+  stub nodenv-version-file "echo .node-version"
 
   definition="${BATS_TMPDIR}/4.0.0"
   cat > "$definition" <<<"echo node-build"

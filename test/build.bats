@@ -125,6 +125,9 @@ PATCH
   unstub make
   unstub patch
 
+# yaml-0.1.6: --prefix=$INSTALL_ROOT
+# make -j 2
+# make install
   assert_build_log <<OUT
 patch -p1 --force -i $BATS_TMPDIR/node-patch.XXX
 node-v4.0.0: --prefix=$INSTALL_ROOT
@@ -133,10 +136,80 @@ make install
 OUT
 }
 
+@test "gmp is linked from Homebrew" {
+  cached_tarball "node-v4.0.0"
+
+  gmp_libdir="$BATS_TMPDIR/homebrew-gmp"
+  mkdir -p "$gmp_libdir"
+
+  stub brew false "--prefix gmp : echo '$gmp_libdir'"
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub brew
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: --prefix=$INSTALL_ROOT --with-gmp-dir=$gmp_libdir
+make -j 2
+make install
+OUT
+}
+
+@test "readline is linked from Homebrew" {
+  cached_tarball "node-v4.0.0"
+
+  readline_libdir="$BATS_TMPDIR/homebrew-readline"
+  mkdir -p "$readline_libdir"
+
+  stub brew "--prefix readline : echo '$readline_libdir'" false
+  stub_make_install
+
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub brew
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=$readline_libdir
+make -j 2
+make install
+OUT
+}
+
+@test "readline is not linked from Homebrew when explicitly defined" {
+  cached_tarball "node-v4.0.0"
+
+  stub brew false
+  stub_make_install
+
+  export NODE_CONFIGURE_OPTS='--with-readline-dir=/custom'
+  run_inline_definition <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+  assert_success
+
+  unstub brew
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: --prefix=$INSTALL_ROOT --with-readline-dir=/custom
+make -j 2
+make install
+OUT
+}
+
 @test "number of CPU cores defaults to 2" {
   cached_tarball "node-v4.0.0"
 
-  stub uname '-s : echo Darwin'
+  stub uname '-s : echo Darwin' false
   stub sysctl false
   stub_make_install
 
@@ -159,7 +232,7 @@ OUT
 @test "number of CPU cores is detected on Mac" {
   cached_tarball "node-v4.0.0"
 
-  stub uname '-s : echo Darwin'
+  stub uname '-s : echo Darwin' false
   stub sysctl '-n hw.ncpu : echo 4'
   stub_make_install
 
@@ -183,7 +256,7 @@ OUT
 @test "number of CPU cores is detected on FreeBSD" {
   cached_tarball "node-v4.0.0"
 
-  stub uname '-s : echo FreeBSD'
+  stub uname '-s : echo FreeBSD' false
   stub sysctl '-n hw.ncpu : echo 1'
   stub_make_install
 
@@ -256,7 +329,7 @@ OUT
 @test "make on FreeBSD defaults to gmake" {
   cached_tarball "node-v4.0.0"
 
-  stub uname "-s : echo FreeBSD"
+  stub uname "-s : echo FreeBSD" false
   MAKE=gmake stub_make_install
 
   MAKE= install_fixture definitions/vanilla-node
