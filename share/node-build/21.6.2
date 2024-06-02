@@ -1,7 +1,6 @@
 before_install_package() {
-  build_package_warn_lts_maintenance "$1"
+  build_package_warn_eol "$1"
 }
-
 
 binary aix-ppc64 "https://nodejs.org/dist/v21.6.2/node-v21.6.2-aix-ppc64.tar.gz#e06dff53a5e2a88caff9735c076165a6a53f4c45960a8887410684e1fea6c7cb"
 binary darwin-arm64 "https://nodejs.org/dist/v21.6.2/node-v21.6.2-darwin-arm64.tar.gz#120c8205654c640865864dc464389b3ffe6d7ebe310dffdbe3fd8718a512e14f"
