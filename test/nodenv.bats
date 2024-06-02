@@ -32,7 +32,8 @@ stub_node_build() {
   stub_node_build 'echo node-build "$@"'
 
   run nodenv-install 4.1.2
-  assert_success <<OUT
+  assert_success
+  assert_output <<OUT
 node-build 4.1.2 ${NODENV_ROOT}/versions/4.1.2
 
 NOTE: to activate this Node version as the new default, run: nodenv global 4.1.2
@@ -51,6 +52,16 @@ OUT
 
   unstub node-build
   unstub nodenv-local
+}
+
+@test "list latest versions" {
+  stub_node_build "--list : echo 4.1.2"
+
+  run nodenv-install --list
+  assert_success
+  assert_output "4.1.2"
+
+  unstub node-build
 }
 
 @test "list available versions" {
