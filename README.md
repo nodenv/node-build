@@ -13,11 +13,9 @@ https://github.com/nodenv/node-build/releases/latest)
 https://img.shields.io/npm/v/@nodenv/node-build?logo=npm&logoColor=white)](
 https://www.npmjs.com/package/@nodenv/node-build/v/latest)
 
-node-build is a command-line utility that makes it easy to install virtually any
-version of Node, from source or precompiled binary.
+node-build is a command-line tool that simplifies installation of any Node version from source or precompiled binary on Unix-like systems.
 
-It is available as a plugin for [nodenv][] that
-provides the `nodenv install` command, or as a standalone program.
+It is available as a plugin for [nodenv][] as the `nodenv install` command, or as a standalone program as the `node-build` command.
 
 <!-- toc -->
 
@@ -42,40 +40,33 @@ provides the `nodenv install` command, or as a standalone program.
 
 ## Installation
 
+### Homebrew package manager
 ```sh
-# Using Homebrew on macOS
-$ brew install node-build
-
-# As a nodenv plugin
-$ mkdir -p "$(nodenv root)"/plugins
-$ git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
-
-# As a standalone program
-$ git clone https://github.com/nodenv/node-build.git
-$ PREFIX=/usr/local ./node-build/install.sh
+brew install node-build
 ```
 
-### Upgrading
-
+Upgrade with:
 ```sh
-# Via Homebrew
-$ brew update && brew upgrade node-build
-
-# As a nodenv plugin
-$ git -C "$(nodenv root)"/plugins/node-build pull
+brew update && brew upgrade node-build
 ```
 
-#### Updating available build versions
-
-To grab the latest versions from nodejs.org and generate definition files for
-node-build to use, check out the [node-build-update-defs][] plugin.
-Once installed:
-
-``` shell
-nodenv update-version-defs
+### Clone as nodenv plugin using git
+```sh
+git clone https://github.com/nodenv/node-build.git "$(nodenv root)"/plugins/node-build
 ```
 
-No need to wait for node-build to provide the latest definitions!
+Upgrade with:
+```sh
+git -C "$(nodenv root)"/plugins/node-build pull
+```
+
+### Install manually as a standalone program
+
+First, download a tarball from https://github.com/nodenv/node-build/releases/latest. Then:
+```sh
+tar -xzf node-build-*.tar.gz
+PREFIX=/usr/local ./node-build-*/install.sh
+```
 
 ## Usage
 
@@ -91,9 +82,17 @@ $ node-build --definitions                 # lists all available versions of Nod
 $ node-build 10.13.0 ~/local/node-10.13.0  # installs Node 10.13.0 to ~/local/node-10.13.0
 ```
 
-node-build does not check for system dependencies before downloading and
-attempting to compile the Node source. Please ensure that [all requisite
-libraries][build-env] are available on your system.
+> **Warning**
+> node-build mostly does not verify that system dependencies are present before downloading and attempting to compile Node from source. Please ensure that [all requisite libraries][build-env] such as build tools and development headers are already present on your system.
+
+Firstly, if a precompiled binary exists for your platform, node-build downloads and installs it.
+Otherwise it will build node from source.
+Basically, what node-build does when installing a Node version is this:
+- Downloads an official tarball of Node source code;
+- Extracts the archive into a temporary directory on your system;
+- Executes `./configure --prefix=/path/to/destination` in the source code;
+- Runs `make install` to compile Node;
+- Verifies that the installed Node is functional.
 
 ### Advanced Usage
 
@@ -106,12 +105,20 @@ instead of compiling from source. To force compilation, pass the `-c` or
 
 #### Custom Build Definitions
 
-If you wish to develop and install a version of Node that is not yet supported
-by node-build, you may specify the path to a custom “build definition file” in
-place of a Node version number.
+To install a version of Node that is not recognized by node-build, you can specify the path to a custom build definition file in place of a Node version number.
 
-Use the [default build definitions][definitions] as a template for your custom
-definitions.
+Check out [default build definitions][definitions] as examples on how to write definition files.
+
+##### Generating Latest-Release Build Definitions
+
+Additionally, check out the [node-build-update-defs][] plugin.
+It generates the standard build definitions for releases available from nodejs.org.
+This allows you to install node versions as soon as they are available from nodejs.org,
+without waiting for node-build itself to provide them. Once installed:
+
+``` shell
+nodenv update-version-defs
+```
 
 #### Custom Build Configuration
 
@@ -144,9 +151,7 @@ The build process may be configured through the following environment variables:
 
 #### Applying Patches
 
-Both `nodenv install` and `node-build` support the `--patch` (`-p`) flag to apply
-a patch to the Node (/iojs/chakracore) source code before building.
-Patches are read from `STDIN`:
+Both `nodenv install` and `node-build` commands support the `-p/--patch` flag to apply a patch to the Node source code before building. Patches are read from standard input:
 
 ```sh
 # applying a single patch
@@ -161,12 +166,9 @@ $ cat fix1.patch fix2.patch | nodenv install --patch 11.1.0
 
 #### Checksum Verification
 
-If you have the `shasum`, `openssl`, or `sha256sum` tool installed, node-build will
-automatically verify the SHA2 checksum of each downloaded package before
-installing it.
+All Node definition files bundled with node-build include checksums for packages, meaning that all externally downloaded packages are automatically checked for integrity after fetching.
 
-Checksums are optional and specified as anchors on the package URL in each
-definition. All definitions bundled with node-build include checksums.
+See the next section for more information on how to author checksums.
 
 #### Package Mirrors
 
@@ -232,13 +234,13 @@ Be sure to include the full build log for build failures.
 Forked from [Sam Stephenson][]'s [ruby-build][] by [Will McKenzie][]
 and modified for node.
 
-[nodenv]: https://github.com/nodenv/nodenv
-[ruby-build]: https://github.com/rbenv/ruby-build
-[definitions]: https://github.com/nodenv/node-build/tree/main/share/node-build
-[wiki]: https://github.com/nodenv/node-build/wiki
-[ruby-build wiki]: https://github.com/rbenv/ruby-build/wiki
-[build-env]: https://github.com/nodenv/node-build/wiki#suggested-build-environment
-[issue tracker]: https://github.com/nodenv/node-build/issues
-[node-build-update-defs]: https://github.com/nodenv/node-build-update-defs
-[Sam Stephenson]: https://github.com/sstephenson
-[Will McKenzie]: https://github.com/oinutter
+  [nodenv]: https://github.com/nodenv/nodenv#readme
+  [definitions]: https://github.com/nodenv/node-build/tree/main/share/node-build
+  [wiki]: https://github.com/nodenv/node-build/wiki
+  [build-env]: https://github.com/nodenv/node-build/wiki#suggested-build-environment
+  [issue tracker]: https://github.com/nodenv/node-build/issues
+  [node-build-update-defs]: https://github.com/nodenv/node-build-update-defs
+  [Sam Stephenson]: https://github.com/sstephenson
+  [Will McKenzie]: https://github.com/oinutter
+  [ruby-build]: https://github.com/rbenv/ruby-build
+  [ruby-build wiki]: https://github.com/rbenv/ruby-build/wiki

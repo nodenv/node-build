@@ -11,7 +11,7 @@ export -n NODE_CONFIGURE_OPTS
   mkdir -p "$INSTALL_ROOT"
   cd "$INSTALL_ROOT"
 
-  stub uname '-s : echo Darwin'
+  stub uname '-s : echo Darwin' '-s : echo Darwin'
   stub sw_vers '-productVersion : echo 10.10'
   stub cc 'false'
   stub brew 'false'
