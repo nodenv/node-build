@@ -696,11 +696,6 @@ build_package_standard_build() {
   local PACKAGE_MAKE_OPTS_ARRAY="${package_var_name}_MAKE_OPTS_ARRAY[@]"
   local PACKAGE_CFLAGS="${package_var_name}_CFLAGS"
 
-  if [ "$package_var_name" = "NODE" ]; then
-      use_homebrew_readline || use_freebsd_pkg || true
-      use_homebrew_gmp || true
-  fi
-
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
       export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
     fi
@@ -789,66 +784,6 @@ before_install_package() {
 
 after_install_package() {
   :
-}
-
-use_homebrew_gmp() {
-  local libdir="$(brew --prefix gmp 2>/dev/null || true)"
-  if [ -d "$libdir" ]; then
-    echo "node-build: using gmp from homebrew"
-    package_option node configure --with-gmp-dir="$libdir"
-  else
-    return 1
-  fi
-}
-
-use_freebsd_pkg() {
-  # check if FreeBSD
-  if [ "FreeBSD" = "$(uname -s)" ]; then
-    # use openssl if installed from Ports Collection
-    if [ -f /usr/local/include/openssl/ssl.h ]; then
-      package_option node configure --with-openssl-dir="/usr/local"
-    fi
-
-    # check if 11-R or later
-    release="$(uname -r)"
-    if [ "${release%%.*}" -ge 11 ]; then
-      # prefers readline to compile most of node versions
-      if pkg info -e readline > /dev/null; then
-        # use readline from Ports Collection
-        package_option node configure --with-readline-dir="/usr/local"
-      elif pkg info -e libedit > /dev/null; then
-        # use libedit from Ports Collection
-        package_option node configure --enable-libedit
-        package_option node configure --with-libedit-dir="/usr/local"
-      fi
-    fi
-  fi
-}
-
-use_homebrew_readline() {
-  if [[ "$NODE_CONFIGURE_OPTS" != *--with-readline-dir=* ]]; then
-    local libdir
-    libdir="$(brew --prefix readline 2>/dev/null || true)"
-    if [ -d "$libdir" ]; then
-      echo "node-build: using readline from homebrew"
-      package_option node configure --with-readline-dir="$libdir"
-    else
-      return 1
-    fi
-  fi
-}
-
-system_openssl_version() {
-  local version_text
-  version_text=$(printf '#include <openssl/opensslv.h>\nOPENSSL_VERSION_TEXT\n' | cc -xc -E - 2>/dev/null)
-  if [[ $version_text == *"OpenSSL "* ]]; then
-    local version=${version_text#*OpenSSL }
-    version=${version%% *}
-    echo $version | sed 's/[^0-9]//g' | sed 's/^0*//'
-  else
-    echo "No system openssl version was found, ensure openssl headers are installed (https://github.com/nodenv/node-build/wiki#suggested-build-environment)" >&2
-    echo 000
-  fi
 }
 
 fix_jxcore_directory_structure() {

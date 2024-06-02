@@ -97,14 +97,14 @@ $ node-build 10.13.0 ~/local/node-10.13.0  # installs Node 10.13.0 to ~/local/no
 > **Warning**
 > node-build mostly does not verify that system dependencies are present before downloading and attempting to compile Node from source. Please ensure that [all requisite libraries][build-env] such as build tools and development headers are already present on your system.
 
+Firstly, if a precompiled binary exists for your platform, node-build downloads and installs it.
+Otherwise it will build node from source.
 Basically, what node-build does when installing a Node version is this:
 - Downloads an official tarball of Node source code;
 - Extracts the archive into a temporary directory on your system;
 - Executes `./configure --prefix=/path/to/destination` in the source code;
 - Runs `make install` to compile Node;
 - Verifies that the installed Node is functional.
-
-Depending on the context, node-build does a little bit more than the above: for example, it will try to link Node to the appropriate OpenSSL version, even if that means downloading and compiling OpenSSL itself; it will discover and link to Homebrew-installed instances of some libraries like libyaml and readline, etc.
 
 ### Advanced Usage
 
