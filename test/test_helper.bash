@@ -41,6 +41,14 @@ teardown() {
   rm -fr "${BATS_TMPDIR:?}"/*
 }
 
+stub_repeated() {
+  local program="$1"
+  # shellcheck disable=SC2155
+  local prefix="$(echo "$program" | tr a-z- A-Z_)"
+  export "${prefix}_STUB_NOINDEX"=1
+  stub "$@"
+}
+
 run_inline_definition() {
   local definition="${BATS_TMPDIR}/build-definition"
   cat > "$definition"

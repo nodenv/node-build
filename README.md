@@ -47,7 +47,7 @@ brew install node-build
 
 Upgrade with:
 ```sh
-brew update && brew upgrade node-build
+brew upgrade node-build
 ```
 
 ### Clone as nodenv plugin using git

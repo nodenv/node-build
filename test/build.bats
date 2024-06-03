@@ -60,7 +60,8 @@ assert_build_log() {
 @test "apply node patch before building" {
   cached_tarball "node-v4.0.0"
 
-  stub brew false
+  stub_repeated uname '-s : echo Linux'
+  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -71,6 +72,8 @@ diff -pU3 align.c align.c
 PATCH
   assert_success
 
+  unstub uname
+  unstub brew
   unstub make
   unstub patch
 
@@ -85,7 +88,8 @@ OUT
 @test "striplevel node patch before building" {
   cached_tarball "node-v4.0.0"
 
-  stub brew false
+  stub_repeated uname '-s : echo Linux'
+  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -96,6 +100,8 @@ diff -pU3 a/configure b/configure
 PATCH
   assert_success
 
+  unstub uname
+  unstub brew
   unstub make
   unstub patch
 
@@ -110,7 +116,8 @@ OUT
 @test "apply node patch from git diff before building" {
   cached_tarball "node-v4.0.0"
 
-  stub brew false
+  stub_repeated uname '-s : echo Linux'
+  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -122,6 +129,8 @@ index 4760c31..66a237a 100755
 PATCH
   assert_success
 
+  unstub uname
+  unstub brew
   unstub make
   unstub patch
 
@@ -136,7 +145,7 @@ OUT
 @test "number of CPU cores defaults to 2" {
   cached_tarball "node-v4.0.0"
 
-  stub uname '-s : echo Darwin'
+  stub_repeated uname '-s : echo Darwin'
   stub sysctl false
   stub_make_install
 
@@ -159,7 +168,7 @@ OUT
 @test "number of CPU cores is detected on Mac" {
   cached_tarball "node-v4.0.0"
 
-  stub uname '-s : echo Darwin'
+  stub_repeated uname '-s : echo Darwin'
   stub sysctl '-n hw.ncpu : echo 4'
   stub_make_install
 
@@ -183,7 +192,7 @@ OUT
 @test "number of CPU cores is detected on FreeBSD" {
   cached_tarball "node-v4.0.0"
 
-  stub uname '-s : echo FreeBSD'
+  stub_repeated uname '-s : echo FreeBSD'
   stub sysctl '-n hw.ncpu : echo 1'
   stub_make_install
 
@@ -207,6 +216,7 @@ OUT
 @test "setting NODE_MAKE_INSTALL_OPTS to a multi-word string" {
   cached_tarball "node-v4.0.0"
 
+  stub_repeated uname '-s : echo Linux'
   stub_make_install
 
   export NODE_MAKE_INSTALL_OPTS="DOGE=\"such wow\""
@@ -227,6 +237,7 @@ OUT
 @test "setting MAKE_INSTALL_OPTS to a multi-word string" {
   cached_tarball "node-v4.0.0"
 
+  stub_repeated uname '-s : echo Linux'
   stub_make_install
 
   export MAKE_INSTALL_OPTS="DOGE=\"such wow\""
@@ -256,7 +267,7 @@ OUT
 @test "make on FreeBSD defaults to gmake" {
   cached_tarball "node-v4.0.0"
 
-  stub uname "-s : echo FreeBSD"
+  stub_repeated uname "-s : echo FreeBSD"
   MAKE=gmake stub_make_install
 
   MAKE= install_fixture definitions/vanilla-node
@@ -275,6 +286,7 @@ apply -p1 -i /my/patch.diff
 exec ./configure "\$@"
 CONF
 
+  stub_repeated uname '-s : echo Linux'
   stub apply 'echo apply "$@" >> build.log'
   stub_make_install
 
