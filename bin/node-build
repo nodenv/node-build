@@ -109,6 +109,15 @@ is_mac() {
   [ $# -eq 0 ] || test "$(osx_version)" "$@"
 }
 
+is_freebsd() {
+  [ "$(uname -s)" = "FreeBSD" ]
+}
+
+freebsd_package_prefix() {
+  local package="$1"
+  pkg info --prefix "$package" 2>/dev/null | cut -wf2
+}
+
 #  9.1  -> 901
 # 10.9  -> 1009
 # 10.10 -> 1010
@@ -972,7 +981,7 @@ if [ -n "$noexec" ]; then
 fi
 
 if [ -z "$MAKE" ]; then
-  if [ "FreeBSD" = "$(uname -s)" ]; then
+  if is_freebsd; then
     # node needs gmake on FreeBSD : https://github.com/nodejs/node/blob/0229e378e80948428cf7baa7b176939e879497cc/BSDmakefile#L7
     export MAKE="gmake"
   else
