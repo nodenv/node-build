@@ -60,8 +60,6 @@ assert_build_log() {
 @test "apply node patch before building" {
   cached_tarball "node-v4.0.0"
 
-  stub_repeated uname '-s : echo Linux'
-  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -72,8 +70,6 @@ diff -pU3 align.c align.c
 PATCH
   assert_success
 
-  unstub uname
-  unstub brew
   unstub make
   unstub patch
 
@@ -88,8 +84,6 @@ OUT
 @test "striplevel node patch before building" {
   cached_tarball "node-v4.0.0"
 
-  stub_repeated uname '-s : echo Linux'
-  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -100,8 +94,6 @@ diff -pU3 a/configure b/configure
 PATCH
   assert_success
 
-  unstub uname
-  unstub brew
   unstub make
   unstub patch
 
@@ -116,8 +108,6 @@ OUT
 @test "apply node patch from git diff before building" {
   cached_tarball "node-v4.0.0"
 
-  stub_repeated uname '-s : echo Linux'
-  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -129,8 +119,6 @@ index 4760c31..66a237a 100755
 PATCH
   assert_success
 
-  unstub uname
-  unstub brew
   unstub make
   unstub patch
 

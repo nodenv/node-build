@@ -65,8 +65,9 @@ DEF
 
   stub_repeated uname '-s : echo Darwin'
   stub sw_vers '-productVersion : echo 10.10'
-  stub_repeated brew 'false'
-  stub_repeated make 'echo make $@'
+  stub make \
+    'echo make $@' \
+    'echo make $@'
 
   cat > ./configure <<CON
 #!${BASH}
@@ -92,6 +93,5 @@ OUT
 
   unstub uname
   unstub sw_vers
-  unstub brew
   unstub make
 }
