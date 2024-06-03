@@ -185,6 +185,7 @@ OUT
   stub_make_install
 
   export -n MAKE_OPTS
+  export NODE_CONFIGURE_OPTS="--with-openssl-dir=/test"
   run_inline_definition <<DEF
 install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
@@ -195,7 +196,7 @@ DEF
   unstub make
 
   assert_build_log <<OUT
-node-v4.0.0: --prefix=$INSTALL_ROOT
+node-v4.0.0: --prefix=$INSTALL_ROOT --with-openssl-dir=/test
 make -j 1
 make install
 OUT
