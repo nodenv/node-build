@@ -11,10 +11,8 @@ export -n NODE_CONFIGURE_OPTS
   mkdir -p "$INSTALL_ROOT"
   cd "$INSTALL_ROOT"
 
-  stub uname '-s : echo Darwin' '-s : echo Darwin'
+  stub_repeated uname '-s : echo Darwin'
   stub sw_vers '-productVersion : echo 10.10'
-  stub cc 'false'
-  stub brew 'false'
   stub make \
     'echo make $@' \
     'echo make $@'
@@ -40,4 +38,8 @@ CFLAGS=no
 make -j 2
 make install
 OUT
+
+  unstub uname
+  unstub sw_vers
+  unstub make
 }

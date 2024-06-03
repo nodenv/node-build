@@ -82,7 +82,7 @@ OUT
 }
 
 @test "nonexistent version" {
-  stub brew false
+  stub_repeated brew false
   stub_node_build 'echo ERROR >&2 && exit 2' \
     "--definitions : echo 0.8.7 0.10.4 0.10.6 1.0.0 4.1.2 | tr ' ' $'\\n'"
 
@@ -102,6 +102,7 @@ If the version you need is missing, try upgrading node-build:
   git -C ${BATS_TEST_DIRNAME}/.. pull
 OUT
 
+  unstub brew
   unstub node-build
 }
 
@@ -119,7 +120,7 @@ See all available versions with \`nodenv install --list'.
 
 If the version you need is missing, try upgrading node-build:
 
-  brew update && brew upgrade node-build
+  brew upgrade node-build
 OUT
 
   unstub brew
