@@ -794,12 +794,12 @@ require_java7() {
 
 # Kept for backward compatibility
 require_gcc() {
-  local stub=1
+  :
 }
 
 # Kept for backward compatibility
 require_llvm() {
-  local stub=1
+  :
 }
 
 # Ensure that directories listed in LDFLAGS exist
