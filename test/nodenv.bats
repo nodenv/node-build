@@ -27,6 +27,17 @@ stub_node_build() {
   unstub nodenv-rehash
 }
 
+@test "install with flags" {
+  stub_node_build 'echo "node-build $(inspect_args "$@")"'
+
+  run nodenv-install -kpv 4.1.2 -- --with-configure-opt="hello world"
+  assert_success "node-build --keep --verbose --patch 4.1.2 ${NODENV_ROOT}/versions/4.1.2 -- \"--with-configure-opt=hello world\""
+
+  unstub node-build
+  unstub nodenv-hooks
+  unstub nodenv-rehash
+}
+
 @test "suggest running nodenv global after install" {
   rm -rf "$NODENV_ROOT/version"
   stub_node_build 'echo node-build "$@"'

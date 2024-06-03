@@ -155,20 +155,19 @@ DEFINITION="${ARGUMENTS[0]}"
 # after the installation process.
 declare -a before_hooks after_hooks
 
+# shellcheck disable=SC2317
 before_install() {
   local hook="$1"
   before_hooks["${#before_hooks[@]}"]="$hook"
 }
 
+# shellcheck disable=SC2317
 after_install() {
   local hook="$1"
   after_hooks["${#after_hooks[@]}"]="$hook"
 }
 
-while IFS=$'\n' read -r script; do
-  scripts+=("$script")
-done < <(nodenv-hooks install)
-
+IFS=$'\n' read -d '' -r -a scripts <<<"$(nodenv-hooks install)" || true
 # shellcheck disable=SC1090
 for script in "${scripts[@]}"; do source "$script"; done
 
@@ -225,9 +224,12 @@ cleanup() {
 
 trap cleanup SIGINT
 
+build_args=(${KEEP:+--keep} ${VERBOSE:+--verbose} ${HAS_PATCH:+--patch} ${SKIP_BINARY:+--compile} "$DEFINITION" "$PREFIX")
+[ ${#EXTRA_ARGUMENTS[@]} -eq 0 ] || build_args+=(-- "${EXTRA_ARGUMENTS[@]}")
+
 # Invoke `node-build` and record the exit status in $STATUS.
 STATUS=0
-node-build $KEEP $VERBOSE $HAS_PATCH $SKIP_BINARY "$DEFINITION" "$PREFIX" || STATUS="$?"
+node-build "${build_args[@]}" || STATUS="$?"
 
 # Display a more helpful message if the definition wasn't found.
 if [ "$STATUS" == "2" ]; then
@@ -242,14 +244,14 @@ if [ "$STATUS" == "2" ]; then
     echo "See all available versions with \`nodenv install --list'."
     echo
     echo -n "If the version you need is missing, try upgrading node-build"
-    if [ "$here" != "${here#$(brew --prefix 2>/dev/null)}" ]; then
-      printf ":\\n\\n"
+    if [ "$here" != "${here#"$(brew --prefix 2>/dev/null)"}" ]; then
+      printf ":\n\n"
       echo "  brew upgrade node-build"
     elif [ -d "${here}/.git" ]; then
-      printf ":\\n\\n"
+      printf ":\n\n"
       echo "  git -C ${here} pull"
     else
-      printf ".\\n"
+      printf ".\n"
     fi
   } >&2
 fi

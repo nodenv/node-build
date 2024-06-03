@@ -27,10 +27,15 @@ lib() {
   parse_options() {
     OPTIONS=()
     ARGUMENTS=()
+    EXTRA_ARGUMENTS=()
     local arg option index
 
-    for arg in "$@"; do
-      if [ "${arg:0:1}" = "-" ]; then
+    while [ $# -gt 0 ]; do
+      arg="$1"
+      if [ "$arg" == "--" ]; then
+        shift 1
+        break
+      elif [ "${arg:0:1}" = "-" ]; then
         if [ "${arg:1:1}" = "-" ]; then
           OPTIONS[${#OPTIONS[*]}]="${arg:2}"
         else
@@ -41,15 +46,19 @@ lib() {
             index=$((index+1))
           done
         fi
+        shift 1
       else
         ARGUMENTS[${#ARGUMENTS[*]}]="$arg"
+        shift 1
       fi
     done
+
+    EXTRA_ARGUMENTS=("$@")
   }
 
-  if [ "$1" == "--$FUNCNAME" ]; then
-    declare -f "$FUNCNAME"
-    echo "$FUNCNAME \"\$1\";"
+  if [ "$1" == "--${FUNCNAME[0]}" ]; then
+    declare -f "${FUNCNAME[0]}"
+    echo "${FUNCNAME[0]} \"\$1\";"
     exit
   fi
 }
@@ -63,20 +72,21 @@ resolve_link() {
 abs_dirname() {
   local path="$1"
   local cwd
-  cwd="$(pwd)"
+  cwd="$(pwd || true)"
 
   while [ -n "$path" ]; do
-    cd "${path%/*}"
+    cd "${path%/*}" || return 1
     local name="${path##*/}"
     path="$(resolve_link "$name" || true)"
   done
 
   pwd
-  cd "$cwd"
+  cd "$cwd" || return 1
 }
 
 capitalize() {
-  printf "%s" "$1" | tr '[:lower:]' '[:upper:]'
+  # shellcheck disable=SC2018,SC2019
+  printf "%s" "$1" | tr 'a-z' 'A-Z'
 }
 
 sanitize() {
@@ -84,7 +94,7 @@ sanitize() {
 }
 
 colorize() {
-  if [ -t 1 ]; then printf "\\e[%sm%s\\e[m" "$1" "$2"
+  if [ -t 1 ]; then printf "\e[%sm%s\e[m" "$1" "$2"
   else echo -n "$2"
   fi
 }
@@ -95,7 +105,9 @@ os_information() {
   elif type -p sw_vers >/dev/null; then
     echo "$(sw_vers -productName) $(sw_vers -productVersion)"
   elif [ -r /etc/os-release ]; then
+    # shellcheck disable=SC1091
     source /etc/os-release
+    # shellcheck disable=SC2153
     echo "$NAME $VERSION_ID"
   else
     local os
@@ -106,7 +118,7 @@ os_information() {
 
 is_mac() {
   [ "$(uname -s)" = "Darwin" ] || return 1
-  [ $# -eq 0 ] || test "$(osx_version)" "$@"
+  [ $# -eq 0 ] || [ "$(osx_version)" -ge "$1" ]
 }
 
 is_freebsd() {
@@ -122,10 +134,10 @@ freebsd_package_prefix() {
 # 10.9  -> 1009
 # 10.10 -> 1010
 osx_version() {
-  local -a ver
-  IFS=. ver=( $(sw_vers -productVersion) )
+  local ver
+  IFS=. read -d "" -r -a ver <<<"$(sw_vers -productVersion)" || true
   IFS="$OLDIFS"
-  echo $(( ${ver[0]}*100 + ${ver[1]} ))
+  echo $(( ver[0]*100 + ver[1] ))
 }
 
 build_failed() {
@@ -141,27 +153,15 @@ build_failed() {
     if ! rmdir "${BUILD_PATH}" 2>/dev/null; then
       echo "Inspect or clean up the working tree at ${BUILD_PATH}"
 
-      if file_is_not_empty "$LOG_PATH"; then
+      if [ -n "$(head -1 "$LOG_PATH" 2>/dev/null)" ]; then
         colorize 33 "Results logged to ${LOG_PATH}"
-        printf "\\n\\n"
+        printf "\n\n"
         echo "Last 10 log lines:"
         tail -n 10 "$LOG_PATH"
       fi
     fi
   } >&3
   exit 1
-}
-
-file_is_not_empty() {
-  local filename="$1"
-  local line_count="$(wc -l "$filename" 2>/dev/null || true)"
-
-  if [ -n "$line_count" ]; then
-    words=( $line_count )
-    [ "${words[0]}" -gt 0 ]
-  else
-    return 1
-  fi
 }
 
 num_cpu_cores() {
@@ -246,14 +246,6 @@ binary() {
   fi
 }
 
-install_package() {
-  install_package_using "tarball" 1 "$@"
-}
-
-install_git() {
-  install_package_using "git" 2 "$@"
-}
-
 install_binary() {
   local url name
 
@@ -263,6 +255,14 @@ install_binary() {
   name="${name%.zip*}"
 
   install_package "$name" "$url" copy "${@:2}"
+}
+
+install_package() {
+  install_package_using "tarball" 1 "$@"
+}
+
+install_git() {
+  install_package_using "git" 2 "$@"
 }
 
 install_package_using() {
@@ -275,7 +275,7 @@ install_package_using() {
   local make_args=( "$package_name" )
   local arg last_arg
 
-  for arg in "${@:$(( $package_type_nargs + 1 ))}"; do
+  for arg in "${@:$(( package_type_nargs + 1 ))}"; do
     if [ "$last_arg" = "--if" ]; then
       "$arg" || return 0
     elif [ "$arg" != "--if" ]; then
@@ -292,9 +292,11 @@ install_package_using() {
     return 0
   fi
 
+  # shellcheck disable=SC2164
   pushd "$BUILD_PATH" >&4
   "fetch_${package_type}" "${fetch_args[@]}"
   make_package "${make_args[@]}"
+  # shellcheck disable=SC2164
   popd >&4
 
   { echo "Installed ${package_name} to ${PREFIX_PATH}"
@@ -306,10 +308,12 @@ make_package() {
   local package_name="$1"
   shift
 
+# shellcheck disable=SC2164
   pushd "$package_name" >&4
   before_install_package "$package_name"
   build_package "$package_name" "$@"
   after_install_package "$package_name"
+  # shellcheck disable=SC2164
   popd >&4
 }
 
@@ -366,7 +370,11 @@ has_checksum_support() {
   local has_checksum_var="HAS_CHECKSUM_SUPPORT_${checksum_command}"
 
   if [ -z "${!has_checksum_var+defined}" ]; then
-    printf -v "$has_checksum_var" "$(echo test | "$checksum_command" >/dev/null; echo $?)"
+    if "$checksum_command" <<<"test" >/dev/null; then
+      printf -v "$has_checksum_var" 0 # success
+    else
+      printf -v "$has_checksum_var" 1 # error
+    fi
   fi
   return "${!has_checksum_var}"
 }
@@ -375,7 +383,7 @@ verify_checksum() {
   local checksum_command
   local filename="$1"
   local expected_checksum
-  expected_checksum="$(echo "$2" | tr '[:upper:]' '[:lower:]')"
+  expected_checksum="$(tr 'A-F' 'a-f' <<<"$2")"
 
   # If the specified filename doesn't exist, return success
   [ -e "$filename" ] || return 0
@@ -399,7 +407,7 @@ verify_checksum() {
 
   # If the computed checksum is empty, return failure
   local computed_checksum
-  computed_checksum=$($checksum_command < "$filename" | tr '[:upper:]' '[:lower:]')
+  computed_checksum="$("$checksum_command" < "$filename" | tr 'A-F' 'a-f')"
   [ -n "$computed_checksum" ] || return 1
 
   if [ "$expected_checksum" != "$computed_checksum" ]; then
@@ -436,11 +444,13 @@ detect_http_client() {
 }
 
 http_head_aria2c() {
+  # shellcheck disable=SC2086
   aria2c --dry-run --no-conf=true ${ARIA2_OPTS} "$1" >&4 2>&1
 }
 
 http_get_aria2c() {
   local out="${2:-$(mktemp "out.XXXXXX")}"
+  # shellcheck disable=SC2086
   if aria2c --allow-overwrite=true --no-conf=true -o "${out}" ${ARIA2_OPTS} "$1" >&4; then
     [ -n "$2" ] || cat "${out}"
   else
@@ -449,18 +459,22 @@ http_get_aria2c() {
 }
 
 http_head_curl() {
+  # shellcheck disable=SC2086
   curl -qsILf ${CURL_OPTS} "$1" >&4 2>&1
 }
 
 http_get_curl() {
+  # shellcheck disable=SC2086
   curl -q -o "${2:--}" -sSLf ${CURL_OPTS} "$1"
 }
 
 http_head_wget() {
+  # shellcheck disable=SC2086
   wget -q --spider ${WGET_OPTS} "$1" >&4 2>&1
 }
 
 http_get_wget() {
+  # shellcheck disable=SC2086
   wget -nv ${WGET_OPTS} -O "${2:--}" "$1"
 }
 
@@ -481,7 +495,7 @@ fetch_tarball() {
     package_url="${package_url%%#*}"
 
     if [ -z "$NODE_BUILD_SKIP_MIRROR" ]; then
-      mirror_url="$("${NODE_BUILD_MIRROR_CMD:=mirror}" $package_url $checksum 2>&4)" || unset mirror_url
+      mirror_url="$("${NODE_BUILD_MIRROR_CMD:-mirror}" $package_url $checksum 2>&4)" || unset mirror_url
     fi
   fi
 
@@ -506,11 +520,13 @@ fetch_tarball() {
     local tarball_filename
     tarball_filename="$(basename "$package_url")"
     echo "Downloading ${tarball_filename}..." >&2
+    # shellcheck disable=SC2015
+    http head "$mirror_url" &&
     download_tarball "$mirror_url" "$package_filename" "$checksum" ||
     download_tarball "$package_url" "$package_filename" "$checksum"
   fi
 
-  { if $tar $tar_args "$package_filename"; then
+  { if $tar "$tar_args" "$package_filename"; then
       if [ ! -d "$package_name" ]; then
         extracted_dir="$(find_extracted_directory)"
         mv "$extracted_dir" "$package_name"
@@ -587,22 +603,26 @@ fetch_git() {
 
   if type git &>/dev/null; then
     if [ -n "$NODE_BUILD_CACHE_PATH" ]; then
+      # shellcheck disable=SC2164
       pushd "$NODE_BUILD_CACHE_PATH" >&4
       local clone_name
       clone_name="$(sanitize "$git_url")"
-      if [ -e "${clone_name}" ]; then
-        { cd "${clone_name}"
+      if [ -e "$clone_name" ]; then
+        { # shellcheck disable=SC2164
+          cd "$clone_name"
           git fetch --force "$git_url" "+${git_ref}:${git_ref}"
         } >&4 2>&1
       else
         git clone --bare --branch "$git_ref" "$git_url" "${clone_name}" >&4 2>&1
       fi
       git_url="$NODE_BUILD_CACHE_PATH/${clone_name}"
+      # shellcheck disable=SC2164
       popd >&4
     fi
 
     if [ -e "${package_name}" ]; then
-      ( cd "${package_name}"
+      ( # shellcheck disable=SC2164
+        cd "${package_name}"
         git fetch --depth 1 origin "+${git_ref}"
         git checkout -q -B "$git_ref" "origin/${git_ref}"
       ) >&4 2>&1
@@ -637,9 +657,12 @@ build_package() {
 package_option() {
   local package_name="$1"
   local command_name="$2"
-  local variable="$(capitalize "${package_name}_${command_name}")_OPTS_ARRAY"
-  local array="${variable[@]}"
+  local variable
+  # e.g. NODE_CONFIGURE_OPTS_ARRAY, OPENSSL_MAKE_OPTS_ARRAY
+  variable="$(capitalize "${package_name}_${command_name}")_OPTS_ARRAY"
+  local array="${variable}[@]"
   shift 2
+  # shellcheck disable=SC2034
   local value=( "${!array}" "$@" )
   eval "$variable=( \"\${value[@]}\" )"
 }
@@ -687,13 +710,15 @@ build_package_standard_build() {
   ( if [ "${CFLAGS+defined}" ] || [ "${!PACKAGE_CFLAGS+defined}" ]; then
       export CFLAGS="$CFLAGS ${!PACKAGE_CFLAGS}"
     fi
-    if [ -z "$CC" ] && is_mac -ge 1010; then
+    if [ -z "$CC" ] && is_mac 1010; then
       export CC=clang
     fi
+    # shellcheck disable=SC2086,SC2153
     ${!PACKAGE_CONFIGURE:-./configure} --prefix="${!PACKAGE_PREFIX_PATH:-$PREFIX_PATH}" \
       "${!PACKAGE_CONFIGURE_OPTS_ARRAY}" $CONFIGURE_OPTS ${!PACKAGE_CONFIGURE_OPTS} || return 1
   ) >&4 2>&1
 
+  # shellcheck disable=SC2086
   { "$MAKE" "${!PACKAGE_MAKE_OPTS_ARRAY}" $MAKE_OPTS ${!PACKAGE_MAKE_OPTS}
   } >&4 2>&1
 }
@@ -706,6 +731,7 @@ build_package_standard_install() {
   local PACKAGE_MAKE_INSTALL_OPTS="${package_var_name}_MAKE_INSTALL_OPTS"
   local PACKAGE_MAKE_INSTALL_OPTS_ARRAY="${package_var_name}_MAKE_INSTALL_OPTS_ARRAY[@]"
 
+  # shellcheck disable=SC2086
   { "$MAKE" ${MAKE_INSTALL_TARGET:-install} "${!PACKAGE_MAKE_INSTALL_OPTS_ARRAY}" $MAKE_INSTALL_OPTS ${!PACKAGE_MAKE_INSTALL_OPTS}
   } >&4 2>&1
 }
@@ -804,16 +830,18 @@ require_llvm() {
 
 # Ensure that directories listed in LDFLAGS exist
 build_package_ldflags_dirs() {
-  local arg dir
-  set - $LDFLAGS
-  while [ $# -gt 0 ]; do
+  local ldflags
+  read -d '' -r -a ldflags <<<"$LDFLAGS" || true
+  local index=0
+  local dir
+  while [ "$index" -lt "${#ldflags[@]}" ]; do
     dir=""
-    case "$1" in
-    -L  ) dir="$2" ;;
-    -L* ) dir="${1#-L}" ;;
+    case "${ldflags[index]}" in
+    -L  ) dir="${ldflags[index+1]}" ;;
+    -L* ) dir="${ldflags[index]#-L}" ;;
     esac
     [ -z "$dir" ] || mkdir -p "$dir"
-    shift 1
+    index=$((index+1))
   done
 }
 
@@ -895,9 +923,11 @@ unset KEEP_BUILD_PATH
 unset HAS_PATCH
 unset IPV4
 unset IPV6
+unset EARLY_EXIT
 
 NODE_BUILD_INSTALL_PREFIX="$(abs_dirname "$0")/.."
 
+# shellcheck disable=SC2206
 IFS=: NODE_BUILD_DEFINITIONS=($NODE_BUILD_DEFINITIONS ${NODE_BUILD_ROOT:-$NODE_BUILD_INSTALL_PREFIX}/share/node-build)
 IFS="$OLDIFS"
 
@@ -906,20 +936,16 @@ parse_options "$@"
 for option in "${OPTIONS[@]}"; do
   case "$option" in
   "h" | "help" )
-    version
-    echo
-    usage 0
+    EARLY_EXIT=help
     ;;
   "definitions" )
-    list_definitions
-    exit 0
+    EARLY_EXIT=list_definitions
     ;;
   "c" | "compile" )
     SKIP_BINARY=true
     ;;
   "l" | "list")
-    list_maintained_versions
-    exit 0
+    EARLY_EXIT=list_maintained_versions
     ;;
   "k" | "keep" )
     KEEP_BUILD_PATH=true
@@ -937,18 +963,61 @@ for option in "${OPTIONS[@]}"; do
     IPV6=true
     ;;
   "version" )
-    version
-    exit 0
+    EARLY_EXIT=version
+    ;;
+  * )
+    printf "node-build: invalid flag '%s'\n" "$option" >&2
+    EARLY_EXIT=usage_error
     ;;
   esac
 done
 
-[ "${#ARGUMENTS[@]}" -eq 2 ] || usage 1 >&2
-
 DEFINITION_PATH="${ARGUMENTS[0]}"
-if [ -z "$DEFINITION_PATH" ]; then
+PREFIX_PATH="${ARGUMENTS[1]}"
+
+if [ -z "$EARLY_EXIT" ] && [ -z "$DEFINITION_PATH" ]; then
+  echo "node-build: missing definition argument" >&2
+  EARLY_EXIT=usage_error
+fi
+
+if [ -z "$EARLY_EXIT" ] && [ -z "$PREFIX_PATH" ]; then
+  echo "node-build: missing prefix argument" >&2
+  EARLY_EXIT=usage_error
+fi
+
+if [ "${#ARGUMENTS[@]}" -gt 2 ]; then
+  echo "node-build: expected at most 2 arguments, got [${ARGUMENTS[*]}]" >&2
+  EARLY_EXIT=usage_error
+fi
+
+if [ "${#EXTRA_ARGUMENTS[@]}" -gt 0 ]; then
+  NODE_CONFIGURE_OPTS_ARRAY=("${EXTRA_ARGUMENTS[@]}")
+fi
+
+case "$EARLY_EXIT" in
+help )
+  version
+  echo
+  usage 0
+  ;;
+version | list_definitions | list_maintained_versions )
+  "$EARLY_EXIT"
+  exit 0
+  ;;
+usage_error )
+  echo >&2
   usage 1 >&2
-elif [ ! -f "$DEFINITION_PATH" ]; then
+  ;;
+'' )
+  ;;
+* )
+  echo "unimplemented EARLY_EXIT: $EARLY_EXIT" >&2
+  exit 1
+  ;;
+esac
+
+# expand the <definition> argument to full path of the definition file
+if [ ! -f "$DEFINITION_PATH" ]; then
   for DEFINITION_DIR in "${NODE_BUILD_DEFINITIONS[@]}"; do
     if [ -f "${DEFINITION_DIR}/${DEFINITION_PATH}" ]; then
       DEFINITION_PATH="${DEFINITION_DIR}/${DEFINITION_PATH}"
@@ -962,10 +1031,8 @@ elif [ ! -f "$DEFINITION_PATH" ]; then
   fi
 fi
 
-PREFIX_PATH="${ARGUMENTS[1]}"
-if [ -z "$PREFIX_PATH" ]; then
-  usage 1 >&2
-elif [ "${PREFIX_PATH#/}" = "$PREFIX_PATH" ]; then
+# normalize the <prefix> argument
+if [ "${PREFIX_PATH#/}" = "$PREFIX_PATH" ]; then
   PREFIX_PATH="${PWD}/${PREFIX_PATH}"
 fi
 
@@ -1010,21 +1077,20 @@ else
   unset NODE_BUILD_CACHE_PATH
 fi
 
+NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
+
+if ! has_checksum_support compute_sha2 ||
+  [ -z "${NODE_BUILD_MIRROR_URL}${NODE_BUILD_MIRROR_CMD}${NODE_BUILD_MIRROR_PACKAGE_URL}" ]; then
+  NODE_BUILD_SKIP_MIRROR=true
+fi
+
 ARIA2_OPTS="${NODE_BUILD_ARIA2_OPTS} ${IPV4+--disable-ipv6=true} ${IPV6+--disable-ipv6=false}"
 CURL_OPTS="${NODE_BUILD_CURL_OPTS} ${IPV4+--ipv4} ${IPV6+--ipv6}"
 WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
 
-NODE_BUILD_MIRROR_URL="${NODE_BUILD_MIRROR_URL%/}"
-
-if ! has_checksum_support compute_sha2 ||
-  [ -z "$NODE_BUILD_MIRROR_URL" -a -z "$NODE_BUILD_MIRROR_CMD" -a -z "$NODE_BUILD_MIRROR_PACKAGE_URL" ]; then
-  NODE_BUILD_SKIP_MIRROR=true
-fi
-
 SEED="$(date "+%Y%m%d%H%M%S").$$"
 LOG_PATH="${TMP}/node-build.${SEED}.log"
 NODE_BIN="${PREFIX_PATH}/bin/node"
-CWD="$(pwd)"
 
 if [ -z "$NODE_BUILD_BUILD_PATH" ]; then
   BUILD_PATH="$(mktemp -d "${LOG_PATH%.log}.XXXXXX")"
@@ -1036,7 +1102,7 @@ exec 4<> "$LOG_PATH" # open the log file at fd 4
 if [ -n "$VERBOSE" ]; then
   tail -f "$LOG_PATH" &
   TAIL_PID=$!
-  trap "kill $TAIL_PID" SIGINT SIGTERM EXIT
+  trap 'kill $TAIL_PID' SIGINT SIGTERM EXIT
 else
   if [ -z "$NODE_BUILD_TESTING" ]; then
     echo "To follow progress, use 'tail -f $LOG_PATH' or pass --verbose" >&2
@@ -1051,6 +1117,7 @@ unset NODELIB
 
 trap build_failed ERR
 mkdir -p "$BUILD_PATH"
+# shellcheck disable=SC1090
 source "$DEFINITION_PATH"
 [ -z "${KEEP_BUILD_PATH}" ] && rm -fr "$BUILD_PATH"
 trap - ERR
