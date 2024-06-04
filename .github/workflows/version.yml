@@ -2,7 +2,12 @@ name: Version Bump
 on:
   schedule: [{ cron: '0 10 * * *' }] # daily: https://crontab.guru/#0_10_*_*_*
   workflow_dispatch:
-
+    inputs:
+      version:
+        description: 'An explicit version (or major|minor|patch) to tag.'
+        default: ''
+        required: false
+        type: string
 permissions: {contents: read}
 
 jobs:
@@ -14,16 +19,17 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.BOT_TOKEN }}
 
-      - run: |-
+      - if: ${{ !inputs.version }}
+        run: |-
           npm run preversion --silent -- -o -v -- share/node-build || status=$?
           case "${status:-0}" in
-            0) echo "release=true" >> $GITHUB_ENV;;
+            0) echo "bump=patch" >> $GITHUB_ENV;;
             1) exit 0;; # exit successfully to mask error, but don't release
             *) exit $status ;; # all other error codes are true failures
           esac
 
-      - if: ${{ env.release }}
-        run: npm version patch
+      - if: ${{ inputs.version || env.bump }}
+        run: npm version ${{ inputs.version || env.bump }}
         env:
           GIT_AUTHOR_NAME: ${{ vars.NODENV_BOT_NAME }}
           GIT_AUTHOR_EMAIL: ${{ vars.NODENV_BOT_EMAIL }}
