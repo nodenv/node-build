@@ -49,6 +49,23 @@ stub_repeated() {
   stub "$@"
 }
 
+# Expose this for stub scripts.
+inspect_args() {
+  local arg
+  local sep=''
+  for arg; do
+    if [[ $arg == *' '* ]]; then
+      printf '%s"%s"' "$sep" "${arg//\"/\\\"}"
+    elif [[ $arg == *'"'* ]]; then
+      printf "%s'%s'" "$sep" "$arg"
+    else
+      printf '%s%s' "$sep" "$arg"
+    fi
+    sep=" "
+  done
+}
+export -f inspect_args
+
 run_inline_definition() {
   local definition="${BATS_TMPDIR}/build-definition"
   cat > "$definition"

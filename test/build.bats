@@ -35,7 +35,8 @@ tarball() {
 
   executable "$configure" <<OUT
 #!$BASH
-echo "$name: \$@" \${NODEOPT:+NODEOPT=\$NODEOPT} >> build.log
+IFS=,
+echo "$name: [\$*]" \${NODEOPT:+NODEOPT=\$NODEOPT} >> build.log
 OUT
 
   for file; do
@@ -48,8 +49,8 @@ OUT
 
 stub_make_install() {
   stub "$MAKE" \
-    " : echo \"$MAKE \$@\" >> build.log" \
-    "install : echo \"$MAKE \$@\" >> build.log && cat build.log >> '$INSTALL_ROOT/build.log'"
+    " : echo \"$MAKE \$(inspect_args \"\$@\")\" >> build.log" \
+    "install : echo \"$MAKE \$(inspect_args \"\$@\")\" >> build.log && cat build.log >> '$INSTALL_ROOT/build.log'"
 }
 
 assert_build_log() {
@@ -75,7 +76,7 @@ PATCH
 
   assert_build_log <<OUT
 patch -p0 --force -i $BATS_TMPDIR/node-patch.XXX
-node-v4.0.0: --prefix=$INSTALL_ROOT
+node-v4.0.0: [--prefix=$INSTALL_ROOT]
 make -j 2
 make install
 OUT
@@ -99,7 +100,7 @@ PATCH
 
   assert_build_log <<OUT
 patch -p1 --force -i $BATS_TMPDIR/node-patch.XXX
-node-v4.0.0: --prefix=$INSTALL_ROOT
+node-v4.0.0: [--prefix=$INSTALL_ROOT]
 make -j 2
 make install
 OUT
@@ -124,7 +125,29 @@ PATCH
 
   assert_build_log <<OUT
 patch -p1 --force -i $BATS_TMPDIR/node-patch.XXX
-node-v4.0.0: --prefix=$INSTALL_ROOT
+node-v4.0.0: [--prefix=$INSTALL_ROOT]
+make -j 2
+make install
+OUT
+}
+
+@test "forward extra command-line arguments as configure flags" {
+  cached_tarball "node-v4.0.0"
+
+  stub_make_install
+
+  cat > "$BATS_TMPDIR/build-definition" <<DEF
+install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+DEF
+
+  # TODO: use configure flags meaningful to node
+  NODE_CONFIGURE_OPTS='--with-readline-dir=/custom' run node-build "$BATS_TMPDIR/build-definition" "$INSTALL_ROOT" -- cppflags="-DYJIT_FORCE_ENABLE -DRUBY_PATCHLEVEL_NAME=test" --with-openssl-dir=/path/to/openssl
+  assert_success
+
+  unstub make
+
+  assert_build_log <<OUT
+node-v4.0.0: [--prefix=$INSTALL_ROOT,cppflags=-DYJIT_FORCE_ENABLE -DRUBY_PATCHLEVEL_NAME=test,--with-openssl-dir=/path/to/openssl,--with-readline-dir=/custom]
 make -j 2
 make install
 OUT
@@ -147,7 +170,7 @@ DEF
   unstub make
 
   assert_build_log <<OUT
-node-v4.0.0: --prefix=$INSTALL_ROOT
+node-v4.0.0: [--prefix=$INSTALL_ROOT]
 make -j 2
 make install
 OUT
@@ -196,19 +219,20 @@ DEF
   unstub make
 
   assert_build_log <<OUT
-node-v4.0.0: --prefix=$INSTALL_ROOT --with-openssl-dir=/test
+node-v4.0.0: [--prefix=$INSTALL_ROOT,--with-openssl-dir=/test]
 make -j 1
 make install
 OUT
 }
 
-@test "setting NODE_MAKE_INSTALL_OPTS to a multi-word string" {
+@test "using MAKE_INSTALL_OPTS" {
   cached_tarball "node-v4.0.0"
 
   stub_repeated uname '-s : echo Linux'
   stub_make_install
 
-  export NODE_MAKE_INSTALL_OPTS="DOGE=\"such wow\""
+  export MAKE_INSTALL_OPTS="--globalmake"
+  export NODE_MAKE_INSTALL_OPTS="NODEMAKE=true with spaces"
   run_inline_definition <<DEF
 install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
@@ -219,28 +243,7 @@ DEF
   assert_build_log <<OUT
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
-make install DOGE="such wow"
-OUT
-}
-
-@test "setting MAKE_INSTALL_OPTS to a multi-word string" {
-  cached_tarball "node-v4.0.0"
-
-  stub_repeated uname '-s : echo Linux'
-  stub_make_install
-
-  export MAKE_INSTALL_OPTS="DOGE=\"such wow\""
-  run_inline_definition <<DEF
-install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
-DEF
-  assert_success
-
-  unstub make
-
-  assert_build_log <<OUT
-node-v4.0.0: --prefix=$INSTALL_ROOT
-make -j 2
-make install DOGE="such wow"
+make install --globalmake RUBYMAKE=true with spaces
 OUT
 }
 
@@ -290,7 +293,7 @@ DEF
 
   assert_build_log <<OUT
 apply -p1 -i /my/patch.diff
-node-v4.0.0: --prefix=$INSTALL_ROOT
+node-v4.0.0: [--prefix=$INSTALL_ROOT]
 make -j 2
 make install
 OUT

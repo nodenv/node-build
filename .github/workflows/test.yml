@@ -27,7 +27,7 @@ jobs:
       with: {fetch-depth: 0}
     - uses: redhat-plumbers-in-action/differential-shellcheck@60c9f2b924a9c5a2ddbb25e7b23e8e11b56faab9 # v5.3.0
       with:
-        severity: warning
+        severity: error # TODO strengthen
         token: ${{ secrets.GITHUB_TOKEN }}
 
   lts:
