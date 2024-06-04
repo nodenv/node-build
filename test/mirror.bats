@@ -9,14 +9,17 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
 
 
 @test "package URL without checksum bypasses mirror" {
+  stub shasum true
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/without-checksum
+  echo "$output" >&2
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
   unstub curl
+  unstub shasum
 }
 
 
@@ -38,18 +41,19 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
-  stub shasum true "echo $checksum"
-  stub curl "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
   stub mirror_stub ": echo $mirror_url"
+  stub shasum true "echo $checksum"
+  stub curl "-*I* $mirror_url : true" \
+    "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
 
   install_fixture definitions/with-checksum
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
-  unstub mirror_stub
   unstub curl
   unstub shasum
+  unstub mirror_stub
 }
 
 
@@ -57,19 +61,19 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
-  stub shasum true "echo $checksum"
-  stub curl "-q -o * -*S* $mirror_url : false"\
-            "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
   stub mirror_stub ": echo $mirror_url"
+  stub shasum true "echo $checksum"
+  stub curl "-*I* $mirror_url : false" \
+    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
-  unstub mirror_stub
   unstub curl
   unstub shasum
+  unstub mirror_stub
 }
 
 
@@ -77,19 +81,21 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   local mirror_url="${NODE_BUILD_MIRROR_URL}/$checksum"
 
-  stub shasum true "echo invalid" "echo $checksum"
-  stub curl "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
-    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
   stub mirror_stub ": echo $mirror_url"
+  stub shasum true "echo invalid" "echo $checksum"
+  stub curl "-*I* $mirror_url : true" \
+    "-q -o * -*S* $mirror_url : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
+    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
+  echo "$output" >&2
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
-  unstub mirror_stub
   unstub curl
   unstub shasum
+  unstub mirror_stub
 }
 
 
@@ -98,18 +104,19 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   export NODE_BUILD_MIRROR_PACKAGE_URL=http://mirror.example.com/package-1.0.0.tar.gz
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
 
-  stub shasum true "echo $checksum"
-  stub curl "-q -o * -*S* $NODE_BUILD_MIRROR_PACKAGE_URL : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
   stub mirror_stub ": echo $NODE_BUILD_MIRROR_PACKAGE_URL"
+  stub shasum true "echo $checksum"
+  stub curl "-*I* $NODE_BUILD_MIRROR_PACKAGE_URL : true" \
+    "-q -o * -*S* $NODE_BUILD_MIRROR_PACKAGE_URL : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
 
   install_fixture definitions/with-checksum
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
-  unstub mirror_stub
   unstub curl
   unstub shasum
+  unstub mirror_stub
 }
 
 
@@ -118,19 +125,19 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   export NODE_BUILD_MIRROR_PACKAGE_URL=http://mirror.example.com/package-1.0.0.tar.gz
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
 
-  stub shasum true "echo $checksum"
-  stub curl "-q -o * -*S* $NODE_BUILD_MIRROR_PACKAGE_URL : false" \
-    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
   stub mirror_stub ": echo $NODE_BUILD_MIRROR_PACKAGE_URL"
+  stub shasum true "echo $checksum"
+  stub curl "-*I* $NODE_BUILD_MIRROR_PACKAGE_URL : false" \
+    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
 
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
-  unstub mirror_stub
   unstub curl
   unstub shasum
+  unstub mirror_stub
 }
 
 
@@ -139,10 +146,11 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   export NODE_BUILD_MIRROR_PACKAGE_URL=http://mirror.example.com/package-1.0.0.tar.gz
   local checksum="ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
 
-  stub shasum true "echo invalid" "echo $checksum"
-  stub curl "-q -o * -*S* $NODE_BUILD_MIRROR_PACKAGE_URL : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
-    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
   stub mirror_stub ": echo $NODE_BUILD_MIRROR_PACKAGE_URL"
+  stub shasum true "echo invalid" "echo $checksum"
+  stub curl "-*I* $NODE_BUILD_MIRROR_PACKAGE_URL : true" \
+    "-q -o * -*S* $NODE_BUILD_MIRROR_PACKAGE_URL : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3" \
+    "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
   install_fixture definitions/with-checksum
   echo "$output" >&2
@@ -150,9 +158,9 @@ export NODE_BUILD_MIRROR_CMD=mirror_stub
   assert_success
   assert [ -x "${INSTALL_ROOT}/bin/package" ]
 
-  unstub mirror_stub
   unstub curl
   unstub shasum
+  unstub mirror_stub
 }
 
 @test "package is fetched from mirror URL constructed from MIRROR_CMD" {
