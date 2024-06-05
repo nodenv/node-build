@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nodenv/node-build.git"
+    "url": "git+https://github.com/nodenv/node-build.git"
   },
   "bugs": {
     "url": "https://github.com/nodenv/node-build/issues"
@@ -46,8 +46,8 @@
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.11.1",
     "bats": "^1.11.0",
-    "bats-assert": "jasonkarns/bats-assert-1",
+    "bats-assert": "github:jasonkarns/bats-assert-1",
     "bats-mock": "^1",
-    "bats-support": "jasonkarns/bats-support"
+    "bats-support": "github:jasonkarns/bats-support"
   }
 }
