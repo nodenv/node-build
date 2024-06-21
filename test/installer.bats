@@ -3,7 +3,8 @@
 load test_helper
 
 @test "installs node-build into PREFIX" {
-  cd "$BATS_TMPDIR"
+  mkdir -p "$TMP"
+  cd "$TMP"
   PREFIX="${PWD}/usr" run "${BATS_TEST_DIRNAME}/../install.sh"
   assert_success
   refute_output
@@ -19,7 +20,8 @@ load test_helper
 }
 
 @test "build definitions don't have the executable bit" {
-  cd "$BATS_TMPDIR"
+  mkdir -p "$TMP"
+  cd "$TMP"
   PREFIX="${PWD}/usr" run "${BATS_TEST_DIRNAME}/../install.sh"
   assert_success
   refute_output
@@ -32,7 +34,8 @@ OUT
 }
 
 @test "overwrites old installation" {
-  cd "$BATS_TMPDIR"
+  mkdir -p "$TMP"
+  cd "$TMP"
   mkdir -p bin share/node-build
   touch bin/node-build
   touch share/node-build/0.10.36
@@ -47,7 +50,8 @@ OUT
 }
 
 @test "unrelated files are untouched" {
-  cd "$BATS_TMPDIR"
+  mkdir -p "$TMP"
+  cd "$TMP"
   mkdir -p bin share/bananas
   chmod g-w bin
   touch bin/bananas

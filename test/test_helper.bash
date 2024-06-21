@@ -1,6 +1,7 @@
 # shellcheck shell=bash
 
 BATS_TMPDIR="$BATS_TEST_DIRNAME/tmp"
+export TMP="$BATS_TMPDIR"/node-build-test
 export NODE_BUILD_CURL_OPTS=
 export NODE_BUILD_HTTP_CLIENT="curl"
 export NODE_BUILD_TESTING=true
@@ -38,7 +39,8 @@ remove_commands_from_path() {
 }
 
 teardown() {
-  rm -fr "${BATS_TMPDIR:?}"/*
+  # rm -fr "${BATS_TMPDIR:?}"/*
+  rm -fr "${TMP:?}"
 }
 
 stub_repeated() {
