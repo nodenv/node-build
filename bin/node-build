@@ -485,6 +485,10 @@ fetch_tarball() {
   local checksum
   local extracted_dir
 
+  if is_node_package "$1" && [ -n "$NODE_BUILD_TARBALL_OVERRIDE" ]; then
+    package_url="$NODE_BUILD_TARBALL_OVERRIDE"
+  fi
+
   if [ -z "$package_url" ]; then
     echo "error: failed to download $package_name (missing package url)" >&2
     return 1
@@ -601,37 +605,27 @@ fetch_git() {
 
   echo "Cloning ${git_url}..." >&2
 
-  if type git &>/dev/null; then
-    if [ -n "$NODE_BUILD_CACHE_PATH" ]; then
-      # shellcheck disable=SC2164
-      pushd "$NODE_BUILD_CACHE_PATH" >&4
-      local clone_name
-      clone_name="$(sanitize "$git_url")"
-      if [ -e "$clone_name" ]; then
-        { # shellcheck disable=SC2164
-          cd "$clone_name"
-          git fetch --force "$git_url" "+${git_ref}:${git_ref}"
-        } >&4 2>&1
-      else
-        git clone --bare --branch "$git_ref" "$git_url" "${clone_name}" >&4 2>&1
-      fi
-      git_url="$NODE_BUILD_CACHE_PATH/${clone_name}"
-      # shellcheck disable=SC2164
-      popd >&4
-    fi
-
-    if [ -e "${package_name}" ]; then
-      ( # shellcheck disable=SC2164
-        cd "${package_name}"
-        git fetch --depth 1 origin "+${git_ref}"
-        git checkout -q -B "$git_ref" "origin/${git_ref}"
-      ) >&4 2>&1
-    else
-      git clone --depth 1 --branch "$git_ref" "$git_url" "${package_name}" >&4 2>&1
-    fi
-  else
+  if ! type git &>/dev/null; then
     echo "error: please install \`git\` and try again" >&2
     exit 1
+  fi
+
+  if [ -n "$NODE_BUILD_CACHE_PATH" ]; then
+    local cache_dir
+    cache_dir="$NODE_BUILD_CACHE_PATH/$(sanitize "$git_url")"
+    if [ -e "$cache_dir" ]; then
+      git -C "$cache_dir" fetch --force "$git_url" "+${git_ref}:${git_ref}" >&4 2>&1
+    else
+      git clone --bare --branch "$git_ref" "$git_url" "$cache_dir" >&4 2>&1
+    fi
+    git_url="$cache_dir"
+  fi
+
+  if [ -e "${package_name}" ]; then
+    git -C "$package_name" fetch --depth 1 origin "+${git_ref}" >&4 2>&1
+    git -C "$package_name" checkout -q -B "$git_ref" "origin/${git_ref}" >&4 2>&1
+  else
+    git clone --depth 1 --branch "$git_ref" "$git_url" "${package_name}" >&4 2>&1
   fi
 }
 
@@ -736,6 +730,7 @@ build_package_standard_install() {
   } >&4 2>&1
 }
 
+# Backward Compatibility for standard function
 build_package_standard() {
   build_package_standard_build "$@"
   build_package_standard_install "$@"
@@ -746,14 +741,11 @@ build_package_autoconf() {
   } >&4 2>&1
 }
 
-build_package_copy_to() {
-  to="$1"
-  mkdir -p "$to"
-  cp -fR . "$to"
-}
+build_package_node() {
+  local package_name="$1"
 
-build_package_copy() {
-  build_package_copy_to "$PREFIX_PATH"
+  { "$NODE_BIN" setup.rb
+  } >&4 2>&1
 }
 
 build_package_jxcore_v8_328() {
@@ -792,6 +784,10 @@ build_package_graal() {
   rm -rf demo sample src
 }
 
+build_package_copy() {
+  mkdir -p "$PREFIX_PATH"
+  cp -fR . "$PREFIX_PATH"
+}
 before_install_package() {
   :
 }
@@ -813,6 +809,25 @@ fix_jxcore_directory_structure() {
   } >&4
 }
 
+require_java() {
+  local required="$1"
+  local java_version version_string
+  java_version="$(java -version 2>&1 || true)"
+  version_string="$(grep 'java version' <<<"$java_version" | head -1 | grep -o '[0-9.]\+' | head -1 || true)"
+  [ -n "$version_string" ] || version_string="$(grep 'openjdk version' <<<"$java_version" | head -1 | grep -o '[0-9.]\+' | head -1 || true)"
+  IFS="."
+  # shellcheck disable=SC2206
+  local nums=($version_string)
+  IFS="$OLDIFS"
+  local found_version="${nums[0]}"
+  [ "$found_version" -gt 1 ] 2>/dev/null || found_version="${nums[1]}"
+  [ "$found_version" -ge "$required" ] 2>/dev/null && return 0
+  colorize 1 "ERROR" >&3
+  echo ": Java >= ${required} required, but your Java version was:" >&3
+  cat <<<"$java_version" >&3
+  return 1
+}
+
 # Kept for backward compatibility
 require_java7() {
   require_java 7
@@ -828,46 +843,42 @@ require_llvm() {
   :
 }
 
-# Ensure that directories listed in LDFLAGS exist
+# Kept for backward compatibility with 3rd-party definitions.
 build_package_ldflags_dirs() {
-  local ldflags
-  read -d '' -r -a ldflags <<<"$LDFLAGS" || true
-  local index=0
-  local dir
-  while [ "$index" -lt "${#ldflags[@]}" ]; do
-    dir=""
-    case "${ldflags[index]}" in
-    -L  ) dir="${ldflags[index+1]}" ;;
-    -L* ) dir="${ldflags[index]#-L}" ;;
-    esac
-    [ -z "$dir" ] || mkdir -p "$dir"
-    index=$((index+1))
-  done
+  true
 }
 
 build_package_enable_shared() {
-  if [[ " ${NODE_CONFIGURE_OPTS} " != *" --disable-shared"* ]]; then
+  if [[ " ${NODE_CONFIGURE_OPTS} ${NODE_CONFIGURE_OPTS_ARRAY[*]}" != *" --disable-shared"* ]]; then
     package_option node configure --enable-shared
   fi
 }
 
 apply_node_patch() {
   local patchfile
-  case "$1" in
-  node-* | iojs-* )
+  if is_node_package "$1"; then
     patchfile="$(mktemp "${TMP}/node-patch.XXXXXX")"
     cat "${2:--}" >"$patchfile"
 
     local striplevel=0
     grep -q '^--- a/' "$patchfile" && striplevel=1
     patch -p$striplevel --force -i "$patchfile"
+  fi
+}
+
+is_node_package() {
+  case "$1" in
+  node-* | iojs-* )
+    return 0
+    ;;
+  *)
+    return 1
     ;;
   esac
 }
 
 version() {
   local git_revision
-
   # Read the revision from git if the remote points to "node-build" repository
   if GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git remote -v 2>/dev/null | grep -q /node-build; then
     git_revision="$(GIT_DIR="$NODE_BUILD_INSTALL_PREFIX/.git" git describe --tags HEAD 2>/dev/null || true)"
@@ -1108,9 +1119,6 @@ else
     echo "To follow progress, use 'tail -f $LOG_PATH' or pass --verbose" >&2
   fi
 fi
-
-export LDFLAGS="-L${PREFIX_PATH}/lib ${LDFLAGS}"
-export CPPFLAGS="-I${PREFIX_PATH}/include ${CPPFLAGS}"
 
 unset NODEOPT
 unset NODELIB
