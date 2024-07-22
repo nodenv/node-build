@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       with: {fetch-depth: 0}
-    - uses: redhat-plumbers-in-action/differential-shellcheck@60c9f2b924a9c5a2ddbb25e7b23e8e11b56faab9 # v5.3.0
+    - uses: redhat-plumbers-in-action/differential-shellcheck@b8c7b83d16cce15d13563f5d055b34b9e3360ed3 # v5.3.1
       with:
         severity: error # TODO strengthen
         token: ${{ secrets.GITHUB_TOKEN }}
