@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v20.17.0/node-v20.17.0-aix-ppc64.tar.gz#44e9bddedf7b6b21917174a7707d737cfa0ef61f9ecb06baf6dc1a208d41d54b"
+binary darwin-arm64 "https://nodejs.org/dist/v20.17.0/node-v20.17.0-darwin-arm64.tar.gz#476324108c4361935465631eec47df1c943ba2c87bc050853385b1d1c71f0b1f"
+binary darwin-x64 "https://nodejs.org/dist/v20.17.0/node-v20.17.0-darwin-x64.tar.gz#eefe9447dbb0b5b233d42730989c6c364487de4043145db2f63da94e9623c380"
+binary linux-arm64 "https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-arm64.tar.gz#18afbf2781edfcc9918343f4bf74a8c35d74d778b85d40a0c09b232adc0ea82c"
+binary linux-armv7l "https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-armv7l.tar.gz#fcc19311817622f2e4693c3fff488c72fa1ce7c2c423c2bd114c86b24fa8c388"
+binary linux-ppc64le "https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-ppc64le.tar.gz#8ab306fa954887bcd9718c61eb91110df37a791dce3097dd249481654b3b663f"
+binary linux-s390x "https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-s390x.tar.gz#7ad50f3aa8f07e7ef2167fa6bb28c850dc6497b633c4ec8c4815f29c53a124b0"
+binary linux-x64 "https://nodejs.org/dist/v20.17.0/node-v20.17.0-linux-x64.tar.gz#21e656f6f4e34080ddc5d75fbfe58ce8482fe6e70a76aeae14afdcdc1e23079d"
+
+install_package "node-v20.17.0" "https://nodejs.org/dist/v20.17.0/node-v20.17.0.tar.gz#409bda5f1896c7c20866610d778d1760991884ad2e7940837cd3f2854cf73747"
