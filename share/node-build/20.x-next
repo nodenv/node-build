@@ -1,1 +1,6 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
 install_git "20.x-next" "https://github.com/nodejs/node.git" "v20.x" standard
