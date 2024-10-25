@@ -1,0 +1,10 @@
+binary aix-ppc64 "https://nodejs.org/dist/v23.1.0/node-v23.1.0-aix-ppc64.tar.gz#e153fef6a3e71d92b2314d2f56c4a9ca0699e8614493c246cf6be6a09f6197b1"
+binary darwin-arm64 "https://nodejs.org/dist/v23.1.0/node-v23.1.0-darwin-arm64.tar.gz#414d4b68299be0cbccfabfac59e53d0726151320e9ff71457ab0bb507fc0592d"
+binary darwin-x64 "https://nodejs.org/dist/v23.1.0/node-v23.1.0-darwin-x64.tar.gz#cb84bd83064ff75f63dd95f1a53b6f7f2d2d36c67e03e9e9c87cfa2b977511b6"
+binary linux-arm64 "https://nodejs.org/dist/v23.1.0/node-v23.1.0-linux-arm64.tar.gz#21e20e961eb2f6ab3fcc24421d3975d1714b6a4525c8ecd4f3dbbee3938a95cc"
+binary linux-armv7l "https://nodejs.org/dist/v23.1.0/node-v23.1.0-linux-armv7l.tar.gz#960287c96b4a13a7c2ba7eb71686550d1281aae0caf5d80afbd76f0c72044ae3"
+binary linux-ppc64le "https://nodejs.org/dist/v23.1.0/node-v23.1.0-linux-ppc64le.tar.gz#51911fe95abce0d3866f436b3ba553252de1acf264369f3bcdd9aad4aad7454d"
+binary linux-s390x "https://nodejs.org/dist/v23.1.0/node-v23.1.0-linux-s390x.tar.gz#b38024a98852e16476351ce0258b0cf2a35e408e9cf50c2cfa2b361687bb16f1"
+binary linux-x64 "https://nodejs.org/dist/v23.1.0/node-v23.1.0-linux-x64.tar.gz#1c436b2ac33a4fef7cf08c08b8a33362325c0c8ac8d05d4054a79628d5d0b5ae"
+
+install_package "node-v23.1.0" "https://nodejs.org/dist/v23.1.0/node-v23.1.0.tar.gz#4ccf155c703d53caf4e56624004782f106fce2b6935496b3ff29c6da4d6b6674"
