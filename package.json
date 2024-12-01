@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.11.1",
-    "bats": "^1.11.0",
+    "bats": "^1.11.1",
     "bats-assert": "github:jasonkarns/bats-assert-1",
     "bats-mock": "^1",
     "bats-support": "github:jasonkarns/bats-support"
