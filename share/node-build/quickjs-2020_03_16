@@ -1,0 +1,4 @@
+# binary linux-x64 "https://bellard.org/quickjs/binary_releases/quickjs-linux-x86_64-2020-03-16.zip#3fc5df07ed20b567ebc8bd09f09d77e3d1132e912328fce36cc293eae47742c3"
+# binary linux-x86 "https://bellard.org/quickjs/binary_releases/quickjs-linux-i686-2020-03-16.zip#c16120090de22456e3a2da036e1162d985653a886c08023af910654e548e13e1"
+
+install_package "quickjs-2020_03_16" "https://bellard.org/quickjs/quickjs-2020-03-16.tar.xz#d01433cfee98c9541c8f2fa215e2a9e4932f5e58b65eb031ebb324fd808bc08b" quickjs
