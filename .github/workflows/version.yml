@@ -1,6 +1,6 @@
 name: Version Bump
 on:
-  push: { branches: main, paths: "share/node-build/"}
+  push: { branches: main, paths: "share/node-build/**"}
   schedule: [{ cron: '0 10 * * *' }] # daily: https://crontab.guru/#0_10_*_*_*
   workflow_dispatch:
     inputs:
