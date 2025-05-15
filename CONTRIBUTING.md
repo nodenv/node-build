@@ -1,11 +1,15 @@
+# Contribution to node-build
+
 ## Adding a new Node version
 
 > TODO
 > Use one of the scripts `script/update-*` to add a new Node version.
 
-## Updating OpenSSL
+## Pull changes from rbenv/ruby-build upstream
 
-Use `script/update-openssl`.
+Lists all ruby-build tags that have not been merged into node-build.
+
+        npm run unmerged
 
 ## Git configuration for fetching rbenv upstream
 
@@ -26,7 +30,6 @@ The configuration assumes node-build's remote is `origin`, and ruby-build's remo
 2. Fetch ruby-build's tags to their own refspec namespace (`rbtags`, in this case):
 
         git config --add remote.ruby-build.fetch '+refs/tags/*:refs/rbtags/*'
-
 
 Resulting snippet in `.git/config`:
 
