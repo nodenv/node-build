@@ -485,6 +485,10 @@ fetch_tarball() {
   local checksum
   local extracted_dir
 
+  if is_node_package "$1" && [ -n "$NODE_BUILD_TARBALL_OVERRIDE" ]; then
+    package_url="$NODE_BUILD_TARBALL_OVERRIDE"
+  fi
+
   if [ -z "$package_url" ]; then
     echo "error: failed to download $package_name (missing package url)" >&2
     return 1
@@ -853,14 +857,23 @@ build_package_enable_shared() {
 
 apply_node_patch() {
   local patchfile
-  case "$1" in
-  node-* | iojs-* )
+  if is_node_package "$1"; then
     patchfile="$(mktemp "${TMP}/node-patch.XXXXXX")"
     cat "${2:--}" >"$patchfile"
 
     local striplevel=0
     grep -q '^--- a/' "$patchfile" && striplevel=1
     patch -p$striplevel --force -i "$patchfile"
+  fi
+}
+
+is_node_package() {
+  case "$1" in
+  node-* | iojs-* )
+    return 0
+    ;;
+  *)
+    return 1
     ;;
   esac
 }

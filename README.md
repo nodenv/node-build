@@ -138,6 +138,7 @@ The build process may be configured through the following environment variables:
 | `NODE_BUILD_MIRROR_PACKAGE_URL` | Custom complete mirror URL (e.g. http://mirror.example.com/package-1.0.0.tar.gz).                  |
 | `NODE_BUILD_SKIP_MIRROR`        | Bypass the download mirror and fetch all package files from their original URLs.                   |
 | `NODE_BUILD_ROOT`               | Custom build definition directory. (Default: `share/node-build`)                                   |
+| `NODE_BUILD_TARBALL_OVERRIDE`   | Override the URL to fetch the node tarball from, optionally followed by `#checksum`.               |
 | `NODE_BUILD_DEFINITIONS`        | Additional paths to search for build definitions. (Colon-separated list)                           |
 | `CC`                            | Path to the C compiler.                                                                            |
 | `NODE_CFLAGS`                   | Additional `CFLAGS` options (_e.g.,_ to override `-O3`).                                           |
