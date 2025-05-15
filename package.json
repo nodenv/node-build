@@ -41,7 +41,7 @@
     "preversion": "script/preversion",
     "version": "script/version-sync",
     "postversion": "git push --follow-tags",
-    "unmerged": "git for-each-ref refs/rbtags --format='%(refname) %(creatordate:short)' --no-merged"
+    "unmerged": "git for-each-ref refs/rbtags --format='%(creatordate:short) %(refname:short) https://github.com/rbenv/ruby-build/releases/tag/%(refname:lstrip=-1)' --no-merged"
   },
   "devDependencies": {
     "@nodenv/node-build-update-defs": "^2.11.1",
