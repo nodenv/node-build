@@ -3,11 +3,11 @@ on:
   schedule: [{cron: '0 */6 * * *'}] # 6hrly https://crontab.guru/#0_*/6_*_*_*
   workflow_dispatch:
 
-permissions: {contents: read}
-
+permissions: {}
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    permissions: { contents: read }
     steps:
     - name: Harden the runner (Audit all outbound calls)
       uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -38,6 +38,7 @@ jobs:
 
   lts:
     runs-on: ubuntu-latest
+    permissions: { contents: read }
     steps:
     - name: Harden the runner (Audit all outbound calls)
       uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
