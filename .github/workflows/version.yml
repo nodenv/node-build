@@ -1,15 +1,15 @@
 name: Version Bump
 on:
-  push: { branches: main, paths: "share/node-build/**"}
-  schedule: [{ cron: '0 10 * * *' }] # daily: https://crontab.guru/#0_10_*_*_*
+  push: { branches: main, paths: "share/node-build/**" }
+  schedule: [{ cron: "0 10 * * *" }] # daily: https://crontab.guru/#0_10_*_*_*
   workflow_dispatch:
     inputs:
       version:
-        description: 'An explicit version (or major|minor|patch) to tag.'
-        default: ''
+        description: "An explicit version (or major|minor|patch) to tag."
+        default: ""
         required: false
         type: string
-permissions: {contents: read}
+permissions: { contents: read }
 
 jobs:
   bump:
