@@ -13,6 +13,7 @@ jobs:
         with: { egress-policy: audit }
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - run: npm ci
+
       - run: npm run scrape-definitions
       - run: npm run lint:lts -- --fix
         continue-on-error: true
@@ -22,16 +23,14 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ vars.NODENV_BOT_EMAIL }}
           GIT_COMMITTER_NAME: ${{ vars.GHA_BOT_NAME }}
           GIT_COMMITTER_EMAIL: ${{ vars.GHA_BOT_EMAIL }}
-      - id: log
-        run: |
-          msg=$(git log --format='- %s' --reverse ${{github.sha}}..)
-          echo "message=${msg//$'\n'/'%0A'}" >> $GITHUB_OUTPUT
+
+      - run: git log --format='- %s' --reverse ${{github.sha}}.. >> ${{ runner.temp }}/pr-body
       - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
           token: ${{ secrets.BOT_TOKEN }}
           branch: latest-scraped-definitions
           title: "Scraped latest definitions"
-          body: ${{ steps.log.outputs.message }}
+          body-path: ${{ runner.temp }}/pr-body
 
   lts:
     runs-on: ubuntu-latest
@@ -41,7 +40,9 @@ jobs:
         with: { egress-policy: audit }
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - run: npm ci
+
       - run: npm run lint:lts -- --fix
+
       - if: failure()
         uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
