@@ -1,10 +1,9 @@
 ---
 name: "🐛 Bug report"
 about: Report a bug with node-build. For "BUILD FAILED" scenarios, see below
-title: ''
+title: ""
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 ### Steps to reproduce the behavior
