@@ -48,6 +48,6 @@
     "bats": "^1.11.0",
     "bats-assert": "^2.2.0",
     "bats-mock": "^1",
-    "bats-support": "github:jasonkarns/bats-support"
+    "bats-support": "^0.3.0"
   }
 }
