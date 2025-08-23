@@ -1,2 +1,5 @@
 /node_modules
+/package*/
+/tmp
+
 /node-build-*.tgz
