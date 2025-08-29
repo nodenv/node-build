@@ -1,17 +1,11 @@
 # node-build
 
-[![Tests](
-https://img.shields.io/github/actions/workflow/status/nodenv/node-build/test.yml?label=tests&logo=github)](
-https://github.com/nodenv/node-build/actions/workflows/test.yml)
-[![Latest Homebrew Release](
-https://img.shields.io/homebrew/v/node-build?logo=homebrew&logoColor=white)](
-https://formulae.brew.sh/formula/node-build)
-[![Latest GitHub Release](
-https://img.shields.io/github/v/release/nodenv/node-build?label=github&logo=github&sort=semver)](
-https://github.com/nodenv/node-build/releases/latest)
-[![Latest npm Release](
-https://img.shields.io/npm/v/@nodenv/node-build?logo=npm&logoColor=white)](
-https://www.npmjs.com/package/@nodenv/node-build/v/latest)
+Install NodeJS versions
+
+[![Tests](https://img.shields.io/github/actions/workflow/status/nodenv/node-build/test.yml?label=tests&logo=github)](https://github.com/nodenv/node-build/actions/workflows/test.yml)
+[![Latest GitHub Release](https://img.shields.io/github/v/release/nodenv/node-build?label=github&logo=github&sort=semver)](https://github.com/nodenv/node-build/releases/latest)
+[![Latest Homebrew Release](https://img.shields.io/homebrew/v/node-build?logo=homebrew&logoColor=white)](https://formulae.brew.sh/formula/node-build)
+[![Latest npm Release](https://img.shields.io/npm/v/@nodenv/node-build?logo=npm&logoColor=white)](https://www.npmjs.com/package/@nodenv/node-build/v/latest)
 
 node-build is a command-line tool that simplifies installation of any Node version from source or precompiled binary on Unix-like systems.
 
