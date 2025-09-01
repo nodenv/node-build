@@ -1,6 +1,6 @@
 # node-build
 
-Install NodeJS versions
+Download, compile, and install Node on Unix-like systems.
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/nodenv/node-build/test.yml?label=tests&logo=github)](https://github.com/nodenv/node-build/actions/workflows/test.yml)
 [![Latest GitHub Release](https://img.shields.io/github/v/release/nodenv/node-build?label=github&logo=github&sort=semver)](https://github.com/nodenv/node-build/releases/latest)
