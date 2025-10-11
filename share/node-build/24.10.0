@@ -1,4 +1,6 @@
 binary aix-ppc64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-aix-ppc64.tar.gz#daa6ea9f6add07922013215bac6712a2b1e29b12e00d9bf4ed45e85eebf5e8e2"
+binary darwin-arm64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-darwin-arm64.tar.gz#fbc3d6e1e1d962450d058e918214373872cc4c46e08673f31c35932afac4a8c5"
+binary darwin-x64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-darwin-x64.tar.gz#627b884f66db0dd35f4b46fb9e994774ce560a7fb60798ba1ab81e867a73687d"
 binary linux-arm64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-arm64.tar.gz#42776dfc722991b1ac9f302f3d7b5cf989cf7aca519b479c50e59f0663803b73"
 binary linux-ppc64le "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-ppc64le.tar.gz#2e285ecbbb7a79b9b59a937796cc63458a283a664226467babb7430d2b69b26e"
 binary linux-s390x "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-s390x.tar.gz#2117ab6eca63d5caf90fb99c870c466419f0e0204ce588fa6622b77b6e3a24e7"
