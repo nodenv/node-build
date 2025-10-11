@@ -1,0 +1,7 @@
+binary aix-ppc64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-aix-ppc64.tar.gz#daa6ea9f6add07922013215bac6712a2b1e29b12e00d9bf4ed45e85eebf5e8e2"
+binary linux-arm64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-arm64.tar.gz#42776dfc722991b1ac9f302f3d7b5cf989cf7aca519b479c50e59f0663803b73"
+binary linux-ppc64le "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-ppc64le.tar.gz#2e285ecbbb7a79b9b59a937796cc63458a283a664226467babb7430d2b69b26e"
+binary linux-s390x "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-s390x.tar.gz#2117ab6eca63d5caf90fb99c870c466419f0e0204ce588fa6622b77b6e3a24e7"
+binary linux-x64 "https://nodejs.org/dist/v24.10.0/node-v24.10.0-linux-x64.tar.gz#2b03c5417ce0b1076780df00e01da373bead3b4b80d1c78c1ad10ee7b918d90c"
+
+install_package "node-v24.10.0" "https://nodejs.org/dist/v24.10.0/node-v24.10.0.tar.gz#fb9aa1938aa8d7b53e437184e4c5b26823db0afb5ac1cbfe6559176531e900e6"
