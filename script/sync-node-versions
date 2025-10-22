@@ -1,0 +1,301 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# Node.js version sync script
+# Fetches the latest Node.js releases and creates version definition files
+
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+readonly SHARE_DIR="$PROJECT_ROOT/share/node-build"
+readonly NODE_RELEASES_API="https://nodejs.org/dist/index.json"
+readonly NODE_DIST_BASE="https://nodejs.org/dist"
+
+# Color codes for output
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly NC='\033[0m' # No Color
+
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $*"
+}
+
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $*"
+}
+
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $*"
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $*"
+}
+
+# Check if required tools are available
+check_dependencies() {
+    local deps=("curl" "jq" "shasum")
+    local missing=()
+    
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing+=("$dep")
+        fi
+    done
+    
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        log_error "Missing required dependencies: ${missing[*]}"
+        log_error "Please install the missing tools and try again."
+        exit 1
+    fi
+}
+
+# Fetch Node.js releases from the official API
+fetch_releases() {
+    log_info "Fetching Node.js releases from $NODE_RELEASES_API"
+    
+    if ! curl -sL "$NODE_RELEASES_API" > /tmp/node-releases.json; then
+        log_error "Failed to fetch Node.js releases"
+        exit 1
+    fi
+    
+    log_success "Fetched Node.js releases data"
+}
+
+# Get list of existing versions in share directory
+get_existing_versions() {
+    find "$SHARE_DIR" -maxdepth 1 -type f -name "[0-9]*" -exec basename {} \; | sort -V
+}
+
+# Check if a version should be processed (filter out pre-release, rc, dev, etc.)
+is_stable_version() {
+    local version="$1"
+    
+    # Skip versions with pre-release identifiers
+    if [[ "$version" =~ -(rc|dev|next|nightly|alpha|beta) ]]; then
+        return 1
+    fi
+    
+    # Skip versions with special prefixes we don't want to auto-sync
+    if [[ "$version" =~ ^(chakracore|graal|iojs|node-dev|node-nightly) ]]; then
+        return 1
+    fi
+    
+    return 0
+}
+
+# Download and verify checksums for a specific version
+fetch_checksums() {
+    local version="$1"
+    local shasums_url="$NODE_DIST_BASE/v$version/SHASUMS256.txt"
+    local temp_file="/tmp/SHASUMS256-$version.txt"
+    
+    if ! curl -sL "$shasums_url" > "$temp_file" 2>/dev/null; then
+        log_warning "Could not fetch checksums for version $version"
+        return 1
+    fi
+    
+    echo "$temp_file"
+}
+
+# Extract checksum for a specific file
+get_checksum() {
+    local shasums_file="$1"
+    local filename="$2"
+    
+    grep "$filename" "$shasums_file" 2>/dev/null | awk '{print $1}' || echo ""
+}
+
+# Check if version needs LTS maintenance warning
+needs_lts_warning() {
+    local version="$1"
+    local major_version
+    major_version=$(echo "$version" | cut -d. -f1)
+    
+    # Versions that are in maintenance LTS (approximate)
+    case "$major_version" in
+        14|16|18|20)
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# Generate version definition file
+create_version_file() {
+    local version="$1"
+    local output_file="$SHARE_DIR/$version"
+    local shasums_file="$2"
+    
+    log_info "Creating version file for $version"
+    
+    # Create the file with appropriate content
+    {
+        # Add LTS maintenance warning if needed
+        if needs_lts_warning "$version"; then
+            echo "before_install_package() {"
+            echo "  build_package_warn_lts_maintenance \"\$1\""
+            echo "}"
+            echo ""
+            echo ""
+        fi
+        
+        # Define platform-specific binaries
+        local platforms=(
+            "aix-ppc64"
+            "darwin-arm64"
+            "darwin-x64"
+            "linux-arm64"
+            "linux-armv7l"
+            "linux-ppc64le"
+            "linux-s390x"
+            "linux-x64"
+        )
+        
+        for platform in "${platforms[@]}"; do
+            local filename="node-v$version-$platform.tar.gz"
+            local checksum
+            checksum=$(get_checksum "$shasums_file" "$filename")
+            
+            if [[ -n "$checksum" ]]; then
+                echo "binary $platform \"$NODE_DIST_BASE/v$version/$filename#$checksum\""
+            fi
+        done
+        
+        echo ""
+        
+        # Add source installation
+        local source_filename="node-v$version.tar.gz"
+        local source_checksum
+        source_checksum=$(get_checksum "$shasums_file" "$source_filename")
+        
+        if [[ -n "$source_checksum" ]]; then
+            echo "install_package \"node-v$version\" \"$NODE_DIST_BASE/v$version/$source_filename#$source_checksum\""
+        else
+            log_warning "No source checksum found for $version"
+            echo "install_package \"node-v$version\" \"$NODE_DIST_BASE/v$version/$source_filename\""
+        fi
+        
+        echo ""
+    } > "$output_file"
+    
+    log_success "Created $output_file"
+}
+
+# Main function
+main() {
+    local max_versions="${1:-10}"  # Default to syncing 10 latest versions
+    local force_update="${2:-false}"
+    
+    log_info "Starting Node.js version sync (max: $max_versions versions)"
+    
+    check_dependencies
+    fetch_releases
+    
+    # Get existing versions
+    local existing_versions
+    existing_versions=$(get_existing_versions)
+    
+    # Parse releases and find new versions
+    local new_versions=()
+    local processed=0
+    
+    # Sort releases by version (descending) and process
+    jq -r '.[].version' /tmp/node-releases.json | sed 's/^v//' | sort -rV | while read -r version; do
+        if [[ $processed -ge $max_versions ]]; then
+            break
+        fi
+        
+        if ! is_stable_version "$version"; then
+            continue
+        fi
+        
+        # Check if version already exists (unless force update)
+        if [[ "$force_update" != "true" ]] && echo "$existing_versions" | grep -q "^$version$"; then
+            log_info "Version $version already exists, skipping"
+            continue
+        fi
+        
+        log_info "Processing version $version"
+        
+        # Fetch checksums
+        local shasums_file
+        if shasums_file=$(fetch_checksums "$version"); then
+            create_version_file "$version" "$shasums_file"
+            rm -f "$shasums_file"
+            new_versions+=("$version")
+            ((processed++))
+        else
+            log_warning "Skipping $version due to checksum fetch failure"
+        fi
+    done
+    
+    # Cleanup
+    rm -f /tmp/node-releases.json
+    
+    if [[ ${#new_versions[@]} -eq 0 ]]; then
+        log_info "No new versions to sync"
+    else
+        log_success "Successfully synced ${#new_versions[@]} version(s): ${new_versions[*]}"
+    fi
+}
+
+# Help message
+show_help() {
+    cat << EOF
+Usage: $0 [OPTIONS] [MAX_VERSIONS]
+
+Sync Node.js version definitions from nodejs.org
+
+OPTIONS:
+    -h, --help          Show this help message
+    -f, --force         Force update existing version files
+    
+ARGUMENTS:
+    MAX_VERSIONS        Maximum number of versions to process (default: 10)
+
+EXAMPLES:
+    $0                  # Sync up to 10 latest versions
+    $0 5                # Sync up to 5 latest versions
+    $0 -f 20            # Force update up to 20 latest versions
+    $0 --help           # Show help
+
+EOF
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -f|--force)
+            force_update="true"
+            shift
+            ;;
+        -*)
+            log_error "Unknown option: $1"
+            show_help
+            exit 1
+            ;;
+        *)
+            if [[ "$1" =~ ^[0-9]+$ ]]; then
+                max_versions="$1"
+            else
+                log_error "Invalid argument: $1"
+                show_help
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Run main function
+main "${max_versions:-10}" "${force_update:-false}"
