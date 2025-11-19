@@ -212,8 +212,7 @@ platform() {
 matches_platform() {
   local match="$1"
   local -a platform
-  IFS=: platform=( $(platform) )
-  IFS="$OLDIFS"
+  IFS=: read -ra platform <<< "$(platform)"
 
   [ "${platform[1]}-${platform[0]}" = "$match" ] ||
   [ "${platform[2]}-${platform[0]}" = "$match" ]
@@ -235,13 +234,13 @@ try_binary(){
 }
 
 binary() {
-  local platform="$1"
+  local platform_match="$1"
   local url="$2"
 
   # return if already set
   [ -n "$BINARY_URL" ] && return 0
 
-  if matches_platform "$platform"; then
+  if matches_platform "$platform_match"; then
     BINARY_URL="$url"
   fi
 }
@@ -499,7 +498,7 @@ fetch_tarball() {
     package_url="${package_url%%#*}"
 
     if [ -z "$NODE_BUILD_SKIP_MIRROR" ]; then
-      mirror_url="$("${NODE_BUILD_MIRROR_CMD:-mirror}" $package_url $checksum 2>&4)" || unset mirror_url
+      mirror_url="$("${NODE_BUILD_MIRROR_CMD:-mirror}" "$package_url" "$checksum" 2>&4)" || unset mirror_url
     fi
   fi
 
@@ -807,13 +806,13 @@ after_install_package() {
 fix_jxcore_directory_structure() {
   {
     mkdir -p "$PREFIX_PATH/bin"
-    pushd "$PREFIX_PATH/bin"
+    pushd "$PREFIX_PATH/bin" || return
     if [ -x ../jx ]; then
       mv -f ../jx .
     fi
     ln -sf jx node
     ln -sf ../libexec/.jx/npm/bin/npm-cli.js npm
-    popd
+    popd || return
   } >&4
 }
 
@@ -1004,6 +1003,7 @@ if [ "${#ARGUMENTS[@]}" -gt 2 ]; then
 fi
 
 if [ "${#EXTRA_ARGUMENTS[@]}" -gt 0 ]; then
+  # shellcheck disable=SC2034
   NODE_CONFIGURE_OPTS_ARRAY=("${EXTRA_ARGUMENTS[@]}")
 fi
 
@@ -1103,6 +1103,7 @@ WGET_OPTS="${NODE_BUILD_WGET_OPTS} ${IPV4+--inet4-only} ${IPV6+--inet6-only}"
 
 SEED="$(date "+%Y%m%d%H%M%S").$$"
 LOG_PATH="${TMP}/node-build.${SEED}.log"
+# shellcheck disable=SC2034
 NODE_BIN="${PREFIX_PATH}/bin/node"
 
 if [ -z "$NODE_BUILD_BUILD_PATH" ]; then
