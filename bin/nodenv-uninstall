@@ -46,11 +46,13 @@ done
 
 declare -a before_hooks after_hooks
 
+# shellcheck disable=SC2317
 before_uninstall() {
   local hook="$1"
   before_hooks["${#before_hooks[@]}"]="$hook"
 }
 
+# shellcheck disable=SC2317
 after_uninstall() {
   local hook="$1"
   after_hooks["${#after_hooks[@]}"]="$hook"
