@@ -1,6 +1,6 @@
 {
   "name": "@nodenv/node-build",
-  "version": "5.4.21",
+  "version": "5.4.22",
   "description": "A tool to download, compile, and install Node on Unix-like systems.",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
@@ -44,10 +44,10 @@
     "unmerged": "git for-each-ref refs/rbtags --format='%(creatordate:short) %(refname:short) https://github.com/rbenv/ruby-build/releases/tag/%(refname:lstrip=-1)' --no-merged"
   },
   "devDependencies": {
-    "@nodenv/node-build-update-defs": "^2.11.3",
-    "bats": "^1.13.0",
-    "bats-assert": "^2.2.2",
-    "bats-mock": "^1",
+    "@nodenv/node-build-update-defs": "2",
+    "bats": "1",
+    "bats-assert": "2",
+    "bats-mock": "1",
     "bats-support": "^0.3.0"
   }
 }
