@@ -25,7 +25,7 @@ jobs:
           GIT_COMMITTER_EMAIL: ${{ vars.GHA_BOT_EMAIL }}
 
       - run: git log --format='- %s' --reverse ${{github.sha}}.. >> ${{ runner.temp }}/pr-body
-      - uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8.0.0
+      - uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
         with:
           token: ${{ secrets.BOT_TOKEN }}
           branch: latest-scraped-definitions
@@ -44,7 +44,7 @@ jobs:
       - run: npm run lint:lts -- --fix
 
       - if: failure()
-        uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v8.0.0
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
         with:
           token: ${{ secrets.BOT_TOKEN }}
           committer: "nodenv bot <jason.karns+nodenv@github.com>"
