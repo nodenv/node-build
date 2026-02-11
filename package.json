@@ -1,6 +1,6 @@
 {
   "name": "@nodenv/node-build",
-  "version": "5.4.25",
+  "version": "5.4.26",
   "description": "A tool to download, compile, and install Node on Unix-like systems.",
   "homepage": "https://github.com/nodenv/node-build#readme",
   "license": "MIT",
