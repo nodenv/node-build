@@ -1,0 +1,15 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
+binary aix-ppc64 "https://nodejs.org/dist/v20.20.1/node-v20.20.1-aix-ppc64.tar.gz#6565a303b13143bf74d65a90eb32f67d97bccbfacbd7c13f9130212756b5966c"
+binary darwin-arm64 "https://nodejs.org/dist/v20.20.1/node-v20.20.1-darwin-arm64.tar.gz#36c5ef36d955995ea2dea700b16b8e79bedeb1ecb4569e77ddc8fc739aa56bac"
+binary darwin-x64 "https://nodejs.org/dist/v20.20.1/node-v20.20.1-darwin-x64.tar.gz#ea8d2cd7280d935232bae5456704843aa50cf452e10b95abd92a721db6496965"
+binary linux-arm64 "https://nodejs.org/dist/v20.20.1/node-v20.20.1-linux-arm64.tar.gz#d6947e10ddc124284aee92981cc739cd4581a6b4bf89520792f2b582600195fa"
+binary linux-armv7l "https://nodejs.org/dist/v20.20.1/node-v20.20.1-linux-armv7l.tar.gz#6d7b0f1f3a88004b251fd4d2ee2f5c4faca15587a3cdaaefae11e655b9e01cde"
+binary linux-ppc64le "https://nodejs.org/dist/v20.20.1/node-v20.20.1-linux-ppc64le.tar.gz#d885a22c1a08bd2d2f91c290770f3a9762075c4ec222fcd9d9fc921b0c8294b9"
+binary linux-s390x "https://nodejs.org/dist/v20.20.1/node-v20.20.1-linux-s390x.tar.gz#7f0688d98fce89a9d7c623a3b0d2eab8374333f31461c8cb8b9d34712c45a1ba"
+binary linux-x64 "https://nodejs.org/dist/v20.20.1/node-v20.20.1-linux-x64.tar.gz#6362e50804cdcc110592201f67beda93bcd702fdcbe1c42840a50d590e3af0ce"
+
+install_package "node-v20.20.1" "https://nodejs.org/dist/v20.20.1/node-v20.20.1.tar.gz#1b6eaf0fa2b99a19ec682149faa0aabbea5bb7f8af2f44ee6f6491d5ff6a9235"
