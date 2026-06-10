@@ -2,12 +2,6 @@ before_install_package() {
   build_package_warn_eol "$1"
 }
 
-
-before_install_package() {
-  build_package_warn_lts_maintenance "$1"
-}
-
-
 binary aix-ppc64 "https://nodejs.org/dist/v23.11.1/node-v23.11.1-aix-ppc64.tar.gz#b8e4e7f8940f4d4f1dbce5099708ef7038c41f38176524ac3b4c14e7e7324201"
 binary darwin-arm64 "https://nodejs.org/dist/v23.11.1/node-v23.11.1-darwin-arm64.tar.gz#255509d2c4fe8e1d6fefb950ad8db285ed75ba543e18744d83dc139f978e404d"
 binary darwin-x64 "https://nodejs.org/dist/v23.11.1/node-v23.11.1-darwin-x64.tar.gz#7e384a0cfa8b44ee4833b3823485baad78bf258e54f47020d2d2b4b75e9275d3"
