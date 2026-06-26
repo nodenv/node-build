@@ -18,5 +18,5 @@ SHARE_PATH="${PREFIX}/share/node-build"
 mkdir -p "$BIN_PATH" "$ETC_PATH" "$SHARE_PATH"
 
 install -p bin/* "$BIN_PATH"
-install -d etc/* "$ETC_PATH"
+install -p -m 0644 etc/install/* "$ETC_PATH/install"
 install -p -m 0644 share/node-build/* "$SHARE_PATH"
