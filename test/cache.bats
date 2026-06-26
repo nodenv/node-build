@@ -4,14 +4,10 @@ load test_helper
 export NODE_BUILD_SKIP_MIRROR=1
 export NODE_BUILD_CACHE_PATH="$BATS_TMPDIR/cache"
 
-setup() {
-  mkdir -p "$NODE_BUILD_CACHE_PATH"
-}
-
-
 @test "packages are saved to download cache" {
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/\${5##*/} \$3"
 
+  mkdir -p "$NODE_BUILD_CACHE_PATH"
   install_fixture definitions/without-checksum
 
   assert_success
@@ -23,6 +19,8 @@ setup() {
 
 @test "cached package without checksum" {
   stub curl
+
+  mkdir -p "$NODE_BUILD_CACHE_PATH"
   cp "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_CACHE_PATH"
 
   install_fixture definitions/without-checksum
@@ -37,6 +35,8 @@ setup() {
 @test "cached package with valid checksum" {
   stub shasum true "echo ba988b1bb4250dee0b9dd3d4d722f9c64b2bacfc805d1b6eba7426bda72dd3c5"
   stub curl
+
+  mkdir -p "$NODE_BUILD_CACHE_PATH"
   cp "${FIXTURE_ROOT}/package-1.0.0.tar.gz" "$NODE_BUILD_CACHE_PATH"
 
   install_fixture definitions/with-checksum
@@ -56,6 +56,7 @@ setup() {
   stub shasum true "echo invalid" "echo $checksum"
   stub curl "-q -o * -*S* http://example.com/* : cp $FIXTURE_ROOT/package-1.0.0.tar.gz \$3"
 
+  mkdir -p "$NODE_BUILD_CACHE_PATH"
   touch "${NODE_BUILD_CACHE_PATH}/package-1.0.0.tar.gz"
 
   install_fixture definitions/with-checksum
