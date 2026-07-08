@@ -1,0 +1,9 @@
+binary aix-ppc64 "https://nodejs.org/dist/v26.5.0/node-v26.5.0-aix-ppc64.tar.gz#245679d4462912d7b9a5f167a81057962812817b7cf8b29c22ec79327192ede0"
+binary darwin-arm64 "https://nodejs.org/dist/v26.5.0/node-v26.5.0-darwin-arm64.tar.gz#ee920559aaa2391569cff4d737e3b83963430e3a14dedd91bfe0ff53171b5af9"
+binary darwin-x64 "https://nodejs.org/dist/v26.5.0/node-v26.5.0-darwin-x64.tar.gz#98293394c945a24e64e00b4177bf075ec963ea70b34d1d2e24bd4a71716d334f"
+binary linux-arm64 "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-arm64.tar.gz#308e5fe89a82461ba5a6cf15ff5221b2cdbd7ae87600aa72bb3c3fbdc66412d1"
+binary linux-ppc64le "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-ppc64le.tar.gz#7ed8da69a2ef008853e28fafe13cfed9dac0fe01e0ef83b1a8ec5b9b8557ed28"
+binary linux-s390x "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-s390x.tar.gz#d673959b1390e1d0865fd7ae8fb981b16697db6345a10b14e130c302cf4cbc28"
+binary linux-x64 "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.gz#22b5f47ad6ae78837e4c2b846019965ce1a06ba143de176102294a1bf44fc677"
+
+install_package "node-v26.5.0" "https://nodejs.org/dist/v26.5.0/node-v26.5.0.tar.gz#b3db373d860129807d8e504eaad184f1f5cb0e970b7467c80595f7a4653cf977"
