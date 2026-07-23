@@ -1,7 +1,9 @@
 name: Test
 on:
   push:
+    branches: [ main, v5 ]
   pull_request:
+    branches: [ main, v5 ]
   schedule: [{ cron: "0 0 10 * *" }] # monthly https://crontab.guru/#0_0_10_*_*
   workflow_dispatch:
 
