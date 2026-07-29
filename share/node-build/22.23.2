@@ -1,0 +1,15 @@
+before_install_package() {
+  build_package_warn_lts_maintenance "$1"
+}
+
+
+binary aix-ppc64 "https://nodejs.org/dist/v22.23.2/node-v22.23.2-aix-ppc64.tar.gz#77c63032fd4ab8e98e0ae7db9d79e396659e04af95a5edf8e1ca869e426c04a5"
+binary darwin-arm64 "https://nodejs.org/dist/v22.23.2/node-v22.23.2-darwin-arm64.tar.gz#61130f394c1630d211dd50aecc4353d379480f36d3ac913cd85dbba1aed585c6"
+binary darwin-x64 "https://nodejs.org/dist/v22.23.2/node-v22.23.2-darwin-x64.tar.gz#58e99022c2ff89395576cc7fd4d98cea24bb68081475d5f88b801ee8729fb026"
+binary linux-arm64 "https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-arm64.tar.gz#013b59cfd2819703a6f4a14ab891fc46fc2a4e3f5bcd92de3fb4929b43e35b30"
+binary linux-armv7l "https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-armv7l.tar.gz#2a2f59eb8fd9dec27b3bee17c729131d1fd3e6d9943d479f1156ce38af8cd599"
+binary linux-ppc64le "https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-ppc64le.tar.gz#65c8aa9e647196f30d3564bb6b201306b1b520f72f0dd3278da326014a018379"
+binary linux-s390x "https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-s390x.tar.gz#986b8441b1d1a01c70ed710bab201741fd0d196d302a7e4338fefd5e1c10e61e"
+binary linux-x64 "https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-x64.tar.gz#b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a"
+
+install_package "node-v22.23.2" "https://nodejs.org/dist/v22.23.2/node-v22.23.2.tar.gz#cdaed46fcd8923a55974b7bbc7caaadeaaf7aed60cc137e59837b72f575ef641"
