@@ -62,8 +62,8 @@ OUT
 @test "updating existing git repository" {
   mkdir -p "${NODE_BUILD_BUILD_PATH}/package-dev"
   stub git \
-    "fetch --depth 1 origin +main : true" \
-    "checkout -q -B main origin/main : true"
+    "-C package-dev fetch --depth 1 origin +main : true" \
+    "-C package-dev checkout -q -B main origin/main : true"
 
   run_inline_definition <<DEF
 install_git "package-dev" "http://example.com/packages/package.git" main copy
