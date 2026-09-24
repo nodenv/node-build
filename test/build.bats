@@ -21,36 +21,69 @@ executable() {
 }
 
 cached_tarball() {
-  mkdir -p "$NODE_BUILD_CACHE_PATH"
-  pushd "$NODE_BUILD_CACHE_PATH" >/dev/null
-  tarball "$@"
-  popd >/dev/null
+  local save_to_fixtures
+  case "$*" in
+  "node-v4.0.0 configure" )
+    save_to_fixtures=1
+    ;;
+  esac
+
+  local tarball="${1}.tar.gz"
+  local fixture_tarball="${FIXTURE_ROOT}/${tarball}"
+  local cached_tarball="${NODE_BUILD_CACHE_PATH}/${tarball}"
+  shift 1
+  
+  if [ -n "$save_to_fixtures" ] && [ -e "$fixture_tarball" ]; then
+    mkdir -p "$(dirname "$cached_tarball")"
+    cp "$fixture_tarball" "$cached_tarball"
+    return 0
+  fi
+
+  generate_tarball "$cached_tarball" "$@"
+  [ -z "$save_to_fixtures" ] || cp "$cached_tarball" "$fixture_tarball"
 }
 
-tarball() {
-  local name="$1"
-  local path="$PWD/$name"
-  local configure="$path/configure"
+generate_tarball() {
+  local tarfile="$1"
   shift 1
+  local name path
+  name="$(basename "${tarfile%.tar.gz}")"
+  path="$(mktemp -d "$TMP/tarball.XXXXX")/${name}"
 
-  executable "$configure" <<OUT
+  local file target
+  for file; do
+    case "$file" in
+    config | configure )
+      mkdir -p "$(dirname "${path}/${file}")"
+      cat > "${path}/${file}" <<OUT
 #!$BASH
 IFS=,
 echo "$name: [\$*]" \${NODEOPT:+NODEOPT=\$NODEOPT} >> build.log
 OUT
-
-  for file; do
-    mkdir -p "$(dirname "${path}/${file}")"
-    touch "${path}/${file}"
+      chmod +x "${path}/${file}"
+      ;;
+    *:* )
+      target="${file#*:}"
+      file="${file%:*}"
+      mkdir -p "$(dirname "${path}/${file}")"
+      cp "$target" "${path}/${file}"
+      ;;
+    * )
+      mkdir -p "$(dirname "${path}/${file}")"
+      touch "${path}/${file}"
+      ;;
+    esac
   done
 
-  tar czf "${path}.tar.gz" -C "${path%/*}" "$name"
+  mkdir -p "$(dirname "$tarfile")"
+  tar czf "$tarfile" -C "${path%/*}" "$name"
+  rm -rf "$path"
 }
 
 stub_make_install() {
   stub "$MAKE" \
     " : echo \"$MAKE \$(inspect_args \"\$@\")\" >> build.log" \
-    "install : echo \"$MAKE \$(inspect_args \"\$@\")\" >> build.log && cat build.log >> '$INSTALL_ROOT/build.log'"
+    "install* : echo \"$MAKE \$(inspect_args \"\$@\")\" >> build.log && cat build.log >> '$INSTALL_ROOT/build.log'"
 }
 
 assert_build_log() {
@@ -59,8 +92,10 @@ assert_build_log() {
 }
 
 @test "apply node patch before building" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
+  stub_repeated uname '-s : echo Linux'
+  stub_repeated brew false
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
 
@@ -83,7 +118,7 @@ OUT
 }
 
 @test "striplevel node patch before building" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
@@ -107,7 +142,7 @@ OUT
 }
 
 @test "apply node patch from git diff before building" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_make_install
   stub patch ' : echo patch "$@" | sed -E "s/\.[[:alnum:]]+$/.XXX/" >> build.log'
@@ -132,7 +167,7 @@ OUT
 }
 
 @test "forward extra command-line arguments as configure flags" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_make_install
 
@@ -141,20 +176,20 @@ install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
 
   # TODO: use configure flags meaningful to node
-  NODE_CONFIGURE_OPTS='--with-readline-dir=/custom' run node-build "$BATS_TMPDIR/build-definition" "$INSTALL_ROOT" -- cppflags="-DYJIT_FORCE_ENABLE -DRUBY_PATCHLEVEL_NAME=test" --with-openssl-dir=/path/to/openssl
+  NODE_CONFIGURE_OPTS='--with-readline-dir=/custom' run node-build "$BATS_TMPDIR/build-definition" "$INSTALL_ROOT" -- cppflags="-DYJIT_FORCE_ENABLE -DNODE_PATCHLEVEL_NAME=test" --with-openssl-dir=/path/to/openssl
   assert_success
 
   unstub make
 
   assert_build_log <<OUT
-node-v4.0.0: [--prefix=$INSTALL_ROOT,cppflags=-DYJIT_FORCE_ENABLE -DRUBY_PATCHLEVEL_NAME=test,--with-openssl-dir=/path/to/openssl,--with-readline-dir=/custom]
+node-v4.0.0: [--prefix=$INSTALL_ROOT,cppflags=-DYJIT_FORCE_ENABLE -DNODE_PATCHLEVEL_NAME=test,--with-openssl-dir=/path/to/openssl,--with-readline-dir=/custom]
 make -j 2
 make install
 OUT
 }
 
 @test "number of CPU cores defaults to 2" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_repeated uname '-s : echo Darwin'
   stub sysctl false
@@ -177,7 +212,7 @@ OUT
 }
 
 @test "number of CPU cores is detected on Mac" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_repeated uname '-s : echo Darwin'
   stub sysctl '-n hw.ncpu : echo 4'
@@ -201,7 +236,7 @@ OUT
 }
 
 @test "number of CPU cores is detected on FreeBSD" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_repeated uname '-s : echo FreeBSD'
   stub sysctl '-n hw.ncpu : echo 1'
@@ -226,7 +261,7 @@ OUT
 }
 
 @test "using MAKE_INSTALL_OPTS" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_repeated uname '-s : echo Linux'
   stub_make_install
@@ -243,7 +278,7 @@ DEF
   assert_build_log <<OUT
 node-v4.0.0: --prefix=$INSTALL_ROOT
 make -j 2
-make install --globalmake RUBYMAKE=true with spaces
+make install --globalmake NODEMAKE=true with spaces
 OUT
 }
 
@@ -257,7 +292,7 @@ OUT
 }
 
 @test "make on FreeBSD defaults to gmake" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   stub_repeated uname "-s : echo FreeBSD"
   MAKE=gmake stub_make_install
@@ -270,7 +305,7 @@ OUT
 }
 
 @test "can use NODE_CONFIGURE to apply a patch" {
-  cached_tarball "node-v4.0.0"
+  cached_tarball "node-v4.0.0" configure
 
   executable "${BATS_TMPDIR}/custom-configure" <<CONF
 #!$BASH
@@ -336,8 +371,8 @@ OUT
   assert_output "node-build: TMPDIR=$TMPDIR is set to a non-accessible location"
 }
 
-@test "initializes LDFLAGS directories" {
-  cached_tarball "node-v4.0.0"
+@test "does not initialize LDFLAGS directories" {
+  cached_tarball "node-v4.0.0" configure
 
   export LDFLAGS="-L ${BATS_TEST_DIRNAME}/what/evs"
   run_inline_definition <<DEF
@@ -345,8 +380,8 @@ install_package "node-v4.0.0" "http://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
 DEF
   assert_success
 
-  assert [ -d "${INSTALL_ROOT}/lib" ]
-  assert [ -d "${BATS_TEST_DIRNAME}/what/evs" ]
+  assert [ ! -d "${INSTALL_ROOT}/lib" ]
+  assert [ ! -d "${BATS_TEST_DIRNAME}/what/evs" ]
 }
 
 @test "directory structure is fixed for jxcore source builds" {
