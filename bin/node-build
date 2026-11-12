@@ -913,7 +913,7 @@ list_maintained_versions() {
 }
 
 exclude_prereleases() {
-  grep -vE -e'-(dev|next|rc|nightly)'
+  grep -vE -e'-(alpha|dev|next|rc|nightly)'
 }
 
 extract_latest_versions() {

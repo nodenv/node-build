@@ -162,6 +162,28 @@ graal+ce_java8-20.0.0"
   assert_output "$expected"
 }
 
+@test "excluding alpha releases from latest stable Node versions" {
+  export NODE_BUILD_ROOT="$BATS_TMPDIR"
+  mkdir -p "${NODE_BUILD_ROOT}/share/node-build"
+
+  all_versions="22.1.0
+22.2.0-alpha.1
+23.0.0-alpha.1
+23.0.0-alpha.2"
+
+  for ver in $all_versions; do
+    touch "${NODE_BUILD_ROOT}/share/node-build/$ver"
+  done
+
+  run node-build --list
+  assert_success
+  assert_output "22.1.0"
+
+  run node-build --definitions
+  assert_success
+  assert_output "$all_versions"
+}
+
 @test "removing duplicate Node versions" {
   export NODE_BUILD_ROOT="$BATS_TMPDIR"
   export NODE_BUILD_DEFINITIONS="${NODE_BUILD_ROOT}/share/node-build"
